@@ -8,8 +8,8 @@ Monsters, Items and Purchasable
 │  - name: String                      │            │ + sellPrice(): int   │
 │  - currentHp: int                    │            │                      │
 │  - level: int                        │            └──────────────────────┘
-│  - baseHp: int                       │                       △
-├──────────────────────────────────────┤                       |
+│  - baseHp: int                       │                       ^
+├──────────────────────────────────────┤                      / \
 │  + *baseDamage*(): int               │                       │
 │  + *speed*(): int                    │
 │  + *healRate*(): double              │                       │
