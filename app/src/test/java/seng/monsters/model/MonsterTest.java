@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +27,9 @@ class MonsterTest {
 
     /**
      * Monster <code>levelUp()</code> should:
-     * - Increase a monster level by 1 and only 1 for all monster
+     * <ul>
+     * <li> Increase a monster level by 1 and only 1 for all monster </li>
+     * </ul>
      */
     @Test
     void levelUp() {
@@ -41,13 +42,15 @@ class MonsterTest {
 
     /**
      * Monster <code>healSelf()</code> should:
-     * - Heal monster health for a certain amount
-     * - Heal monster health up to the max health even if the amount specified is higher
-     * - Should not heal if the input is invalid (negative)
+     * <ul>
+     * <li> Heal monster health for a certain amount </li>
+     * <li> Heal monster health up to the max health even if the amount specified is higher </li>
+     * <li> Should not heal if the input is invalid (negative) </li>
+     * </ul>
      */
     @Test
     void healSelf() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             monster.takeDamage(20);
             monster.healSelf(20);
             assertEquals(monster.maxHp(), monster.getCurrentHp());
@@ -68,13 +71,15 @@ class MonsterTest {
 
     /**
      * Monster <code>takeDamage()</code> should:
-     * - Deal exact damage to the monster
-     * - Not deal anymore if health is already 0
-     * - Not deal if the amount is invalid (negative)
+     * <ul>
+     * <li> Deal exact damage to the monster </li>
+     * <li> Not deal anymore if health is already 0 </li>
+     * <li> Not deal if the amount is invalid (negative) </li>
+     * </ul>
      */
     @Test
     void takeDamage() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             monster.takeDamage(20);
             assertNotEquals(monster.maxHp(), monster.getCurrentHp());
 
@@ -98,11 +103,13 @@ class MonsterTest {
 
     /**
      * Monster <code>setName()</code> should:
-     * - Change their name
+     * <ul>
+     * <li> Change their name </li>
+     * </ul>
      */
     @Test
     void setName() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             final var prevName = monster.getName();
             monster.setName("amongus");
             assertNotEquals(prevName, monster.getName());
@@ -112,14 +119,16 @@ class MonsterTest {
 
     /**
      * Monster <code>setBaseHp()</code> should:
-     * - Change the base hp into a new amount
-     * - Change the current hp to max hp if it is more than the new max hp
-     * - Not change the current hp if it is less than the new max hp
-     * - Not change any properties if the input is invalid (negative)
+     * <ul>
+     * <li> Change the base hp into a new amount </li>
+     * <li> Change the current hp to max hp if it is more than the new max hp </li>
+     * <li> Not change the current hp if it is less than the new max hp </li>
+     * <li> Not change any properties if the input is invalid (negative) </li>
+     * </ul>
      */
     @Test
     void setBaseHp() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             final var prevHp = monster.getCurrentHp();
             monster.setBaseHp(10);
             assertNotEquals(prevHp, monster.getCurrentHp());
@@ -140,12 +149,14 @@ class MonsterTest {
 
     /**
      * Monster <code>maxHp()</code> should:
-     * - Give the max hp given the level and base hp
-     * - Automatically scale up and down when levelling up or base hp was changed
+     * <ul>
+     * <li> Give the max hp given the level and base hp </li>
+     * <li> Automatically scale up and down when levelling up or base hp was changed </li>
+     * </ul>
      */
     @Test
     void maxHp() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             var maxHp = monster.maxHp();
             monster.levelUp();
             assertNotEquals(maxHp, monster.maxHp());
@@ -159,12 +170,14 @@ class MonsterTest {
 
     /**
      * Monster <code>damage()</code> should:
-     * - Return the maximum damage output given the current environment and monster level
-     * - Return 1.5x damage if the environment is ideal to the monster
+     * <ul>
+     * <li> Return the maximum damage output given the current environment and monster level </li>
+     * <li> Return 1.5x damage if the environment is ideal to the monster </li>
+     * </ul>
      */
     @Test
     void damage() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             monster.levelUp();
             final var unboosted = monster.damage(Environment.FIELD);
             assertNotEquals(monster.baseDamage(), unboosted);
@@ -176,11 +189,13 @@ class MonsterTest {
 
     /**
      * Monster <code>isFainted()</code> should:
-     * - Return always accurate boolean about the state of the monster
+     * <ul>
+     * <li> Return always accurate boolean about the state of the monster </li>
+     * </ul>
      */
     @Test
     void isFainted() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             assertFalse(monster.isFainted());
 
             monster.takeDamage(monster.maxHp() / 2);
@@ -193,25 +208,29 @@ class MonsterTest {
 
     /**
      * Monster <code>sellPrice()</code> should:
-     * - be 1/2 of te buy price
+     * <ul>
+     * <li> be 1/2 of te buy price </li>
+     * </ul>
      */
     @Test
     void sellPrice() {
-        for (final var monster: all) {
+        for (final var monster : all) {
             assertEquals(monster.buyPrice() / 2, monster.sellPrice());
         }
     }
 
     /**
      * Monster <code>equals()</code> should:
-     * - Should only match two of the same instance (using the id)
+     * <ul>
+     * <li> Should only match two of the same instance (using the id)a </li>
+     * </ul>
      */
     @Test
     void testEquals() {
         final var monster = new Monster.Eel(1);
         assertFalse(monster.equals(new Monster.Eel(1)));
 
-        final var pointer = monster;
+        final var pointer = (Monster) monster;
         assertTrue(monster.equals(pointer));
 
         pointer.levelUp();

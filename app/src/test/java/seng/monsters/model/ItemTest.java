@@ -18,15 +18,15 @@ class ItemTest {
 
     /**
      * Given Item when applied to Monster:
-     * - Potion should add 50 HP
-     * - Potion should not heal if monster is fainted, and throw an Exception
-     * - Potion should not heal if monster has full health, and throw an Exception
-     * <p>
-     * - Revive should set the fainted monster health to 1/4 of its health
-     * - Revive should not heal if monster is not fainted, and throw an Exception
-     * <p>
-     * - RareCandy should increase the level of monster by 1 only 1
-     * - RareCandy should never throw an Exception
+     * <ul>
+     * <li>Potion should add 50 HP</li>
+     * <li>Potion should not heal if monster is fainted, and throw an Exception</li>
+     * <li>Potion should not heal if monster has full health, and throw an Exception</li>
+     * <li>Revive should set the fainted monster health to 1/4 of its health</li>
+     * <li>Revive should not heal if monster is not fainted, and throw an Exception</li>
+     * <li>RareCandy should increase the level of monster by 1 only 1</li>
+     * <li>RareCandy should never throw an Exception</li>
+     * </ul>
      */
     @Test
     void applyTo() {
@@ -66,7 +66,9 @@ class ItemTest {
 
     /**
      * Check if all types item should:
-     * - have their sellPrice be 1/2 buyPrice
+     * <ul>
+     * <li>have their sellPrice be 1/2 buyPrice </li>
+     * </ul>
      */
     @Test
     void sellPrice() {

@@ -12,8 +12,10 @@ class EnvironmentTest {
 
     /**
      * Check if <code>Environment.all()</code> method:
-     * - Give a unique list of all environments
-     * - Give a list of all possible environments
+     * <ul>
+     * <li> Give a unique list of all environments </li>
+     * <li> Give a list of all possible environments </li>
+     * </ul>
      */
     @Test
     void all() {
@@ -33,7 +35,9 @@ class EnvironmentTest {
 
     /**
      * Check if <code>Environment.toString()</code> method:
-     * - Convert the enum into a string by its label in lowercase
+     * <ul>
+     * <li> Convert the enum into a string by its label in lowercase </li>
+     * </ul>
      */
     @Test
     void testToString() {
