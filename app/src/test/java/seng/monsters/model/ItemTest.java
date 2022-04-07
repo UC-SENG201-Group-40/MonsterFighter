@@ -1,10 +1,8 @@
 package seng.monsters.model;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -23,10 +21,10 @@ class ItemTest {
      * - Potion should add 50 HP
      * - Potion should not heal if monster is fainted, and throw an Exception
      * - Potion should not heal if monster has full health, and throw an Exception
-     *
+     * <p>
      * - Revive should set the fainted monster health to 1/4 of its health
      * - Revive should not heal if monster is not fainted, and throw an Exception
-     *
+     * <p>
      * - RareCandy should increase the level of monster by 1 only 1
      * - RareCandy should never throw an Exception
      */

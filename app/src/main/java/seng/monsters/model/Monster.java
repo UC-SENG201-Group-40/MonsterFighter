@@ -340,6 +340,8 @@ public abstract class Monster implements Purchasable {
      * @param amount The amount healed
      */
     public void healSelf(int amount) {
+        if (amount < 0)
+            return;
         this.currentHp = Math.min(currentHp + amount, maxHp());
     }
 
@@ -349,6 +351,8 @@ public abstract class Monster implements Purchasable {
      * @param amount The amount damaged
      */
     public void takeDamage(int amount) {
+        if (amount < 0)
+            return;
         this.currentHp = Math.max(currentHp - amount, 0);
     }
 
@@ -367,7 +371,12 @@ public abstract class Monster implements Purchasable {
      * @param baseHp The new base hp
      */
     public void setBaseHp(int baseHp) {
+        if (baseHp < 0)
+            return;
         this.baseHp = baseHp;
+        if (this.currentHp > maxHp()) {
+            this.currentHp = maxHp();
+        }
     }
 
 
