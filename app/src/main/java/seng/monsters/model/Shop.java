@@ -7,10 +7,7 @@
 //
 package seng.monsters.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -38,7 +35,9 @@ final class Shop {
      */
     private final Map<UUID, Monster> monsterStock = new HashMap<>();
 
-    /** The game managger */
+    /**
+     * The game managger
+     */
     private final GameManager manager;
 
     public Shop(GameManager manager) {
@@ -93,15 +92,16 @@ final class Shop {
      * @return A monster
      */
     public Monster randomMonster() {
-        final var seed = (int) Math.floor(Math.random() * 3) % 3;
-        final var range = (int) Math.round(Math.random() * 6 * manager.getDifficulty()) - 3 * manager.getDifficulty();
+        final var rng = new Random();
+        final var range = rng.nextInt(6 * manager.getDifficulty()) - 3 * manager.getDifficulty();
         final var level = Math.max(1, manager.getCurrentDay() + range);
         final List<Monster> allMonsters = List.of(
             new Monster.Quacker(level),
             new Monster.Raver(level),
-            new Monster.Tree(level)
+            new Monster.Tree(level),
+            new Monster.Eel(level)
         );
-        return allMonsters.get(seed);
+        return allMonsters.get(rng.nextInt(allMonsters.size()));
     }
 
     /**
@@ -110,11 +110,12 @@ final class Shop {
      * @return A map mapping all the item to a count
      */
     public Map<Item, Integer> randomItemStock() {
+        final var rng = new Random();
         final List<Item> allItems = List.of(new Item.Potion(), new Item.Revive(), new Item.RareCandy());
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
-                final var count = (int) Math.round(Math.random() * manager.getCurrentDay() * manager.getDifficulty()) + 1;
+                final var count = rng.nextInt( manager.getCurrentDay() * manager.getDifficulty()) + 1;
                 map.put(item, count);
             });
         return map;
@@ -135,6 +136,7 @@ final class Shop {
 
     /**
      * Get the monster in stock
+     *
      * @return The list all monster in stock
      */
     public List<Monster> getMonsterStock() {
@@ -143,6 +145,7 @@ final class Shop {
 
     /**
      * Get the items and its count
+     *
      * @return The list all item in stock
      */
     public List<Map.Entry<Item, Integer>> getItemStock() {

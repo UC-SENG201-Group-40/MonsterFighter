@@ -14,7 +14,9 @@ import java.util.UUID;
  * An entity that can fight in a battle with a variety of stats
  */
 public abstract class Monster implements Purchasable {
-    /** A Quacker duck */
+    /**
+     * A Quacker duck
+     */
     public static final class Quacker extends Monster {
         /**
          * Create a new monster
@@ -57,17 +59,19 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() > 0.9;
+            return Math.random() <= 0.4;
         }
 
         @Override
         public boolean shouldLeave() {
-            final var line = isFainted() ? 0.75 : 0.95;
-            return Math.random() > line;
+            final var line = isFainted() ? 0.25 : 0.01;
+            return Math.random() <= line;
         }
     }
 
-    /** A Raver crab */
+    /**
+     * A Raver crab
+     */
     public static final class Raver extends Monster {
         /**
          * Create a new monster
@@ -110,17 +114,19 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() > 0.9;
+            return Math.random() <= 0.4;
         }
 
         @Override
         public boolean shouldLeave() {
-            final var line = isFainted() ? 0.8 : 0.95;
-            return Math.random() > line;
+            final var line = isFainted() ? 0.2 : 0.05;
+            return Math.random() <= line;
         }
     }
 
-    /** A Tree, that's it */
+    /**
+     * A Tree, that's it
+     */
     public static final class Tree extends Monster {
         /**
          * Create a new monster
@@ -163,12 +169,73 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() > 0.9;
+            return Math.random() <= 0.3;
         }
 
         @Override
         public boolean shouldLeave() {
-            return Math.random() > (isFainted() ? 0.8 : 0.95);
+            return Math.random() <= (isFainted() ? 0.15 : 0.01);
+        }
+    }
+
+    /**
+     * An eel that can steals health
+     */
+    public static final class Eel extends Monster {
+        /**
+         * Create a new monster
+         *
+         * @param level The current level
+         */
+        public Eel(int level) {
+            super("Eel", 60, level);
+        }
+
+        /**
+         * Create a new monster
+         *
+         * @param name  The name of the monster
+         * @param level The current level
+         */
+        public Eel(String name, int level) {
+            super(name, 60, level);
+        }
+
+        @Override
+        public int baseDamage() {
+            return 40;
+        }
+
+        @Override
+        public int speed() {
+            return 10;
+        }
+
+        @Override
+        public int healRate() {
+            return 70;
+        }
+
+        @Override
+        public int damage(Environment env) {
+            final var res = super.damage(env);
+            healSelf(res / 2);
+            return res;
+        }
+
+        @Override
+        public Environment idealEnvironment() {
+            return Environment.URBAN;
+        }
+
+        @Override
+        public boolean shouldLevelUp() {
+            return Math.random() <= 0.4;
+        }
+
+        @Override
+        public boolean shouldLeave() {
+            return Math.random() <= (isFainted() ? 0.25 : 0.01);
         }
     }
 
@@ -269,6 +336,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Heal self with a certain amount
+     *
      * @param amount The amount healed
      */
     public void healSelf(int amount) {
@@ -277,6 +345,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Damage self with a certain amount
+     *
      * @param amount The amount damaged
      */
     public void takeDamage(int amount) {
@@ -285,6 +354,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Set the name of the monster
+     *
      * @param name The new name
      */
     public void setName(String name) {
@@ -293,6 +363,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Set the base hp of the monster
+     *
      * @param baseHp The new base hp
      */
     public void setBaseHp(int baseHp) {
@@ -302,6 +373,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * The maximum hp for this level
+     *
      * @return The max hp in integer
      */
     public int maxHp() {
@@ -310,6 +382,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * The produce the damage given the proper environment
+     *
      * @return The damage taking level
      */
     public int scaledDamage() {
@@ -319,6 +392,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * The produce the damage given the proper environment
+     *
      * @param env The environment of the battlefield
      * @return The damage taking account the environment boost
      */
@@ -330,6 +404,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Signal if the monster is fainted and needed to be revived
+     *
      * @return A boolean signalling whether monster is fainted
      */
     public boolean isFainted() {
@@ -338,14 +413,17 @@ public abstract class Monster implements Purchasable {
 
     /**
      * The cost to buy this monster
+     *
      * @return The integer representing the price
      */
     public int buyPrice() {
         final var basePrice = (baseHp + baseDamage() + healRate() + speed()) * multiplier();
         return (int) basePrice;
     }
+
     /**
      * The cost to sell this monster
+     *
      * @return The integer representing the price
      */
     public int sellPrice() {
@@ -354,6 +432,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Get the current level
+     *
      * @return The level of the monster
      */
     public int getLevel() {
@@ -362,6 +441,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Get the current name
+     *
      * @return The name of the monster
      */
     public String getName() {
@@ -370,6 +450,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Get the current hp
+     *
      * @return The current hp of the monster
      */
     public int getCurrentHp() {
@@ -378,6 +459,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Get the id
+     *
      * @return The id of the monster
      */
     public UUID getId() {
@@ -386,6 +468,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Compared the monster with another
+     *
      * @param mon The other monster to compared
      * @return A boolean whether the monster is the same
      */
