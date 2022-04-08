@@ -84,12 +84,12 @@ class ItemTest {
      */
     @Test
     void testEquals() {
-        assertTrue(new Item.Potion().equals(new Item.Potion()));
-        assertTrue(new Item.Revive().equals(new Item.Revive()));
-        assertTrue(new Item.RareCandy().equals(new Item.RareCandy()));
-        assertFalse(new Item.Potion().equals(new Item.Revive()));
-        assertFalse(new Item.Revive().equals(new Item.RareCandy()));
-        assertFalse(new Item.RareCandy().equals(new Item.Potion()));
+        assertEquals(new Item.Potion(), new Item.Potion());
+        assertEquals(new Item.Revive(), new Item.Revive());
+        assertEquals(new Item.RareCandy(), new Item.RareCandy());
+        assertNotEquals(new Item.Potion(), new Item.Revive());
+        assertNotEquals(new Item.Revive(), new Item.RareCandy());
+        assertNotEquals(new Item.RareCandy(), new Item.Potion());
     }
 
     /**
