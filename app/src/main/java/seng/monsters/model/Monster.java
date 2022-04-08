@@ -478,7 +478,7 @@ public abstract class Monster implements Purchasable {
     /**
      * Compared the monster with another
      *
-     * @param mon The other monster to compared
+     * @param other The other to compared
      * @return A boolean whether the monster is the same
      */
     public boolean equals(Object other) {
