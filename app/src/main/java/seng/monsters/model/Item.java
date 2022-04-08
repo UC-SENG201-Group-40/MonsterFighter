@@ -147,8 +147,10 @@ public abstract class Item implements Purchasable {
      * @param o The item to be compared to
      * @return A boolean signalling whether the item is identical
      */
-    public boolean equals(Item o) {
-        return o.hashCode() == this.hashCode();
+    public boolean equals(Object o) {
+        if (o instanceof Item item)
+            return this.hashCode() == item.hashCode();
+        return false;
     }
 
     /**
