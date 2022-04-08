@@ -481,7 +481,9 @@ public abstract class Monster implements Purchasable {
      * @param mon The other monster to compared
      * @return A boolean whether the monster is the same
      */
-    public boolean equals(Monster mon) {
-        return this.getId().equals(mon.getId());
+    public boolean equals(Object other) {
+        if (other instanceof Monster mon)
+            return this.getId().equals(mon.getId());
+        return false;
     }
 }
