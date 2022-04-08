@@ -93,7 +93,7 @@ final class Shop {
      */
     public Monster randomMonster() {
         final var rng = new Random();
-        final var range = rng.nextInt(6 * manager.getDifficulty()) - 3 * manager.getDifficulty();
+        final var range = rng.nextInt(6 * manager.getDifficulty() + 1) - 3 * manager.getDifficulty();
         final var level = Math.max(1, manager.getCurrentDay() + range);
         final List<Monster> allMonsters = List.of(
             new Monster.Quacker(level),

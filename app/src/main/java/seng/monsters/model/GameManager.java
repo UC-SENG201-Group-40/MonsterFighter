@@ -28,6 +28,17 @@ public class GameManager {
         // TODO: Available battles
     }
 
+    public GameManager(int gold, int currentDay, int maxDays, int difficulty) {
+        this.gold = gold;
+        this.currentDay = currentDay % maxDays;
+        this.maxDays = maxDays;
+        this.difficulty = difficulty;
+        this.trainer = new Trainer("");
+        this.inventory = new Inventory();
+        this.shop = new Shop(this);
+
+    }
+
 
     public int getGold() {
         return gold;
@@ -52,4 +63,20 @@ public class GameManager {
     public void setMaxDays(int maxDays) {
         this.maxDays = maxDays;
     }
+
+    // TODO: Remove laater
+    protected void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    // TODO: Rem
+    protected void setCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
+    }
+
+    protected void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 }
+
+

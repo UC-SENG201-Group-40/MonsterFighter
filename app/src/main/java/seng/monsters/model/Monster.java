@@ -386,7 +386,7 @@ public abstract class Monster implements Purchasable {
      * @return The max hp in integer
      */
     public int maxHp() {
-        return (int) (this.baseHp * multiplier());
+        return (int) Math.min(Integer.MAX_VALUE - 1, this.baseHp * multiplier());
     }
 
     /**
@@ -395,7 +395,10 @@ public abstract class Monster implements Purchasable {
      * @return The damage taking level
      */
     public int scaledDamage() {
-        final var res = (double) baseDamage() * multiplier();
+        final var res = Math.min(
+            Integer.MAX_VALUE - 1,
+            baseDamage() * multiplier()
+        );
         return (int) res;
     }
 
@@ -407,7 +410,10 @@ public abstract class Monster implements Purchasable {
      */
     public int damage(Environment env) {
         final var envMultiplier = env == idealEnvironment() ? 1.5 : 1;
-        final var res = (double) baseDamage() * multiplier() * envMultiplier;
+        final var res = Math.min(
+            Integer.MAX_VALUE - 1,
+            baseDamage() * multiplier() * envMultiplier
+        );
         return (int) res;
     }
 
@@ -426,7 +432,10 @@ public abstract class Monster implements Purchasable {
      * @return The integer representing the price
      */
     public int buyPrice() {
-        final var basePrice = (baseHp + baseDamage() + healRate() + speed()) * multiplier();
+        final var basePrice = Math.min(
+            Integer.MAX_VALUE - 1,
+            (baseHp + baseDamage() + healRate() + speed()) * multiplier()
+        );
         return (int) basePrice;
     }
 
