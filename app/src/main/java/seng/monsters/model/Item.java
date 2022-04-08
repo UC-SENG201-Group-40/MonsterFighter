@@ -13,6 +13,7 @@ import java.util.Objects;
  * A usable item that can be applied to a monster to produce a variety of result
  */
 public abstract class Item implements Purchasable {
+
     /** Potion to heal monsters */
     public static class Potion extends Item {
         /**
@@ -56,7 +57,7 @@ public abstract class Item implements Purchasable {
         public void applyTo(Monster mon) throws NoEffectException {
             if (!mon.isFainted())
                 throw new NoEffectException("The monster is not dead");
-            mon.healSelf(30);
+            mon.healSelf(mon.maxHp() / 4);
         }
 
         @Override
@@ -146,8 +147,10 @@ public abstract class Item implements Purchasable {
      * @param o The item to be compared to
      * @return A boolean signalling whether the item is identical
      */
-    public boolean equals(Item o) {
-        return o.hashCode() == this.hashCode();
+    public boolean equals(Object o) {
+        if (o instanceof Item item)
+            return this.hashCode() == item.hashCode();
+        return false;
     }
 
     /**

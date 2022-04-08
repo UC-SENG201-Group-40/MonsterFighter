@@ -78,5 +78,16 @@ public final class Inventory {
             .map(Map.Entry::getKey)
             .toList();
     }
+
+    /**
+     * Get all item in the inventory as an entry
+     * @return The items and its count as entries in a ArrayList
+     */
+    public List<Map.Entry<Item, Integer>> getItemEntries() {
+        return items
+            .entrySet()
+            .stream()
+            .toList();
+    }
 }
 

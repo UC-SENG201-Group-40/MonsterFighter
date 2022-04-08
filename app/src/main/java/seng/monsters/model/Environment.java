@@ -15,6 +15,10 @@ import java.util.List;
 public enum Environment {
     DESERT, FIELD, BEACH, HILL, FOREST, URBAN;
 
+    /**
+     * Get all the possible environment
+     * @return A list of all unique environment
+     */
     static List<Environment> all() {
         return List.of(
             Environment.BEACH,
