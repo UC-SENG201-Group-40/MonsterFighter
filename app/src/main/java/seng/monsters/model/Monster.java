@@ -219,7 +219,7 @@ public abstract class Monster implements Purchasable {
         @Override
         public int damage(Environment env) {
             final var res = super.damage(env);
-            healSelf(res / 2);
+            healSelf(res / 4);
             return res;
         }
 
