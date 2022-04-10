@@ -5,6 +5,7 @@
 //  Created by d-exclaimation on 3:29 PM.
 //  Copyright © 2022 d-exclaimation. All rights reserved.
 //
+
 package seng.monsters.model;
 
 
@@ -49,7 +50,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 20;
+            return 40;
         }
 
         @Override
@@ -79,7 +80,7 @@ public abstract class Monster implements Purchasable {
          * @param level The current level
          */
         public Raver(int level) {
-            super("Raver", 100, level);
+            super("Raver", 200, level);
         }
 
         /**
@@ -89,7 +90,7 @@ public abstract class Monster implements Purchasable {
          * @param level The current level
          */
         public Raver(String name, int level) {
-            super(name, 100, level);
+            super(name, 200, level);
         }
 
         @Override
@@ -149,7 +150,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int baseDamage() {
-            return 10;
+            return 60;
         }
 
         @Override
@@ -213,13 +214,13 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 70;
+            return 50;
         }
 
         @Override
         public int damage(Environment env) {
             final var res = super.damage(env);
-            healSelf(res / 4);
+            healSelf(res / 5);
             return res;
         }
 
@@ -323,7 +324,7 @@ public abstract class Monster implements Purchasable {
      * @return A level multiplier double
      */
     private double multiplier() {
-        return Math.pow(1.25, this.level - 1);
+        return Math.pow(1.1, this.level - 1);
     }
 
     /**

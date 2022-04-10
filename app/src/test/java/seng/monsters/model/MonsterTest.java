@@ -160,7 +160,7 @@ class MonsterTest {
             var maxHp = monster.maxHp();
             monster.levelUp();
             assertNotEquals(maxHp, monster.maxHp());
-            assertEquals(maxHp * 1.25, monster.maxHp());
+            assertEquals(Math.round(maxHp * 1.1), monster.maxHp());
 
             maxHp = monster.maxHp();
             monster.setBaseHp(10);
@@ -228,13 +228,13 @@ class MonsterTest {
     @Test
     void testEquals() {
         final var monster = new Monster.Eel(1);
-        assertFalse(monster.equals(new Monster.Eel(1)));
+        assertNotEquals(new Monster.Eel(1), monster);
 
         final var pointer = (Monster) monster;
-        assertTrue(monster.equals(pointer));
+        assertEquals(monster, pointer);
 
         pointer.levelUp();
 
-        assertTrue(monster.equals(pointer));
+        assertEquals(monster, pointer);
     }
 }
