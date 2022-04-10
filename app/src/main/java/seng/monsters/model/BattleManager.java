@@ -21,7 +21,7 @@ import java.util.Random;
  *
  * The match is handled with <code>javax.swing.Timer</code> to simulate monster attacking each other in a visible manner.
  */
-public class BattleManager {
+public final class BattleManager {
     /**
      * The UI that provides callbacks at certain event during the match
      */
