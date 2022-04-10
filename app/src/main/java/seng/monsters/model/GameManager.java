@@ -39,6 +39,9 @@ public class GameManager {
 
     }
 
+    public Trainer getTrainer() {
+        return trainer;
+    }
 
     public int getGold() {
         return gold;
