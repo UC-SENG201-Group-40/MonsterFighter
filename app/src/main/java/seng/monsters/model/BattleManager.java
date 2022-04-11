@@ -7,9 +7,6 @@
 //
 package seng.monsters.model;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -19,19 +16,13 @@ import java.util.Random;
 /**
  * Battle manager to handle battle between Trainer.
  *
- * The match is handled with <code>javax.swing.Timer</code> to simulate monster attacking each other in a visible manner.
+ * The match is handled using the <code>nextIteration()</code> method which will need to be and
  */
 public final class BattleManager {
     /**
      * The UI that provides callbacks at certain event during the match
      */
     public interface UI {
-        int frameDelay();
-
-        void beforeStart(boolean isMon1Turn);
-
-        void afterStart();
-
         void onEachFrame(boolean isMon1Turn, int pos);
 
         void onEachDamage(boolean isMon1Turn, int dmg);
@@ -66,14 +57,22 @@ public final class BattleManager {
     /** The list of actions done */
     private final ConcurrentLinkedDeque<String> feeds = new ConcurrentLinkedDeque<>();
 
-    /** The Timer to perform interval based action without blocking the main thread*/
-    private Timer timer;
+    /** The randomizer used to simulate fluctuating damage output */
+    private final Random rng = new Random();
 
-    /**
-     * Battle manager to handle battle between Trainer.
-     *
-     * The match is handled with <code>javax.swing.Timer</code> to simulate monster attacking each other in a visible manner.
-     */
+    /** The boolean signalling whose turn is at this moment */
+    private boolean isMon1Turn;
+
+    /** Pseudo position state to simulate delay in the attack before connecting*/
+    private int pos;
+
+    /** Pseudo speed (in distance) state the jump of movement in the attack before connecting */
+    private int speed;
+
+    /** Pseudo end goal state simulating the distance needed to reach before the attack lands */
+    private int goal;
+
+
     public BattleManager(UI ui, Trainer player, Trainer enemy) {
         this.player1 = player;
         this.player2 = enemy;
@@ -81,6 +80,10 @@ public final class BattleManager {
         try {
             this.mon1 = nextPlayerMon();
             this.mon2 = nextEnemyMon();
+            this.isMon1Turn = mon1.speed() >= mon2.speed();
+            this.pos = isMon1Turn ? 62 : 551;
+            this.speed = isMon1Turn ? 20 : -20;
+            this.goal = isMon1Turn ? 551 : 62;
             this.isSettled = new AtomicBoolean(false);
         } catch (WhitedOutException ignored) {
             this.isSettled = new AtomicBoolean(true);
@@ -88,150 +91,92 @@ public final class BattleManager {
     }
 
     /**
-     * Wrapper higher-order function for <code>start()</code>
-     * @return An action listener to start the match
+     * A method to proceed to the next iteration of the battle
      */
-    public ActionListener onStart() {
-        return e -> start();
-    }
+    public void nextIteration() {
+        if (isEitherFallen()) {
+            try {
+                mon1 = mon1.isFainted() ? nextPlayerMon() : mon1;
+                mon2 = mon2.isFainted() ? nextEnemyMon() : mon2;
+                changeMonster();
+            } catch (WhitedOutException ignored) {
+                endGame();
+            }
+            return;
+        }
 
+        ui.onEachFrame(isMon1Turn, pos);
+        pos += speed;
+
+        if (hasAttackLands()) {
+            performDamage();
+            isMon1Turn = !isMon1Turn;
+            pos = isMon1Turn ? 62 : 551;
+            speed = -speed;
+            goal = isMon1Turn ? 551 : 62;
+        }
+    }
 
     /**
-     * Start the battle until either side loses
+     * Check if the pseudo attack has reach the target and lands
+     * @return A boolean signalling the attacking landing or not
      */
-    public void start() {
-        if (isSettled()) return;
-
-        final var isMon1 = mon1.speed() >= mon2.speed();
-
-        ui.beforeStart(isMon1);
-
-        timer = new Timer(ui.frameDelay(), onEachTimer(isMon1));
-        timer.start();
-
-        ui.afterStart();
+    private boolean hasAttackLands() {
+        return isMon1Turn ? pos >= goal : pos <= goal;
     }
 
     /**
-     * Action listener for each tick by the Timer to proceed with the match
-     * @param isMon1 A boolean signalling who start first
-     * @return An action listener simulating a non-instant fight between both parties
+     * Performed the damage, add new feed that the damage landed, and call damage event callback
      */
-    private ActionListener onEachTimer(boolean isMon1) {
-        return new ActionListener() {
-            /** The randomizer used to simulate fluctuating damage output */
-            private final Random rng = new Random();
+    private void performDamage() {
+        final var atk = isMon1Turn ? mon1 : mon2;
+        final var def = isMon1Turn ? mon2 : mon1;
+        final var atkTrainer = isMon1Turn ? player1 : player2;
+        final var defTrainer = isMon1Turn ? player2 : player1;
 
-            /** The boolean signalling whose turn is at this moment */
-            private boolean isMon1Turn = isMon1;
+        final var maxDmg = atk.damage(Environment.FIELD);
+        final var dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
 
-            /** Pseudo position state to simulate delay in the attack before connecting*/
-            private int pos = isMon1 ? 62 : 551;
+        def.takeDamage(dmg);
 
-            /** Pseudo speed (in distance) state the jump of movement in the attack before connecting */
-            private int speed = isMon1 ? 20 : -20;
+        feeds.add(String.format(
+            "%s's %s attacked %s's %s dealing %d",
+            atkTrainer.getName(), atk.getName(),
+            defTrainer.getName(), def.getName(),
+            dmg
+        ));
 
-            /** Pseudo end goal state simulating the distance needed to reach before the attack lands */
-            private int goal = isMon1 ? 551 : 62;
+        if (def.isFainted()) {
+            feeds.add(String.format("%s's %s fainted", defTrainer.getName(),  def.getName()));
+        }
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isEitherFallen()) {
-                    try {
-                        mon1 = mon1.isFainted() ? nextPlayerMon() : mon1;
-                        mon2 = mon2.isFainted() ? nextEnemyMon() : mon2;
-                        onChangeMonster();
-                    } catch (WhitedOutException ignored) {
-                        onEndGame();
-                    }
-                    return;
-                }
-
-                ui.onEachFrame(isMon1Turn, pos);
-                pos += speed;
-
-                if (hasAttackLands()) {
-                    afterAttackLands();
-                }
-            }
-
-            /**
-             * Check if the pseudo attack has reach the target and lands
-             * @return A boolean signalling the attacking landing or not
-             */
-            private boolean hasAttackLands() {
-                return isMon1Turn ? pos >= goal : pos <= goal;
-            }
-
-            /**
-             * Performed the damage, add new feed that the damage landed, and call damage event callback
-             */
-            private void damage() {
-                final var atk = isMon1Turn ? mon1 : mon2;
-                final var def = isMon1Turn ? mon2 : mon1;
-                final var atkTrainer = isMon1Turn ? player1 : player2;
-                final var defTrainer = isMon1Turn ? player2 : player1;
-
-                final var maxDmg = atk.damage(Environment.FIELD);
-                final var dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
-
-                def.takeDamage(dmg);
-
-                feeds.add(String.format(
-                    "%s's %s attacked %s's %s dealing %d",
-                    atkTrainer.getName(), atk.getName(),
-                    defTrainer.getName(), def.getName(),
-                    dmg
-                ));
-
-                if (def.isFainted()) {
-                    feeds.add(String.format("%s's %s fainted", defTrainer.getName(),  def.getName()));
-                }
-
-                ui.onEachDamage(isMon1Turn, dmg);
-            }
-
-            /**
-             * Switching monsters after either battling monster fainted, and resetting the pseudo states
-             */
-            private void onChangeMonster() {
-                isMon1Turn = mon1.speed() >= mon2.speed();
-                pos = isMon1Turn ? 62 : 551;
-                speed = isMon1Turn ? 20 : -20;
-                goal = isMon1Turn ? 551 : 62;
-                ui.onEachNextMonster(isMon1Turn);
-            }
-
-            /**
-             * Ending the match, add to the ending feed, call the end callback, and stopping the timer
-             */
-            private void onEndGame() {
-                feeds.add(String.format(
-                    "%s win with %d monster left and %s lost",
-                    winner().getName(),
-                    winner().getParty().stream().filter(m -> !m.isFainted()).toList().size(),
-                    loser().getName()
-                ));
-                isSettled.set(true);
-                ui.onEnd(isMon1Turn);
-
-                if(timer != null)
-                    timer.stop();
-            }
-
-            /**
-             * Perform pseudo state reset  after attack lands
-             */
-            private void afterAttackLands() {
-                damage();
-                isMon1Turn = !isMon1Turn;
-                pos = isMon1Turn ? 62 : 551;
-                speed = -speed;
-                goal = isMon1Turn ? 551 : 62;
-            }
-        };
+        ui.onEachDamage(isMon1Turn, dmg);
     }
 
+    /**
+     * Switching monsters after either battling monster fainted, and resetting the pseudo states
+     */
+    private void changeMonster() {
+        isMon1Turn = mon1.speed() >= mon2.speed();
+        pos = isMon1Turn ? 62 : 551;
+        speed = isMon1Turn ? 20 : -20;
+        goal = isMon1Turn ? 551 : 62;
+        ui.onEachNextMonster(isMon1Turn);
+    }
+
+    /**
+     * Ending the match, add to the ending feed, and call the end callback
+     */
+    private void endGame() {
+        feeds.add(String.format(
+            "%s win with %d monster left and %s lost",
+            winner().getName(),
+            winner().getParty().stream().filter(m -> !m.isFainted()).toList().size(),
+            loser().getName()
+        ));
+        isSettled.set(true);
+        ui.onEnd(isMon1Turn);
+    }
 
     /**
      * Get the next monster for the player that is not fainted
@@ -280,6 +225,22 @@ public final class BattleManager {
      */
     public Monster getMon2() {
         return mon2;
+    }
+
+    /**
+     * Get the player trainer
+     * @return A trainer representation for the player
+     */
+    public Trainer getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * Get the opposing trainer
+     * @return A trainer representation for the enemy
+     */
+    public Trainer getPlayer2() {
+        return player2;
     }
 
     /**
