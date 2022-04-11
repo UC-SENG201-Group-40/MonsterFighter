@@ -5,7 +5,6 @@
 //  Created by d-exclaimation on 3:29 PM.
 //  Copyright © 2022 d-exclaimation. All rights reserved.
 //
-
 package seng.monsters.model;
 
 
@@ -40,7 +39,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int baseDamage() {
-            return 40;
+            return 45;
         }
 
         @Override
@@ -105,7 +104,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 40;
+            return 75;
         }
 
         @Override
@@ -226,12 +225,64 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public Environment idealEnvironment() {
-            return Environment.URBAN;
+            return Environment.DESERT;
         }
 
         @Override
         public boolean shouldLevelUp() {
             return Math.random() <= 0.4;
+        }
+
+        @Override
+        public boolean shouldLeave() {
+            return Math.random() <= (isFainted() ? 0.25 : 0.01);
+        }
+    }
+
+    /** A speedy boy */
+    public static final class Doger extends Monster {
+        /**
+         * Create a new monster
+         *
+         * @param level The current level
+         */
+        public Doger(int level) {
+            super("Doger", 40, level);
+        }
+
+        /**
+         * Create a new monster
+         *
+         * @param name  The name of the monster
+         * @param level The current level
+         */
+        public Doger(String name, int level) {
+            super(name, 40, level);
+        }
+
+        @Override
+        public int baseDamage() {
+            return 80;
+        }
+
+        @Override
+        public int speed() {
+            return 100;
+        }
+
+        @Override
+        public int healRate() {
+            return 10;
+        }
+
+        @Override
+        public Environment idealEnvironment() {
+            return Environment.URBAN;
+        }
+
+        @Override
+        public boolean shouldLevelUp() {
+            return Math.random() <= 0.5;
         }
 
         @Override

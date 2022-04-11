@@ -17,7 +17,8 @@ class MonsterTest {
             new Monster.Quacker(1),
             new Monster.Raver(1),
             new Monster.Tree(1),
-            new Monster.Eel(1)
+            new Monster.Eel(1),
+            new Monster.Doger(1)
         );
     }
 
