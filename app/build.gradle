@@ -33,3 +33,13 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.jar {
+    // Use the App as entry point for Jar output
+    manifest.attributes.put "Main-Class", "seng.monsters.App"
+}
+
+run {
+    // Whenever an input is asked use the Standard system in
+    standardInput = System.in
+}
