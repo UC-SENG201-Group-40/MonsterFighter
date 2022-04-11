@@ -27,24 +27,10 @@
 - [`gradlew.bat`](gradlew.bat): Windows script to operate gradle project
 - [`settings.gradle`](settings.gradle): Project settings
 
-### Open on Eclipse 
+## Instructions
 
-- Go to `File`
-- Select `Import ...`
-- Choose `Gradle Project`
-- Select project root directory, (will be this directory, not just `/app`)
+- [Running Gradle project with CLI](/documents/instructions/running.md)
+- [Packaging to jar](/documents/instructions/packaging.md)
+- [Opening on IDEs](/documents/instructions/opening.md)
 
-### Open on IntelliJ IDEA
-
-**GUI version**
-- Go to `File`
-- Select `Open`
-- Select project root directory, (will be this directory, not just `/app`)
-- Install the plugins if necessary (will be prompted to)
-
-**CLI version**
-```sh
-cd <path-to-root-directory/this-directory>
-idea .
-```
 
