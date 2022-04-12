@@ -9,13 +9,13 @@ package seng.monsters.model;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.Random;
 
 /**
  * Battle manager to handle battle between Trainer.
- *
+ * <p>
  * The match is handled using the <code>nextIteration()</code> method which will need to be and
  */
 public final class BattleManager {
@@ -35,48 +35,80 @@ public final class BattleManager {
     /**
      * Signals that the trainer no longer have any active (non-fainted) monster left
      */
-    public static class WhitedOutException extends IllegalStateException {}
+    public static class WhitedOutException extends IllegalStateException {
+    }
 
-    /** The UI class to perform certain action on event */
+    /**
+     * The UI class to perform certain action on event
+     */
     private final UI ui;
 
-    /** The player trainer */
+    /**
+     * The player trainer
+     */
     private final Trainer player1;
 
-    /** The opposing trainer */
+    /**
+     * The opposing trainer
+     */
     private final Trainer player2;
 
-    /** The current monster for the player */
+    /**
+     * The environment where the battle is held
+     */
+    private final Environment environment;
+
+    /**
+     * The current monster for the player
+     */
     private Monster mon1;
 
-    /** The current monster for the opponent */
+    /**
+     * The current monster for the opponent
+     */
     private Monster mon2;
 
+    /**
+     * A state to determine whether the manager can still continue
+     */
     private AtomicBoolean isSettled;
 
-    /** The list of actions done */
+    /**
+     * The list of actions done
+     */
     private final ConcurrentLinkedDeque<String> feeds = new ConcurrentLinkedDeque<>();
 
-    /** The randomizer used to simulate fluctuating damage output */
+    /**
+     * The randomizer used to simulate fluctuating damage output
+     */
     private final Random rng = new Random();
 
-    /** The boolean signalling whose turn is at this moment */
+    /**
+     * The boolean signalling whose turn is at this moment
+     */
     private boolean isMon1Turn;
 
-    /** Pseudo position state to simulate delay in the attack before connecting*/
+    /**
+     * Pseudo position state to simulate delay in the attack before connecting
+     */
     private int pos;
 
-    /** Pseudo speed (in distance) state the jump of movement in the attack before connecting */
+    /**
+     * Pseudo speed (in distance) state the jump of movement in the attack before connecting
+     */
     private int speed;
 
-    /** Pseudo end goal state simulating the distance needed to reach before the attack lands */
+    /**
+     * Pseudo end goal state simulating the distance needed to reach before the attack lands
+     */
     private int goal;
 
 
-    public BattleManager(UI ui, Trainer player, Trainer enemy) {
+    public BattleManager(UI ui, Trainer player, Trainer enemy, Environment environment) {
         this.player1 = player;
         this.player2 = enemy;
         this.ui = ui;
+        this.environment = environment;
         try {
             this.mon1 = nextPlayerMon();
             this.mon2 = nextEnemyMon();
@@ -94,6 +126,9 @@ public final class BattleManager {
      * A method to proceed to the next iteration of the battle
      */
     public void nextIteration() {
+        if (isSettled())
+            return;
+
         if (isEitherFallen()) {
             try {
                 mon1 = mon1.isFainted() ? nextPlayerMon() : mon1;
@@ -119,6 +154,7 @@ public final class BattleManager {
 
     /**
      * Check if the pseudo attack has reach the target and lands
+     *
      * @return A boolean signalling the attacking landing or not
      */
     private boolean hasAttackLands() {
@@ -134,7 +170,7 @@ public final class BattleManager {
         final var atkTrainer = isMon1Turn ? player1 : player2;
         final var defTrainer = isMon1Turn ? player2 : player1;
 
-        final var maxDmg = atk.damage(Environment.FIELD);
+        final var maxDmg = atk.damage(environment);
         final var dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
 
         def.takeDamage(dmg);
@@ -147,7 +183,7 @@ public final class BattleManager {
         ));
 
         if (def.isFainted()) {
-            feeds.add(String.format("%s's %s fainted", defTrainer.getName(),  def.getName()));
+            feeds.add(String.format("%s's %s fainted", defTrainer.getName(), def.getName()));
         }
 
         ui.onEachDamage(isMon1Turn, dmg);
@@ -180,6 +216,7 @@ public final class BattleManager {
 
     /**
      * Get the next monster for the player that is not fainted
+     *
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextPlayerMon() throws WhitedOutException {
@@ -190,8 +227,10 @@ public final class BattleManager {
             throw new WhitedOutException();
         }
     }
+
     /**
      * Get the next monster for the enemy that is not fainted
+     *
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextEnemyMon() throws WhitedOutException {
@@ -205,6 +244,7 @@ public final class BattleManager {
 
     /**
      * Get the feeds broadcast during the battle
+     *
      * @return A concurrent linked deque containing the feeds
      */
     public Collection<String> getFeeds() {
@@ -213,6 +253,7 @@ public final class BattleManager {
 
     /**
      * Get the player's monster currently battling
+     *
      * @return A monster currently battling
      */
     public Monster getMon1() {
@@ -221,6 +262,7 @@ public final class BattleManager {
 
     /**
      * Get the enemy's monster currently battling
+     *
      * @return A monster currently battling
      */
     public Monster getMon2() {
@@ -229,6 +271,7 @@ public final class BattleManager {
 
     /**
      * Get the player trainer
+     *
      * @return A trainer representation for the player
      */
     public Trainer getPlayer1() {
@@ -237,6 +280,7 @@ public final class BattleManager {
 
     /**
      * Get the opposing trainer
+     *
      * @return A trainer representation for the enemy
      */
     public Trainer getPlayer2() {
@@ -245,29 +289,34 @@ public final class BattleManager {
 
     /**
      * Get the winning trainer
+     *
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer winner() {
-        return mon2.isFainted() ? player1 : player2;
+        return mon2 != null && mon2.isFainted() ? player1 : player2;
     }
 
     /**
      * Get the losing trainer
+     *
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer loser() {
-        return mon1.isFainted() ? player1 : player2;
+        return mon1 != null && mon1.isFainted() ? player1 : player2;
     }
 
     /**
      * Check if either battling monster has fainted
+     *
      * @return A boolean signalling if either fainted
      */
     public boolean isEitherFallen() {
-        return mon1.isFainted() || mon2.isFainted();
+        return isSettled() || mon1.isFainted() || mon2.isFainted();
     }
+
     /**
      * Check if the match has settled
+     *
      * @return A boolean signalling that result
      */
     public boolean isSettled() {
