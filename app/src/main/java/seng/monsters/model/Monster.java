@@ -39,7 +39,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int baseDamage() {
-            return 40;
+            return 45;
         }
 
         @Override
@@ -49,7 +49,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 20;
+            return 40;
         }
 
         @Override
@@ -79,7 +79,7 @@ public abstract class Monster implements Purchasable {
          * @param level The current level
          */
         public Raver(int level) {
-            super("Raver", 100, level);
+            super("Raver", 200, level);
         }
 
         /**
@@ -89,7 +89,7 @@ public abstract class Monster implements Purchasable {
          * @param level The current level
          */
         public Raver(String name, int level) {
-            super(name, 100, level);
+            super(name, 200, level);
         }
 
         @Override
@@ -104,7 +104,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 40;
+            return 75;
         }
 
         @Override
@@ -149,7 +149,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int baseDamage() {
-            return 10;
+            return 60;
         }
 
         @Override
@@ -213,14 +213,66 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int healRate() {
-            return 70;
+            return 50;
         }
 
         @Override
         public int damage(Environment env) {
             final var res = super.damage(env);
-            healSelf(res / 4);
+            healSelf(res / 5);
             return res;
+        }
+
+        @Override
+        public Environment idealEnvironment() {
+            return Environment.DESERT;
+        }
+
+        @Override
+        public boolean shouldLevelUp() {
+            return Math.random() <= 0.4;
+        }
+
+        @Override
+        public boolean shouldLeave() {
+            return Math.random() <= (isFainted() ? 0.25 : 0.01);
+        }
+    }
+
+    /** A speedy boy */
+    public static final class Doger extends Monster {
+        /**
+         * Create a new monster
+         *
+         * @param level The current level
+         */
+        public Doger(int level) {
+            super("Doger", 40, level);
+        }
+
+        /**
+         * Create a new monster
+         *
+         * @param name  The name of the monster
+         * @param level The current level
+         */
+        public Doger(String name, int level) {
+            super(name, 40, level);
+        }
+
+        @Override
+        public int baseDamage() {
+            return 80;
+        }
+
+        @Override
+        public int speed() {
+            return 100;
+        }
+
+        @Override
+        public int healRate() {
+            return 10;
         }
 
         @Override
@@ -230,7 +282,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() <= 0.4;
+            return Math.random() <= 0.5;
         }
 
         @Override
@@ -323,7 +375,7 @@ public abstract class Monster implements Purchasable {
      * @return A level multiplier double
      */
     private double multiplier() {
-        return Math.pow(1.25, this.level - 1);
+        return Math.pow(1.1, this.level - 1);
     }
 
     /**
