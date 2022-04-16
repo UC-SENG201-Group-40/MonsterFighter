@@ -24,6 +24,12 @@ public final class Trainer {
     }
 
     /**
+     * Signals that the caller has attempted to index a monster that does not exist
+     */
+    static final class MonsterDoesNotExistException extends IndexOutOfBoundsException {
+    }
+
+    /**
      * The name of the trainer
      */
     private String name;
