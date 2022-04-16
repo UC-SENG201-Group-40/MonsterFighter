@@ -8,6 +8,7 @@
 package seng.monsters.model;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Environment about the field of battle
@@ -28,6 +29,16 @@ public enum Environment {
             Environment.HILL,
             Environment.URBAN
         );
+    }
+
+    /**
+     * Generates a random environment
+     * @return An environment randomly chosen from the list of environments
+     */
+    public static Environment generateRandomEnvironment() {
+        Environment[] environments = Environment.values();
+        final var random = new Random();
+        return environments[random.nextInt(environments.length)];
     }
 
     @Override
