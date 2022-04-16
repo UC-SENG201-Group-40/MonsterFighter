@@ -72,8 +72,69 @@ public class GameManager {
      * @return A boolean signalling if the game is finished
      */
     public boolean nextDay() {
-        // TODO: --- Missing implementations ---
-        return true;
+        this.setCurrentDay(getCurrentDay() + 1);
+        if (getCurrentDay() == getMaxDays()) { return true; }
+        else {
+            this.triggerNightEvents();
+            return false; }
+    }
+
+    /**
+     * Triggers night events if game does not end after calling nextDay
+     */
+    public void triggerNightEvents() {
+        this.changeEnvironment();
+        this.shop.restock();
+        this.partyMonstersLeave();
+        this.partyMonstersHeal();
+        this.partyMonstersLevelUp();
+        this.monsterJoinsParty();
+    }
+
+    /**
+     * Changes the environment to a randomly selected environment
+     */
+    public void changeEnvironment() {
+        var newEnvironment = Environment.generateRandomEnvironment();
+        this.setEnvironment(newEnvironment);
+    }
+
+    /**
+     * Removes a monster from the party if their leave prerequisites are met.
+     * Only remove one monster at once to prevent indexing errors.
+     */
+    public void partyMonstersLeave() {
+        for (int i=0; i < this.trainer.getParty().size(); i++) {
+            if (this.trainer.getParty().get(i).shouldLeave()) {
+                this.trainer.remove(i);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Heals each party monster by their heal rate or 0 if fainted.
+     */
+    public void partyMonstersHeal() {
+        for (int i=0; i < this.trainer.getParty().size(); i++) {
+            var monsterHealRate = this.trainer.getParty().get(i).healRate();
+            this.trainer.getParty().get(i).healSelf(monsterHealRate);
+            }
+    }
+
+    /**
+     * Levels up each monster in the party that meets level up prerequisites
+     */
+    public void partyMonstersLevelUp() {
+        for (int i=0; i < this.trainer.getParty().size(); i++) {
+            if (this.trainer.getParty().get(i).shouldLevelUp()) {
+                this.trainer.getParty().get(i).levelUp();
+            }
+        }
+    }
+
+    public void monsterJoinsParty() {
+        // TODO: --- Missing implementation ---
     }
 
     /**
@@ -123,7 +184,7 @@ public class GameManager {
      * @throws IndexOutOfBoundsException If either the indices are not valid indices for the party
      */
     public void switchMonsterOnParty(Monster monster, int to) throws IndexOutOfBoundsException {
-        // TODO: --- Required controller methods to use to play the game (pulled from the flow of the game) ---
+        this.trainer.moveMonster(monster, to);
     }
 
     /**
@@ -144,30 +205,23 @@ public class GameManager {
     /**
      * Sell a purchasable from the shop
      * @param purchasable The purchase being made
-     * @throws Shop.NotInStockException If the item does not exist
+     * @throws Inventory.ItemNotExistException If the item does not exist
+     * @throws Trainer.MonsterDoesNotExistException If the monster does not exist
      */
-    public void sell(Purchasable purchasable) throws Inventory.ItemNotExistException {
+    public void sell(Purchasable purchasable) throws Inventory.ItemNotExistException, Trainer.MonsterDoesNotExistException {
         if (purchasable instanceof Item item) {
             this.inventory.remove(item);
         } else if (purchasable instanceof Monster monster) {
             var i = this.trainer.getParty().indexOf(monster);
-            // TODO: --- Custom error ---
             if (i == -1)
-                throw new Inventory.ItemNotExistException();
+                throw new Trainer.MonsterDoesNotExistException();
             this.trainer.remove(i);
         }
         this.shop.sellPurchasable(purchasable);
     }
 
     /**
-     * Random night event
-     */
-    public void randomNightEvent() {
-        // TODO: --- Missing implementations ---
-    }
-
-    /**
-     * Change the player name to a new onw
+     * Change the player name to a new one
      * @param name The new name the player choose
      */
     public void setTrainerName(String name) {
