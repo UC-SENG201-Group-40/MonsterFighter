@@ -82,6 +82,7 @@ public final class Trainer {
 
     /**
      * Remove a monster from the party and return it
+     *
      * @param index The index of the monster
      * @return The monster removed
      * @throws IndexOutOfBoundsException If the index is invalid
@@ -96,7 +97,7 @@ public final class Trainer {
      * Switch the ordering of two monster
      *
      * @param monster The monster being moved
-     * @param to The index to removed to
+     * @param to      The index to removed to
      * @throws IndexOutOfBoundsException If either the index is out of bound
      */
     public void moveMonster(Monster monster, int to) throws IndexOutOfBoundsException {
