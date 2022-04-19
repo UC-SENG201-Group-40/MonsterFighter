@@ -240,7 +240,9 @@ public abstract class Monster implements Purchasable {
         }
     }
 
-    /** A speedy boy (Fast, hits pretty good, but might die afterward) */
+    /**
+     * A speedy boy (Fast, hits pretty good, but might die afterward)
+     */
     public static final class Doger extends Monster {
         /**
          * Create a new monster
@@ -292,7 +294,9 @@ public abstract class Monster implements Purchasable {
         }
     }
 
-    /** Definitely a shark (Hit hard, if it doesn't die first)  */
+    /**
+     * Definitely a shark (Hit hard, if it doesn't die first)
+     */
     public static final class Shark extends Monster {
         /**
          * Create a new monster
@@ -603,6 +607,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * Get all types of monster with a specific level
+     *
      * @param level The level all monster is set to
      * @return A list of unique monsters set to the level given
      */
