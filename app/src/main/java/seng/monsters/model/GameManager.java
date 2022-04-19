@@ -8,7 +8,6 @@
 package seng.monsters.model;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameManager {
     private int gold = 0;
@@ -174,7 +173,7 @@ public class GameManager {
 
     /**
      * A chance that a random monsters join the party if there is a slot
-     *
+     * <p>
      * Joining chance:
      * <code> base = 0.01 </code> <p>
      * <code> f(d, c, m) = base x d x c / m</code>
