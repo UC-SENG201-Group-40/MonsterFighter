@@ -95,12 +95,7 @@ final class Shop {
         final var rng = new Random();
         final var range = rng.nextInt(6 * manager.getDifficulty() + 1) - 3 * manager.getDifficulty();
         final var level = Math.max(1, manager.getCurrentDay() + range);
-        final List<Monster> allMonsters = List.of(
-            new Monster.Quacker(level),
-            new Monster.Raver(level),
-            new Monster.Tree(level),
-            new Monster.Eel(level)
-        );
+        final List<Monster> allMonsters = Monster.all(level);
         return allMonsters.get(rng.nextInt(allMonsters.size()));
     }
 

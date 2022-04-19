@@ -8,6 +8,7 @@
 package seng.monsters.model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameManager {
     private int gold = 0;
@@ -171,8 +172,21 @@ public class GameManager {
         }
     }
 
+    /**
+     * A chance that a random monsters join the party if there is a slot
+     *
+     * Joining chance:
+     * <code> base = 0.01 </code> <p>
+     * <code> f(d, c, m) = base x d x c / m</code>
+     */
     public void monsterJoinsParty() {
-        // TODO: --- Missing implementation ---
+        final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
+        final var isLucky = Math.random() <= chance;
+        if (trainer.getParty().size() >= 4 || !isLucky)
+            return;
+
+        final var joining = shop.randomMonster();
+        trainer.add(joining);
     }
 
     /**
@@ -252,7 +266,9 @@ public class GameManager {
      * @throws Shop.NotInStockException        If the item does not exist
      * @throws Shop.InsufficientFundsException If the current gold is not enough to make the purchase
      */
-    public void buy(Purchasable purchasable) throws Shop.NotInStockException, Shop.InsufficientFundsException {
+    public void buy(
+        Purchasable purchasable
+    ) throws Shop.NotInStockException, Shop.InsufficientFundsException, Trainer.PartyFullException {
         shop.buyPurchasable(purchasable);
         if (purchasable instanceof Item item) {
             inventory.add(item);
