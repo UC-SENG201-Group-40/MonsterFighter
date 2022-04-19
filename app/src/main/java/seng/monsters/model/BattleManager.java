@@ -293,7 +293,9 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer winner() {
-        return mon2 != null && mon2.isFainted() ? player1 : player2;
+        final var remainingPlayerMon = player1.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final var remainingEnemyMon = player2.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        return remainingPlayerMon >= remainingEnemyMon ? player1 : player2;
     }
 
     /**
@@ -302,7 +304,9 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer loser() {
-        return mon1 != null && mon1.isFainted() ? player1 : player2;
+        final var remainingPlayerMon = player1.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final var remainingEnemyMon = player2.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        return remainingPlayerMon >= remainingEnemyMon ? player2 : player1;
     }
 
     /**
