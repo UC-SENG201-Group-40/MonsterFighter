@@ -7,6 +7,7 @@
 //
 package seng.monsters.model;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -96,6 +97,32 @@ public abstract class Item implements Purchasable {
         }
     }
 
+    /** FullRestore restores health to full regardless if monster is fainted or not */
+    public static class FullRestore extends Item {
+        /**
+         * Create a new Item with a name
+         */
+        public FullRestore() {
+            super("FullRestore");
+        }
+
+        @Override
+        public void applyTo(Monster mon) throws NoEffectException {
+            if (mon.getCurrentHp() == mon.maxHp())
+                throw new NoEffectException("The monster hp is full");
+            mon.healSelf(mon.maxHp());
+        }
+
+        @Override
+        public int buyPrice() {
+            return 1000;
+        }
+
+        @Override
+        public int sellPrice() {
+            return buyPrice() / 2;
+        }
+    }
     /**
      * Signals that aan item has been applied to a monster but produce no result
      */
@@ -160,5 +187,14 @@ public abstract class Item implements Purchasable {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+
+    /**
+     * All the items possible
+     * @return A list of all unique items
+     */
+    public static List<Item> all() {
+        return List.of(new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
     }
 }

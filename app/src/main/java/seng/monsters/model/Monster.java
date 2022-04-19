@@ -601,6 +601,11 @@ public abstract class Monster implements Purchasable {
         return false;
     }
 
+    /**
+     * Get all types of monster with a specific level
+     * @param level The level all monster is set to
+     * @return A list of unique monsters set to the level given
+     */
     public static List<Monster> all(int level) {
         return List.of(
             new Monster.Quacker(level),
