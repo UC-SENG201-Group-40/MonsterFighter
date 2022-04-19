@@ -618,7 +618,7 @@ public abstract class Monster implements Purchasable {
             new Monster.Tree(level),
             new Monster.Eel(level),
             new Monster.Doger(level),
-            new Monster.Doger(level)
+            new Monster.Shark(level)
         );
     }
 }
