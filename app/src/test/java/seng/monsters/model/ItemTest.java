@@ -26,6 +26,8 @@ class ItemTest {
      * <li>Revive should not heal if monster is not fainted, and throw an Exception</li>
      * <li>RareCandy should increase the level of monster by 1 only 1</li>
      * <li>RareCandy should never throw an Exception</li>
+     * <li>FullRestore should heal monster to full health </li>
+     * <li>FullRestore should not heal if monster's health is full</li>
      * </ul>
      */
     @Test
@@ -62,6 +64,20 @@ class ItemTest {
         final var prevLevel = labMonster.getLevel();
         new Item.RareCandy().applyTo(labMonster);
         assertEquals(prevLevel + 1, labMonster.getLevel());
+
+        // FullRestore should heal monster to full health
+        labMonster.takeDamage(labMonster.maxHp());
+        assertTrue(labMonster.isFainted());
+        new Item.FullRestore().applyTo(labMonster);
+        assertEquals(labMonster.maxHp(), labMonster.getCurrentHp());
+
+        labMonster.takeDamage(labMonster.maxHp() / 2);
+        assertFalse(labMonster.isFainted());
+        new Item.FullRestore().applyTo(labMonster);
+        assertEquals(labMonster.maxHp(), labMonster.getCurrentHp());
+
+        // FullRestore should not heal if monster's health is full
+        assertThrows(Item.NoEffectException.class, () -> new Item.FullRestore().applyTo(labMonster));
     }
 
     /**
@@ -72,7 +88,8 @@ class ItemTest {
      */
     @Test
     void sellPrice() {
-        final var res = Stream.of(new Item.Potion(), new Item.Revive(), new Item.RareCandy())
+        final var res = Item.all()
+            .stream()
             .map(item -> item.buyPrice() / 2 == item.sellPrice())
             .reduce(true, (acc, bool) -> acc && bool);
 
@@ -87,9 +104,13 @@ class ItemTest {
         assertEquals(new Item.Potion(), new Item.Potion());
         assertEquals(new Item.Revive(), new Item.Revive());
         assertEquals(new Item.RareCandy(), new Item.RareCandy());
+        assertEquals(new Item.FullRestore(), new Item.FullRestore());
         assertNotEquals(new Item.Potion(), new Item.Revive());
         assertNotEquals(new Item.Revive(), new Item.RareCandy());
         assertNotEquals(new Item.RareCandy(), new Item.Potion());
+        assertNotEquals(new Item.FullRestore(), new Item.Revive());
+        assertNotEquals(new Item.FullRestore(), new Item.RareCandy());
+        assertNotEquals(new Item.FullRestore(), new Item.Potion());
     }
 
     /**
@@ -105,5 +126,8 @@ class ItemTest {
 
         final var rareCandy = new Item.RareCandy();
         assertEquals(Objects.hash(rareCandy.getName()), rareCandy.hashCode());
+
+        final var fullRestore = new Item.FullRestore();
+        assertEquals(Objects.hash(fullRestore.getName()), fullRestore.hashCode());
     }
 }
