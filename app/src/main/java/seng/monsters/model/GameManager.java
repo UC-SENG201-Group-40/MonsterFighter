@@ -10,21 +10,62 @@ package seng.monsters.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Game Manager that the model of the game
+ */
 public class GameManager {
+    /**
+     * The gold owned by the player
+     */
     private int gold = 0;
+
+    /**
+     * The score accumulated through the game
+     */
     private int score = 0;
+
+    /**
+     * The current day count
+     */
     private int currentDay = 1;
+
+    /**
+     * The maximum day limit
+     */
     private int maxDays = 5;
+
+    /**
+     * The difficulty scale
+     */
     private int difficulty = 1;
+
+    /**
+     * The current environment of the day
+     */
     private Environment environment = Environment.FIELD;
 
+    /**
+     * The player trainer
+     */
     private final Trainer trainer;
+
+    /**
+     * The player's inventory
+     */
     private final Inventory inventory;
+
+    /**
+     * The current shop for the day
+     */
     private final Shop shop;
+
+    /**
+     * The available battles for the day
+     */
     private final ArrayList<Trainer> availableBattles = new ArrayList<>();
 
     public GameManager() {
-        trainer = new Trainer("");
+        trainer = new Trainer("Anonymous");
         inventory = new Inventory();
         shop = new Shop(this);
     }
@@ -203,9 +244,6 @@ public class GameManager {
      * Only remove one monster at once to prevent indexing errors.
      */
     protected void partyMonstersLeave() {
-        // TODO:
-        //  - Decide if only at most 1 monster leave per night or remove the limit
-        //  - If there is no limit, use the remove(Monster mon) (which takes O(n^2) where n <= 4)
         for (int i = 0; i < trainer.getParty().size(); i++) {
             if (trainer.getParty().get(i).shouldLeave()) {
                 trainer.remove(i);
