@@ -113,7 +113,36 @@ public class GameManager {
         return score;
     }
 
-    // MARK: -- Next day --
+
+    // MARK: -- Rule checking methods --
+
+    /**
+     * Check if the player has no monster that is active
+     * @return true if the player parties are all fainted
+     */
+    public boolean hasNoMonsterLeft() {
+        return trainer.getParty().stream().allMatch(Monster::isFainted);
+    }
+
+    /**
+     * Check if the player has not enough funds to purchase a monster
+     * @return true if the player gold is less than any monster price in the shop
+     */
+    public boolean hasNotEnoughMoneyForMonster() {
+        return getGold() < shop.getMonsterStock().stream().mapToInt(Monster::buyPrice).min().orElse(0);
+    }
+
+    /**
+     * Check if the player has done a battle once
+     * @return true if any of enemies has fainted monster
+     */
+    public boolean hasNotBattleOnce() {
+        return availableBattles.stream()
+            .map(Trainer::getParty)
+            .noneMatch(party -> party.stream().anyMatch(Monster::isFainted));
+    }
+
+    // MARK: -- Next day methods --
 
     /**
      * Proceed to the following day and update all state accordingly
@@ -123,10 +152,13 @@ public class GameManager {
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
         final var hasEnded = getCurrentDay() >= getMaxDays();
+
         if (!hasEnded)
             triggerNightEvents();
-        return hasEnded;
+
+        return hasEnded || (hasNoMonsterLeft() && hasNotEnoughMoneyForMonster());
     }
+
 
     /**
      * Trigger refreshes for any value that can be reloaded without changing the day
