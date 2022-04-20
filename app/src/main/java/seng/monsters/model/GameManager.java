@@ -8,6 +8,7 @@
 package seng.monsters.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameManager {
     private int gold = 0;
@@ -28,16 +29,16 @@ public class GameManager {
         shop = new Shop(this);
     }
 
-    public GameManager(int gold, int currentDay, int maxDays, int difficulty) {
+    public GameManager(int gold, int currentDay, int maxDays, int difficulty, String name) {
         this.gold = gold;
         this.currentDay = currentDay % maxDays;
         this.maxDays = maxDays;
         this.difficulty = difficulty;
-        this.trainer = new Trainer("");
+        this.trainer = new Trainer(name);
         this.inventory = new Inventory();
         this.shop = new Shop(this);
 
-        // TODO: -- Available battles, shop should be restocked after initial setup
+        refreshCurrentDay();
     }
 
     /**
@@ -94,8 +95,25 @@ public class GameManager {
         return difficulty;
     }
 
+    /**
+     * Get the available battles for this current day
+     *
+     * @return The list of all trainer available to fight
+     */
+    public List<Trainer> getAvailableBattles() {
+        return availableBattles;
+    }
 
-    // TODO: --- Required controller methods to use to play the game (pulled from the flow of the game) ---
+    /**
+     * Get the score
+     *
+     * @return The score points
+     */
+    public int getScore() {
+        return score;
+    }
+
+    // MARK: -- Next day --
 
     /**
      * Proceed to the following day and update all state accordingly
@@ -111,17 +129,24 @@ public class GameManager {
     }
 
     /**
+     * Trigger refreshes for any value that can be reloaded without changing the day
+     */
+    public void refreshCurrentDay() {
+        shop.restock();
+        updateAvailableBattles();
+    }
+
+    /**
      * Triggers night events if game does not end after calling nextDay
      */
     protected void triggerNightEvents() {
         changeEnvironment();
-        shop.restock();
         partyMonstersLeave();
         partyMonstersHeal();
         partyMonstersLevelUp();
         monsterJoinsParty();
-
-        // TODO: -- Missing available battles --
+        shop.restock();
+        updateAvailableBattles();
     }
 
     /**
@@ -178,7 +203,7 @@ public class GameManager {
      * <code> base = 0.01 </code> <p>
      * <code> f(d, c, m) = base x d x c / m</code>
      */
-    public void monsterJoinsParty() {
+    protected void monsterJoinsParty() {
         final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
         final var isLucky = Math.random() <= chance;
         if (trainer.getParty().size() >= 4 || !isLucky)
@@ -186,6 +211,38 @@ public class GameManager {
 
         final var joining = shop.randomMonster();
         trainer.add(joining);
+    }
+
+    /**
+     * Update the available battles for the day
+     */
+    protected void updateAvailableBattles() {
+        final var amountEnemies = Math.max(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays());
+        final var amountMonster = Math.max(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays());
+
+        availableBattles.clear();
+
+        for (var i = 0; i < amountEnemies; i++) {
+            final var enemy = new Trainer(getEnvironment().toString() + " Enemy " + i);
+            for (var j = 0; j < amountMonster; j++) {
+                enemy.add(shop.randomMonster());
+            }
+            availableBattles.add(enemy);
+        }
+    }
+
+    // MARK: -- Actions --
+
+    /**
+     * Prepare battle manager for a battle against selected enemy
+     * @param ui The UI used to the battle manager
+     * @param index The index of the available battle
+     * @return The battle manager that had been prepared
+     * @throws IndexOutOfBoundsException If the index given does not point to a valid enemy
+     */
+    public BattleManager prepareBattle(BattleManager.UI ui, int index) throws IndexOutOfBoundsException {
+        final var enemy = getAvailableBattles().get(index);
+        return new BattleManager(ui, getTrainer(), enemy, getEnvironment());
     }
 
     /**
@@ -320,6 +377,15 @@ public class GameManager {
      */
     public void setMaxDays(int maxDays) {
         this.maxDays = maxDays;
+    }
+
+    /**
+     * Set the new score
+     *
+     * @param score The new total score
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /**

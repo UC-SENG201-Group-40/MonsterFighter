@@ -121,9 +121,11 @@ final class Shop {
      */
     public void restock() {
         monsterStock.clear();
-        IntStream.range(0, 3 * manager.getDifficulty())
-            .mapToObj(_i -> randomMonster())
-            .forEachOrdered(mon -> monsterStock.put(mon.getId(), mon));
+
+        for (var i = 0; i < 3 * manager.getDifficulty(); i++) {
+            final var mon = randomMonster();
+            monsterStock.put(mon.getId(), mon);
+        }
 
         itemStock.clear();
         itemStock.putAll(randomItemStock());
