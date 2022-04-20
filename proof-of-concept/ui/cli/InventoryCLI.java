@@ -1,4 +1,4 @@
-package seng.monsters.model;
+package seng.monsters.ui.cli;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ public final class InventoryCLI {
 
     ArrayList<Item> itemsReference = new ArrayList<>();
 
-    public InventoryCLI(GameManager tempGameManager) {
-        gameManager = tempGameManager;
+    public InventoryCLI(GameManager gameManager) {
+        this.gameManager = gameManager;
         inventory = gameManager.getInventory();
         party = gameManager.getTrainer().getParty();
 
@@ -109,11 +109,11 @@ public final class InventoryCLI {
     private void displayUseItemOptions(Item item, boolean itemUsed){
         System.out.println("\n===========================\n");
         if (itemUsed) { System.out.printf("%s successfully used!\n", item.getName()); }
-        System.out.printf("You have %d %ss. Select a monster to use one on, or return to the inventory menu:%n"
+        System.out.printf("You have %d %s(s). Select a monster to use one on, or return to the inventory menu:%n"
                 , inventory.getItemNumber(item), item.getName());
         for (int i = 0; i < party.size(); i++) {
             var mon = party.get(i);
-            System.out.printf("%d - %s (Level %d, %dHp/%dHp)\n", i+1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.getMaxHp());
+            System.out.printf("%d - %s (Level %d, %dHp/%dHp)\n", i+1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
         }
         System.out.println("\n0 - Return to Inventory menu");
     }
