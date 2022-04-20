@@ -50,13 +50,6 @@ public class GameManager {
     }
 
     /**
-     * Get the player inventory
-     *
-     * @return The player's inventory
-     */
-    public Inventory getInventory() { return inventory; }
-
-    /**
      * Get the gold reserve owned by the player
      *
      * @return The count of gold the player owned
