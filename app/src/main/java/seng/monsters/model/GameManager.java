@@ -8,36 +8,78 @@
 package seng.monsters.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * The Game Manager that the model of the game
+ */
 public class GameManager {
+    /**
+     * The gold owned by the player
+     */
     private int gold = 0;
+
+    /**
+     * The score accumulated through the game
+     */
     private int score = 0;
+
+    /**
+     * The current day count
+     */
     private int currentDay = 1;
+
+    /**
+     * The maximum day limit
+     */
     private int maxDays = 5;
+
+    /**
+     * The difficulty scale
+     */
     private int difficulty = 1;
+
+    /**
+     * The current environment of the day
+     */
     private Environment environment = Environment.FIELD;
 
+    /**
+     * The player trainer
+     */
     private final Trainer trainer;
+
+    /**
+     * The player's inventory
+     */
     private final Inventory inventory;
+
+    /**
+     * The current shop for the day
+     */
     private final Shop shop;
+
+    /**
+     * The available battles for the day
+     */
     private final ArrayList<Trainer> availableBattles = new ArrayList<>();
 
     public GameManager() {
-        trainer = new Trainer("");
+        trainer = new Trainer("Anonymous");
         inventory = new Inventory();
         shop = new Shop(this);
     }
 
-    public GameManager(int gold, int currentDay, int maxDays, int difficulty) {
+    public GameManager(int gold, int currentDay, int maxDays, int difficulty, String name) {
         this.gold = gold;
         this.currentDay = currentDay % maxDays;
         this.maxDays = maxDays;
         this.difficulty = difficulty;
-        this.trainer = new Trainer("");
+        this.trainer = new Trainer(name);
         this.inventory = new Inventory();
         this.shop = new Shop(this);
 
-        // TODO: -- Available battles, shop should be restocked after initial setup
+        refreshCurrentDay();
     }
 
     /**
@@ -103,8 +145,69 @@ public class GameManager {
         return difficulty;
     }
 
+    /**
+     * Get the available battles for this current day
+     *
+     * @return The list of all trainer available to fight
+     */
+    public List<Trainer> getAvailableBattles() {
+        return availableBattles
+            .stream()
+            .filter(trainer -> !trainer.isWhitedOut())
+            .toList();
+    }
 
-    // TODO: --- Required controller methods to use to play the game (pulled from the flow of the game) ---
+    /**
+     * Get the score
+     *
+     * @return The score points
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Get the current shop
+     * @return The shop
+     */
+    public Shop getShop() {
+        return shop;
+    }
+
+    // MARK: -- Rule checking methods --
+
+
+    /**
+     * Check if the player has no monster and not enough funds to purchase a monster
+     *
+     * @return true if the player has no monster and gold is less than any monster price in the shop
+     */
+    public boolean hasNotEnoughMoneyForMonster() {
+        return trainer.getParty().isEmpty() &&
+            getGold() < shop.getMonsterStock().stream().mapToInt(Monster::buyPrice).min().orElse(0);
+    }
+
+    /**
+     * Check if the player has not active monster and not enough funds to purchase revive
+     *
+     * @return true if the player's party is all fainted and gold is less than the price of revive
+     */
+    public boolean hasNoPossibilityForRevive() {
+        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice();
+    }
+
+    /**
+     * Check if the player has done a battle once
+     *
+     * @return true if any of enemies has fainted monster
+     */
+    public boolean hasNotBattleOnce() {
+        return availableBattles.stream()
+            .map(Trainer::getParty)
+            .noneMatch(party -> party.stream().anyMatch(mon -> mon.getCurrentHp() < mon.maxHp()));
+    }
+
+    // MARK: -- Next day methods --
 
     /**
      * Proceed to the following day and update all state accordingly
@@ -114,9 +217,22 @@ public class GameManager {
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
         final var hasEnded = getCurrentDay() >= getMaxDays();
+
         if (!hasEnded)
             triggerNightEvents();
-        return hasEnded;
+
+        return hasEnded
+            || hasNotEnoughMoneyForMonster()
+            || hasNoPossibilityForRevive();
+    }
+
+
+    /**
+     * Trigger refreshes for any value that can be reloaded without changing the day
+     */
+    public void refreshCurrentDay() {
+        shop.restock();
+        updateAvailableBattles();
     }
 
     /**
@@ -124,13 +240,12 @@ public class GameManager {
      */
     protected void triggerNightEvents() {
         changeEnvironment();
-        shop.restock();
         partyMonstersLeave();
         partyMonstersHeal();
         partyMonstersLevelUp();
         monsterJoinsParty();
-
-        // TODO: -- Missing available battles --
+        shop.restock();
+        updateAvailableBattles();
     }
 
     /**
@@ -146,9 +261,6 @@ public class GameManager {
      * Only remove one monster at once to prevent indexing errors.
      */
     protected void partyMonstersLeave() {
-        // TODO:
-        //  - Decide if only at most 1 monster leave per night or remove the limit
-        //  - If there is no limit, use the remove(Monster mon) (which takes O(n^2) where n <= 4)
         for (int i = 0; i < trainer.getParty().size(); i++) {
             if (trainer.getParty().get(i).shouldLeave()) {
                 trainer.remove(i);
@@ -174,14 +286,60 @@ public class GameManager {
      */
     protected void partyMonstersLevelUp() {
         for (final var mon : trainer.getParty()) {
-            if (mon.shouldLeave()) {
+            if (mon.shouldLevelUp()) {
                 mon.levelUp();
             }
         }
     }
 
-    public void monsterJoinsParty() {
-        // TODO: --- Missing implementation ---
+    /**
+     * A chance that a random monsters join the party if there is a slot
+     * <p>
+     * Joining chance:
+     * <code> base = 0.01 </code> <p>
+     * <code> f(d, c, m) = base x d x c / m</code>
+     */
+    protected void monsterJoinsParty() {
+        final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
+        final var isLucky = Math.random() <= chance;
+        if (trainer.getParty().size() >= 4 || !isLucky)
+            return;
+
+        final var joining = shop.randomMonster();
+        trainer.add(joining);
+    }
+
+    /**
+     * Update the available battles for the day
+     */
+    protected void updateAvailableBattles() {
+        final var amountEnemies = Math.max(1, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
+
+        availableBattles.clear();
+
+        for (var i = 0; i < amountEnemies; i++) {
+            final var enemy = new Trainer(getEnvironment().toString() + " enemy " + i);
+            for (var j = 0; j < amountMonster; j++) {
+                enemy.add(shop.randomMonster());
+            }
+            availableBattles.add(enemy);
+        }
+    }
+
+    // MARK: -- Actions --
+
+    /**
+     * Prepare battle manager for a battle against selected enemy
+     *
+     * @param ui    The UI used to the battle manager
+     * @param index The index of the available battle
+     * @return The battle manager that had been prepared
+     * @throws IndexOutOfBoundsException If the index given does not point to a valid enemy
+     */
+    public BattleManager prepareBattle(BattleManager.UI ui, int index) throws IndexOutOfBoundsException {
+        final var enemy = getAvailableBattles().get(index);
+        return new BattleManager(ui, getTrainer(), enemy, getEnvironment());
     }
 
     /**
@@ -260,8 +418,11 @@ public class GameManager {
      * @param purchasable The purchase being made
      * @throws Shop.NotInStockException        If the item does not exist
      * @throws Shop.InsufficientFundsException If the current gold is not enough to make the purchase
+     * @throws Trainer.PartyFullException      if the current party if full
      */
-    public void buy(Purchasable purchasable) throws Shop.NotInStockException, Shop.InsufficientFundsException {
+    public void buy(
+        Purchasable purchasable
+    ) throws Shop.NotInStockException, Shop.InsufficientFundsException, Trainer.PartyFullException {
         shop.buyPurchasable(purchasable);
         if (purchasable instanceof Item item) {
             inventory.add(item);
@@ -314,6 +475,15 @@ public class GameManager {
      */
     public void setMaxDays(int maxDays) {
         this.maxDays = maxDays;
+    }
+
+    /**
+     * Set the new score
+     *
+     * @param score The new total score
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /**

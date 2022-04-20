@@ -13,13 +13,7 @@ class MonsterTest {
 
     @BeforeEach
     void setUp() {
-        all = List.of(
-            new Monster.Quacker(1),
-            new Monster.Raver(1),
-            new Monster.Tree(1),
-            new Monster.Eel(1),
-            new Monster.Doger(1)
-        );
+        all = Monster.all(1);
     }
 
     @AfterEach

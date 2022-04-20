@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerTest {
 
@@ -163,5 +162,26 @@ class TrainerTest {
     void setName() {
         trainer.setName("Amongus");
         assertEquals("Amongus", trainer.getName());
+    }
+
+    /**
+     * Trainer <code>isWhiteOut()</code> should:
+     * <ul>
+     * <li>Return true if player has no monsters</li>
+     * <li>Return true if player has no active monster</li>
+     * <li>Return false otherwise </li>
+     * </ul>
+     */
+    @Test
+    void isWhiteOut() {
+        assertTrue(trainer.isWhitedOut());
+
+        trainer.add(new Monster.Doger(10));
+
+        assertFalse(trainer.isWhitedOut());
+
+        trainer.getParty().forEach(mon -> mon.takeDamage(mon.maxHp()));
+
+        assertTrue(trainer.isWhitedOut());
     }
 }

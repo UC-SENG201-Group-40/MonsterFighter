@@ -8,6 +8,7 @@
 package seng.monsters.model;
 
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,7 +16,7 @@ import java.util.UUID;
  */
 public abstract class Monster implements Purchasable {
     /**
-     * A Quacker duck
+     * A Quacker duck (Jack of all trades)
      */
     public static final class Quacker extends Monster {
         /**
@@ -70,7 +71,7 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * A Raver crab
+     * A Raver crab (Damage sponge, doesn't fight back well)
      */
     public static final class Raver extends Monster {
         /**
@@ -125,7 +126,7 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * A Tree, that's it
+     * A Tree, that's it (Long lasting, always in full health before battle)
      */
     public static final class Tree extends Monster {
         /**
@@ -149,17 +150,17 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int baseDamage() {
-            return 60;
+            return 40;
         }
 
         @Override
         public int speed() {
-            return 10;
+            return 40;
         }
 
         @Override
         public int healRate() {
-            return 100;
+            return 200;
         }
 
         @Override
@@ -174,12 +175,12 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLeave() {
-            return Math.random() <= (isFainted() ? 0.15 : 0.01);
+            return Math.random() <= (isFainted() ? 0.05 : 0.01);
         }
     }
 
     /**
-     * An eel that can steals health
+     * An eel that can steals health (Heals in battle, but mega slow)
      */
     public static final class Eel extends Monster {
         /**
@@ -239,7 +240,9 @@ public abstract class Monster implements Purchasable {
         }
     }
 
-    /** A speedy boy */
+    /**
+     * A speedy boy (Fast, hits pretty good, but might die afterward)
+     */
     public static final class Doger extends Monster {
         /**
          * Create a new monster
@@ -278,6 +281,60 @@ public abstract class Monster implements Purchasable {
         @Override
         public Environment idealEnvironment() {
             return Environment.URBAN;
+        }
+
+        @Override
+        public boolean shouldLevelUp() {
+            return Math.random() <= 0.5;
+        }
+
+        @Override
+        public boolean shouldLeave() {
+            return Math.random() <= (isFainted() ? 0.25 : 0.01);
+        }
+    }
+
+    /**
+     * Definitely a shark (Hit hard, if it doesn't die first)
+     */
+    public static final class Shark extends Monster {
+        /**
+         * Create a new monster
+         *
+         * @param level The current level
+         */
+        public Shark(int level) {
+            super("Shark", 50, level);
+        }
+
+        /**
+         * Create a new monster
+         *
+         * @param name  The name of the monster
+         * @param level The current level
+         */
+        public Shark(String name, int level) {
+            super(name, 50, level);
+        }
+
+        @Override
+        public int baseDamage() {
+            return 120;
+        }
+
+        @Override
+        public int speed() {
+            return 20;
+        }
+
+        @Override
+        public int healRate() {
+            return 20;
+        }
+
+        @Override
+        public Environment idealEnvironment() {
+            return Environment.BEACH;
         }
 
         @Override
@@ -528,13 +585,6 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Get the max hp
-     *
-     * @return The max hp of the monster
-     */
-    public int getMaxHp() { return maxHp(); }
-
-    /**
      * Get the id
      *
      * @return The id of the monster
@@ -553,5 +603,22 @@ public abstract class Monster implements Purchasable {
         if (other instanceof Monster mon)
             return this.getId().equals(mon.getId());
         return false;
+    }
+
+    /**
+     * Get all types of monster with a specific level
+     *
+     * @param level The level all monster is set to
+     * @return A list of unique monsters set to the level given
+     */
+    public static List<Monster> all(int level) {
+        return List.of(
+            new Monster.Quacker(level),
+            new Monster.Raver(level),
+            new Monster.Tree(level),
+            new Monster.Eel(level),
+            new Monster.Doger(level),
+            new Monster.Shark(level)
+        );
     }
 }

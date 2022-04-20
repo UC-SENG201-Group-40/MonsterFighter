@@ -16,10 +16,13 @@ class BattleManagerTest {
     private static abstract class DudUI implements BattleManager.UI {
         public void onEachFrame(boolean isMon1Turn, int pos) {
         }
+
         public void onEachDamage(boolean isMon1Turn, int dmg) {
         }
+
         public void onEachNextMonster(boolean isMon1Turn) {
         }
+
         public void onEnd(boolean isMon1Turn) {
         }
     }
@@ -125,7 +128,9 @@ class BattleManagerTest {
 
     /**
      * BattleManager <code>getFeeds</code> should:
-     * - Give all the accumulated feed broadcast by the manager
+     * <ul>
+     * <li> Give all the accumulated feed broadcast by the manager
+     * </ul>
      */
     @Test
     void getFeeds() {
@@ -154,8 +159,10 @@ class BattleManagerTest {
 
     /**
      * BattleManager <code>isEitherFallen</code> should:
-     * - Return true is either battling monster is fainted
-     * - Return false is either is still standing
+     * <ul>
+     * <li> Return true is either battling monster is fainted
+     * <li> Return false is either is still standing
+     * </ul>
      */
     @Test
     void isEitherFallen() {
@@ -172,9 +179,11 @@ class BattleManagerTest {
 
     /**
      * BattleManager <code>isSettled</code> should:
-     * - Return false the battle is still on going
-     * - Return true if either trainers no longer have any active monster and <code>nextIteration</code> was called
-     * - Return true if the player has no active monster to begin with
+     * <ul>
+     * <li> Return false the battle is still on going </li>
+     * <li> Return true if either trainers no longer have any active monster and <code>nextIteration</code> was called
+     * <li> Return true if the player has no active monster to begin with
+     * </ul>
      */
     @Test
     void isSettled() {
@@ -190,5 +199,33 @@ class BattleManagerTest {
         mon.takeDamage(mon.maxHp());
         battleManager.nextIteration();
         assertTrue(battleManager.isSettled());
+    }
+
+
+    /**
+     * BattleManager's:
+     * <ul>
+     * <li><code>goldReward</code> should return the sum of sell price for the losing player</li>
+     * <li><code>scoreReward</code> should return the sum of level for the losing player</li>
+     * </ul>
+     */
+    @Test
+    void reward() {
+        final var alive = new Monster.Doger(10);
+        final var dead1 = new Monster.Doger(10);
+        final var dead2 = new Monster.Doger(10);
+        player.add(alive);
+        enemy.add(dead1);
+        enemy.add(dead2);
+
+        battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
+
+        dead1.takeDamage(dead1.maxHp());
+        dead2.takeDamage(dead2.maxHp());
+        battleManager.nextIteration();
+
+        assertTrue(battleManager.isSettled());
+        assertEquals(dead1.sellPrice() + dead2.sellPrice(), battleManager.goldReward());
+        assertEquals(dead1.getLevel() + dead2.getLevel(), battleManager.scoreReward());
     }
 }
