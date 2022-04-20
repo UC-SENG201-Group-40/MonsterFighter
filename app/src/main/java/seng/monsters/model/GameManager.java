@@ -173,6 +173,7 @@ public class GameManager {
 
     /**
      * Check if the player has not active monster and not enough funds to purchase revive
+     *
      * @return true if the player's party is all fainted and gold is less than the price of revive
      */
     public boolean hasNoPossibilityForRevive() {
@@ -401,6 +402,7 @@ public class GameManager {
      * @param purchasable The purchase being made
      * @throws Shop.NotInStockException        If the item does not exist
      * @throws Shop.InsufficientFundsException If the current gold is not enough to make the purchase
+     * @throws Trainer.PartyFullException      if the current party if full
      */
     public void buy(
         Purchasable purchasable
