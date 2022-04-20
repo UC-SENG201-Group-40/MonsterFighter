@@ -585,13 +585,6 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Get the max hp
-     *
-     * @return The max hp of the monster
-     */
-    public int getMaxHp() { return maxHp(); }
-
-    /**
      * Get the id
      *
      * @return The id of the monster
