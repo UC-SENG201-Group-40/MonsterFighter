@@ -157,6 +157,13 @@ public class GameManager {
         return score;
     }
 
+    /**
+     * Get the current shop
+     * @return The shop
+     */
+    public Shop getShop() {
+        return shop;
+    }
 
     // MARK: -- Rule checking methods --
 
@@ -188,7 +195,7 @@ public class GameManager {
     public boolean hasNotBattleOnce() {
         return availableBattles.stream()
             .map(Trainer::getParty)
-            .noneMatch(party -> party.stream().anyMatch(Monster::isFainted));
+            .noneMatch(party -> party.stream().anyMatch(mon -> mon.getCurrentHp() < mon.maxHp()));
     }
 
     // MARK: -- Next day methods --
@@ -270,7 +277,7 @@ public class GameManager {
      */
     protected void partyMonstersLevelUp() {
         for (final var mon : trainer.getParty()) {
-            if (mon.shouldLeave()) {
+            if (mon.shouldLevelUp()) {
                 mon.levelUp();
             }
         }
@@ -297,13 +304,13 @@ public class GameManager {
      * Update the available battles for the day
      */
     protected void updateAvailableBattles() {
-        final var amountEnemies = Math.max(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays());
-        final var amountMonster = Math.max(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays());
+        final var amountEnemies = Math.max(1, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 
         for (var i = 0; i < amountEnemies; i++) {
-            final var enemy = new Trainer(getEnvironment().toString() + " Enemy " + i);
+            final var enemy = new Trainer(getEnvironment().toString() + " enemy " + i);
             for (var j = 0; j < amountMonster; j++) {
                 enemy.add(shop.randomMonster());
             }
