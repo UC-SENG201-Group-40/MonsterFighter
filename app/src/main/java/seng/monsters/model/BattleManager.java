@@ -326,4 +326,26 @@ public final class BattleManager {
     public boolean isSettled() {
         return isSettled.get();
     }
+
+    /**
+     * The gold total rewarded for this battle
+     * @return The amount gold should be received by the winner
+     */
+    public int goldReward() {
+        return loser().getParty()
+            .stream()
+            .mapToInt(Monster::sellPrice)
+            .sum();
+    }
+
+    /**
+     * The score total rewarded for this battle
+     * @return The amount score should be received by the winner
+     */
+    public int scoreReward() {
+        return loser().getParty()
+            .stream()
+            .mapToInt(Monster::getLevel)
+            .sum();
+    }
 }
