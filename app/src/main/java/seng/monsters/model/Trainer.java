@@ -145,4 +145,12 @@ public final class Trainer {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Check if the trainer has any monster active
+     * @return true if all monster is fainted
+     */
+    public boolean isWhitedOut() {
+        return party.stream().allMatch(Monster::isFainted);
+    }
 }

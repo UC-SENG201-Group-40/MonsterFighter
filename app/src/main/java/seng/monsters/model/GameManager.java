@@ -101,7 +101,10 @@ public class GameManager {
      * @return The list of all trainer available to fight
      */
     public List<Trainer> getAvailableBattles() {
-        return availableBattles;
+        return availableBattles
+            .stream()
+            .filter(trainer -> !trainer.isWhitedOut())
+            .toList();
     }
 
     /**
@@ -121,7 +124,7 @@ public class GameManager {
      * @return true if the player parties are all fainted
      */
     public boolean hasNoMonsterLeft() {
-        return trainer.getParty().stream().allMatch(Monster::isFainted);
+        return trainer.isWhitedOut();
     }
 
     /**
