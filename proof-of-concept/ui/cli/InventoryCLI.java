@@ -113,7 +113,7 @@ public final class InventoryCLI {
                 , inventory.getItemNumber(item), item.getName());
         for (int i = 0; i < party.size(); i++) {
             var mon = party.get(i);
-            System.out.printf("%d - %s (Level %d, %dHp/%dHp)\n", i+1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.getMaxHp());
+            System.out.printf("%d - %s (Level %d, %dHp/%dHp)\n", i+1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
         }
         System.out.println("\n0 - Return to Inventory menu");
     }

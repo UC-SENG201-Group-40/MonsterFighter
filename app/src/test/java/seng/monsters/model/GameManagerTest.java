@@ -4,10 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -205,10 +202,6 @@ class GameManagerTest {
         final var currentHp = perfectMon.getCurrentHp();
         final var currentLevel = perfectMon.getLevel();
         final var currentDay = manager.getCurrentDay();
-        final var itemStock = manager.getShop()
-            .getItemStock()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         final var monsterStock = manager.getShop().getMonsterStock();
         final var availableBattles = manager.getAvailableBattles().size();
 
@@ -233,7 +226,7 @@ class GameManagerTest {
         assertFalse(manager.getShop()
             .getItemStock()
             .stream()
-            .allMatch(entry -> Objects.equals(entry.getValue(), itemStock.getOrDefault(entry.getKey(), 0)))
+            .allMatch(entry -> entry.getValue() == 0)
         );
 
         // New monster stock
@@ -354,7 +347,7 @@ class GameManagerTest {
     /**
      * BattleManager's <code>updateAvailableBattles</code> should:
      * <ul>
-     * <li> Remove all previous enemis</li>
+     * <li> Remove all previous enemies</li>
      * <li> Add new enemies with fresh new parties</li>
      * </ul>
      */
@@ -370,35 +363,167 @@ class GameManagerTest {
         assertNotEquals(availableBattles, manager.getAvailableBattles().size());
     }
 
-    @Test
-    void prepareBattle() {
-    }
-
+    /**
+     * BattleManager's <code>useItemFromInventory</code> should:
+     * <ul>
+     * <li> Use the item to the monster and reduce the count by 1 </li>
+     * <li> Throw an Exception, if the item doesn't exist in the inventory </li>
+     * </ul>
+     */
     @Test
     void useItemFromInventory() {
+        final var mon = new Monster.Shark(9);
+        assertThrows(Inventory.ItemNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), mon));
+        assertEquals(9, mon.getLevel());
+
+        manager.getInventory().add(new Item.RareCandy());
+
+        manager.useItemFromInventory(new Item.RareCandy(), mon);
+        assertNotEquals(9, mon.getLevel());
+        assertEquals(10, mon.getLevel());
+        assertEquals(0, manager.getInventory().getItemNumber(new Item.RareCandy()));
     }
 
+    /**
+     * BattleManager's <code>useItemFromInventory</code> should:
+     * <ul>
+     * <li> Use the item to the monster and reduce the count by 1 </li>
+     * <li> Throw an Exception, if the item doesn't exist in the inventory </li>
+     * <li> Throw an Exception, if the index points an invalid monster </li>
+     * </ul>
+     */
     @Test
     void testUseItemFromInventory() {
+        final var mon = new Monster.Shark(9);
+        assertThrows(Trainer.MonsterDoesNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), 0));
+        assertEquals(9, mon.getLevel());
+
+        manager.getTrainer().add(mon);
+
+        assertThrows(Inventory.ItemNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), 0));
+        assertEquals(9, mon.getLevel());
+
+        manager.getInventory().add(new Item.RareCandy());
+
+        manager.useItemFromInventory(new Item.RareCandy(), 0);
+        assertNotEquals(9, mon.getLevel());
+        assertEquals(10, mon.getLevel());
+        assertEquals(0, manager.getInventory().getItemNumber(new Item.RareCandy()));
     }
 
+    /**
+     * BattleManager's <code>switchMonsterOnParty</code> should:
+     * <ul>
+     * <li> Switch the location of two monster </li>
+     * <li> Throw an Exception, if the index points an invalid monster </li>
+     * </ul>
+     */
     @Test
     void switchMonsterOnParty() {
+        final var mon1 = new Monster.Shark(10);
+        final var mon2 = new Monster.Doger(10);
+        manager.getTrainer().add(mon1);
+        manager.getTrainer().add(mon2);
+
+        manager.switchMonsterOnParty(0, 1);
+
+        final var party = manager.getTrainer().getParty();
+        assertEquals(mon2, party.get(0));
+        assertEquals(mon1, party.get(1));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> manager.switchMonsterOnParty(0, 10));
     }
 
+    /**
+     * BattleManager's <code>switchMonsterOnParty</code> should:
+     * <ul>
+     * <li> Switch the location of two monster </li>
+     * <li> Throw an Exception, if the index points an invalid monster </li>
+     * </ul>
+     */
     @Test
     void testSwitchMonsterOnParty() {
+        final var mon1 = new Monster.Shark(10);
+        final var mon2 = new Monster.Doger(10);
+        manager.getTrainer().add(mon1);
+        manager.getTrainer().add(mon2);
+
+        manager.switchMonsterOnParty(mon1, 1);
+
+        final var party = manager.getTrainer().getParty();
+        assertEquals(mon2, party.get(0));
+        assertEquals(mon1, party.get(1));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> manager.switchMonsterOnParty(mon1, 10));
     }
 
+    /**
+     * BattleManager's <code>buy</code> should:
+     * <ul>
+     * <li> Buy the item or monster purchased </li>
+     * <li> Add the item or monster purchased to the inventory or the party</li>
+     * <li> Subtract the cost of buying the purchased item or monster </li>
+     * <li> Throw an Exception, if monster or item doesn't exist in the shop </li>
+     * <li> Throw an Exception, if the player has insufficient gold </li>
+     * </ul>
+     */
     @Test
     void buy() {
+        final var anyItem = manager.getShop().getItemStock().stream().map(Map.Entry::getKey).findAny().orElseThrow();
+        final var anyMonster = manager.getShop().getMonsterStock().stream().findAny().orElseThrow();
+
+        manager.setGold(0);
+
+        assertThrows(Shop.InsufficientFundsException.class, () -> manager.buy(anyItem));
+        assertThrows(Shop.InsufficientFundsException.class, () -> manager.buy(anyMonster));
+
+        manager.setGold(anyItem.buyPrice() + anyMonster.buyPrice() + 100);
+
+        manager.buy(anyItem);
+
+        assertTrue(manager.getInventory().getItemNumber(anyItem) > 0);
+
+        manager.buy(anyMonster);
+
+        assertTrue(manager.getTrainer().getParty().contains(anyMonster));
+
+        manager.setGold(manager.getGold() * 10);
+
+        assertThrows(Shop.NotInStockException.class, () -> manager.buy(new Monster.Eel(1)));
     }
 
+    /**
+     * BattleManager's <code>sell</code> should:
+     * <ul>
+     * <li> Sell the item or monster purchased </li>
+     * <li> Remove the item or monster purchased to the inventory or the party</li>
+     * <li> Add the cost of selling the purchased item or monster </li>
+     * <li> Throw an Exception, if monster or item doesn't exist in the inventory or party </li>
+     * </ul>
+     */
     @Test
     void sell() {
-    }
+        final var anyItem = new Item.FullRestore();
+        final var anyMonster = new Monster.Quacker(10);
 
-    @Test
-    void setTrainerName() {
+        manager.setGold(0);
+
+        assertThrows(Inventory.ItemNotExistException.class, () -> manager.sell(anyItem));
+        assertThrows(Trainer.MonsterDoesNotExistException.class, () -> manager.sell(anyMonster));
+        assertEquals(0, manager.getGold());
+
+        manager.getInventory().add(anyItem);
+        manager.getTrainer().add(anyMonster);
+
+
+        manager.sell(anyItem);
+
+        assertEquals(0, manager.getInventory().getItemNumber(anyItem));
+
+        manager.sell(anyMonster);
+
+        assertFalse(manager.getTrainer().getParty().contains(anyMonster));
+
+        assertEquals(anyItem.sellPrice() + anyMonster.sellPrice(), manager.getGold());
     }
 }
