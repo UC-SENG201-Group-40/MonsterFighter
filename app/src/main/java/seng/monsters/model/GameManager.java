@@ -119,24 +119,28 @@ public class GameManager {
 
     // MARK: -- Rule checking methods --
 
+
     /**
-     * Check if the player has no monster that is active
-     * @return true if the player parties are all fainted
+     * Check if the player has no monster and not enough funds to purchase a monster
+     *
+     * @return true if the player has no monster and gold is less than any monster price in the shop
      */
-    public boolean hasNoMonsterLeft() {
-        return trainer.isWhitedOut();
+    public boolean hasNotEnoughMoneyForMonster() {
+        return trainer.getParty().isEmpty() &&
+            getGold() < shop.getMonsterStock().stream().mapToInt(Monster::buyPrice).min().orElse(0);
     }
 
     /**
-     * Check if the player has not enough funds to purchase a monster
-     * @return true if the player gold is less than any monster price in the shop
+     * Check if the player has not active monster and not enough funds to purchase revive
+     * @return true if the player's party is all fainted and gold is less than the price of revive
      */
-    public boolean hasNotEnoughMoneyForMonster() {
-        return getGold() < shop.getMonsterStock().stream().mapToInt(Monster::buyPrice).min().orElse(0);
+    public boolean hasNoPossibilityForRevive() {
+        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice();
     }
 
     /**
      * Check if the player has done a battle once
+     *
      * @return true if any of enemies has fainted monster
      */
     public boolean hasNotBattleOnce() {
@@ -159,7 +163,9 @@ public class GameManager {
         if (!hasEnded)
             triggerNightEvents();
 
-        return hasEnded || (hasNoMonsterLeft() && hasNotEnoughMoneyForMonster());
+        return hasEnded
+            || hasNotEnoughMoneyForMonster()
+            || hasNoPossibilityForRevive();
     }
 
 
@@ -270,7 +276,8 @@ public class GameManager {
 
     /**
      * Prepare battle manager for a battle against selected enemy
-     * @param ui The UI used to the battle manager
+     *
+     * @param ui    The UI used to the battle manager
      * @param index The index of the available battle
      * @return The battle manager that had been prepared
      * @throws IndexOutOfBoundsException If the index given does not point to a valid enemy
