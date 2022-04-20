@@ -66,6 +66,15 @@ public final class Inventory {
     }
 
     /**
+     * Returns the amount of a specified item in the player's inventory
+     * @param item The specified item to retrieve the count of
+     * @return An int representing the number of the item in the player's inventory
+     */
+    public int getItemNumber(Item item) {
+        return items.get(item);
+    }
+
+    /**
      * Get all the item in the inventory
      *
      * @return The items as an arraylist
