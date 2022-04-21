@@ -10,7 +10,7 @@ public final class PartyCLI {
     private final GameManager gameManager;
     private final List<Monster> party;
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     public PartyCLI(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -25,7 +25,7 @@ public final class PartyCLI {
      */
     public void partyStatsInterface(boolean monsterMoved) throws IllegalArgumentException {
         displayPartyStats(monsterMoved);
-        selectMonsterToMove(scanner.nextInt());
+        selectMonsterToMove(input.nextInt());
     }
 
     /**
@@ -36,7 +36,7 @@ public final class PartyCLI {
      */
     public boolean moveMonsterInterface(Monster mon) {
         displayMoveMonsters(mon);
-        return selectMonsterToSwap(mon, scanner.nextInt());
+        return selectMonsterToSwap(mon, input.nextInt());
     }
 
     /**
@@ -57,10 +57,10 @@ public final class PartyCLI {
             }
         } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid input!");
-            selectMonsterToMove(scanner.nextInt());
+            selectMonsterToMove(input.nextInt());
         } catch (IndexOutOfBoundsException ignored) {
             System.out.println("No monster in that position!");
-            selectMonsterToMove(scanner.nextInt());
+            selectMonsterToMove(input.nextInt());
         }
     }
 
@@ -84,10 +84,10 @@ public final class PartyCLI {
             }
         } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid input!");
-            selectMonsterToSwap(mon, scanner.nextInt());
+            selectMonsterToSwap(mon, input.nextInt());
         } catch (IndexOutOfBoundsException ignored) {
             System.out.println("No monster in that position!");
-            selectMonsterToSwap(mon, scanner.nextInt());
+            selectMonsterToSwap(mon, input.nextInt());
         }
         return monsterMoved;
     }
@@ -133,8 +133,8 @@ public final class PartyCLI {
 
     public static void make(GameManager gameManager) {
         try {
-            final var cli = new PartyCLI(gameManager);
-            cli.partyStatsInterface(false);
+            final var partyCLI = new PartyCLI(gameManager);
+            partyCLI.partyStatsInterface(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
