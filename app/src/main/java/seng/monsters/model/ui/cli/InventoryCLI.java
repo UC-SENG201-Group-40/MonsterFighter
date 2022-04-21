@@ -1,4 +1,4 @@
-package seng.monsters.ui.cli;
+package seng.monsters.model.ui.cli;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -430,7 +430,7 @@ public abstract class Monster implements Purchasable {
      * The type of monster
      * @return The type of monster as a string
      */
-    protected String monsterType() {
+    public String monsterType() {
         return this.getClass().getSimpleName();
     }
 
