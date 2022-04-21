@@ -126,7 +126,7 @@ public abstract class Item implements Purchasable {
     /**
      * Signals that aan item has been applied to a monster but produce no result
      */
-    static final class NoEffectException extends IllegalStateException {
+    public static final class NoEffectException extends IllegalStateException {
         public NoEffectException(String desc) {
             super(desc);
         }

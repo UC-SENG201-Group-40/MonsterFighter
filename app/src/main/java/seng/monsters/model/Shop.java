@@ -17,13 +17,13 @@ final class Shop {
     /**
      * Signals that the desired purchasable is not available in the Shop at this current state
      */
-    static final class NotInStockException extends IndexOutOfBoundsException {
+    public static final class NotInStockException extends IndexOutOfBoundsException {
     }
 
     /**
      * Signals that the buyer does not have sufficient fund to make the purchase
      */
-    static final class InsufficientFundsException extends IndexOutOfBoundsException {
+    public static final class InsufficientFundsException extends IndexOutOfBoundsException {
     }
 
     /**

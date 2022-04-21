@@ -17,7 +17,7 @@ public final class Trainer {
     /**
      * Signals that add is called when the party reach its maximum size
      */
-    static final class PartyFullException extends IllegalStateException {
+    public static final class PartyFullException extends IllegalStateException {
         public PartyFullException(String desc) {
             super(desc);
         }
@@ -26,7 +26,7 @@ public final class Trainer {
     /**
      * Signals that the caller has attempted to index a monster that does not exist
      */
-    static final class MonsterDoesNotExistException extends IndexOutOfBoundsException {
+    public static final class MonsterDoesNotExistException extends IndexOutOfBoundsException {
     }
 
     /**

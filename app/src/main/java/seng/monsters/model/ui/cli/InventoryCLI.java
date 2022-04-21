@@ -1,5 +1,10 @@
 package seng.monsters.model.ui.cli;
 
+import seng.monsters.model.GameManager;
+import seng.monsters.model.Inventory;
+import seng.monsters.model.Item;
+import seng.monsters.model.Monster;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

@@ -18,7 +18,7 @@ public final class Inventory {
     /**
      * Signals that the caller intended to use an item that does not exist in the inventory
      */
-    static final class ItemNotExistException extends IndexOutOfBoundsException {
+    public static final class ItemNotExistException extends IndexOutOfBoundsException {
     }
 
     /**

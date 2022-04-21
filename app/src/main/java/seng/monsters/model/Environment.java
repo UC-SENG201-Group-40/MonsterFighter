@@ -20,7 +20,7 @@ public enum Environment {
      * Get all the possible environment
      * @return A list of all unique environment
      */
-    static List<Environment> all() {
+    public static List<Environment> all() {
         return List.of(
             Environment.BEACH,
             Environment.DESERT,
