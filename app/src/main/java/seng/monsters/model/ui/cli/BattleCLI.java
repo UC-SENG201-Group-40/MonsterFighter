@@ -5,7 +5,7 @@
 //  Created by d-exclaimation on 7:14 PM.
 //  Copyright © 2022 d-exclaimation. All rights reserved.
 //
-package seng.monsters.ui.cli;
+package seng.monsters.model.ui.cli;
 
 import seng.monsters.model.BattleManager;
 import seng.monsters.model.Environment;
@@ -37,7 +37,11 @@ public final class BattleCLI implements BattleManager.UI {
 
         while (!battler.isSettled()) {
             battler.nextIteration();
-            Thread.sleep(40);
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException e) {
+                break;
+            }
         }
     }
 

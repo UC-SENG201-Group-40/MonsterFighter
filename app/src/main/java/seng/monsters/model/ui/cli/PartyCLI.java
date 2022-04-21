@@ -1,4 +1,7 @@
-package seng.monsters.model;
+package seng.monsters.model.ui.cli;
+
+import seng.monsters.model.GameManager;
+import seng.monsters.model.Monster;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +19,7 @@ public final class PartyCLI {
 
     /**
      * Prints the player's party and monster stats and takes the player's input to choose which monster to move.
+     *
      * @param monsterMoved Flagged if a monster had been moved in the previously used method.
      * @throws IllegalArgumentException if an invalid parameter is passed.
      */
@@ -26,37 +30,35 @@ public final class PartyCLI {
 
     /**
      * Prints the player's party and takes the player's input to choose which monster to swap with.
+     *
      * @param mon The monster that is to be swapped.
      * @return A boolean that flags if a monster had been swapped.
      */
     public boolean moveMonsterInterface(Monster mon) {
-
         displayMoveMonsters(mon);
         return selectMonsterToSwap(mon, scanner.nextInt());
     }
 
     /**
      * Takes the player's input and chooses the first monster to swap.
+     *
      * @param scannerInput The player's input.
-     * @throws IllegalArgumentException if an invalid parameter is passed.
+     * @throws IllegalArgumentException  if an invalid parameter is passed.
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
     public void selectMonsterToMove(int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
-                var mon = party.get(scannerInput-1);
+                var mon = party.get(scannerInput - 1);
                 boolean monsterMoved = moveMonsterInterface(mon);
                 partyStatsInterface(monsterMoved);
-            }
-            else if (scannerInput != 0) {
+            } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        }
-        catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid input!");
             selectMonsterToMove(scanner.nextInt());
-        }
-        catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException ignored) {
             System.out.println("No monster in that position!");
             selectMonsterToMove(scanner.nextInt());
         }
@@ -64,26 +66,26 @@ public final class PartyCLI {
 
     /**
      * Takes the player's input and attempts to swap the first monster with the second monster (chosen via input).
-     * @param mon The monster that is to be swapped.
+     *
+     * @param mon          The monster that is to be swapped.
      * @param scannerInput The player's input.
      * @return A boolean that flags if a monster had been swapped.
-     * @throws IllegalArgumentException if an invalid parameter is passed.
+     * @throws IllegalArgumentException  if an invalid parameter is passed.
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
     public boolean selectMonsterToSwap(Monster mon, int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
         boolean monsterMoved = false;
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
-                gameManager.switchMonsterOnParty(mon, scannerInput-1);
+                gameManager.switchMonsterOnParty(mon, scannerInput - 1);
                 monsterMoved = true;
+            } else if (scannerInput != 0) {
+                throw new IllegalArgumentException();
             }
-            else if (scannerInput != 0) { throw new IllegalArgumentException(); }
-        }
-        catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid input!");
             selectMonsterToSwap(mon, scanner.nextInt());
-        }
-        catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException ignored) {
             System.out.println("No monster in that position!");
             selectMonsterToSwap(mon, scanner.nextInt());
         }
@@ -92,11 +94,14 @@ public final class PartyCLI {
 
     /**
      * Prints the party of monsters and their stats.
+     *
      * @param monsterMoved Flagged if a monster was moved in the previous method.
      */
     public void displayPartyStats(boolean monsterMoved) {
         System.out.println("\n===========================\n");
-        if (monsterMoved) { System.out.println("Monsters successfully swapped!"); }
+        if (monsterMoved) {
+            System.out.println("Monsters successfully swapped!");
+        }
         System.out.println("Here is your party. Select a monster to move, or return to the main menu:");
         for (int i = 0; i < party.size(); i++) {
             var mon = party.get(i);
@@ -113,6 +118,7 @@ public final class PartyCLI {
 
     /**
      * Prints the party of monsters without stats for readability.
+     *
      * @param mon The monster to be swapped.
      */
     public void displayMoveMonsters(Monster mon) {
