@@ -5,7 +5,7 @@
 //  Created by d-exclaimation on 10:09 AM.
 //  Copyright © 2022 d-exclaimation. All rights reserved.
 //
-package seng.monsters.model.ui.gui;
+package seng.monsters.ui.gui;
 
 import seng.monsters.model.BattleManager;
 import seng.monsters.model.Environment;

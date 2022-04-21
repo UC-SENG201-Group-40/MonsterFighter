@@ -1,4 +1,4 @@
-package seng.monsters.model.ui.cli;
+package seng.monsters.ui.cli;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
