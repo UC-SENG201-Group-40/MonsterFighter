@@ -23,7 +23,7 @@ public final class InventoryCLI {
     }
 
     /**
-     * Prints the player's inventory and takes the player's input to navigate the menu.
+     * Prints the player's inventory and takes the player's input to choose which item to use.
      * @throws IllegalArgumentException if an invalid parameter is passed.
      */
     public void inventoryInterface() throws IllegalArgumentException {
