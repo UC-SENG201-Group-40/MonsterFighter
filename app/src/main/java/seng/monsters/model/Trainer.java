@@ -113,9 +113,11 @@ public final class Trainer {
      * @throws IndexOutOfBoundsException If either the index is out of bound
      */
     public void switchMonster(int from, int to) throws IndexOutOfBoundsException {
-        final var temp = party.get(from);
-        party.set(from, party.get(to));
-        party.set(to, temp);
+        if (from != to) {
+            final var temp = party.get(from);
+            party.set(from, party.get(to));
+            party.set(to, temp);
+        }
     }
 
     /**

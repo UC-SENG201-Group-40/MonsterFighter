@@ -1,4 +1,4 @@
-package seng.monsters.model;
+package seng.monsters.ui.cli;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ public final class InventoryCLI {
 
     ArrayList<Item> itemsReference = new ArrayList<>();
 
-    public InventoryCLI(GameManager tempGameManager) {
-        gameManager = tempGameManager;
+    public InventoryCLI(GameManager gameManager) {
+        this.gameManager = gameManager;
         inventory = gameManager.getInventory();
         party = gameManager.getTrainer().getParty();
 
@@ -23,7 +23,7 @@ public final class InventoryCLI {
     }
 
     /**
-     * Prints the player's inventory and takes the player's input to navigate the menu.
+     * Prints the player's inventory and takes the player's input to choose which item to use.
      * @throws IllegalArgumentException if an invalid parameter is passed.
      */
     public void inventoryInterface() throws IllegalArgumentException {
@@ -109,7 +109,7 @@ public final class InventoryCLI {
     private void displayUseItemOptions(Item item, boolean itemUsed){
         System.out.println("\n===========================\n");
         if (itemUsed) { System.out.printf("%s successfully used!\n", item.getName()); }
-        System.out.printf("You have %d %ss. Select a monster to use one on, or return to the inventory menu:%n"
+        System.out.printf("You have %d %s(s). Select a monster to use one on, or return to the inventory menu:%n"
                 , inventory.getItemNumber(item), item.getName());
         for (int i = 0; i < party.size(); i++) {
             var mon = party.get(i);
