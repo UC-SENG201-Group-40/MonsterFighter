@@ -68,8 +68,6 @@ public abstract class Monster implements Purchasable {
             final var line = isFainted() ? 0.25 : 0.01;
             return Math.random() <= line;
         }
-        @Override
-        public String monsterType() { return "Quacker"; }
     }
 
     /**
@@ -125,8 +123,6 @@ public abstract class Monster implements Purchasable {
             final var line = isFainted() ? 0.2 : 0.05;
             return Math.random() <= line;
         }
-        @Override
-        public String monsterType() { return "Raver"; }
     }
 
     /**
@@ -181,8 +177,6 @@ public abstract class Monster implements Purchasable {
         public boolean shouldLeave() {
             return Math.random() <= (isFainted() ? 0.05 : 0.01);
         }
-        @Override
-        public String monsterType() { return "Tree"; }
     }
 
     /**
@@ -244,8 +238,6 @@ public abstract class Monster implements Purchasable {
         public boolean shouldLeave() {
             return Math.random() <= (isFainted() ? 0.25 : 0.01);
         }
-        @Override
-        public String monsterType() { return "Eel"; }
     }
 
     /**
@@ -300,8 +292,6 @@ public abstract class Monster implements Purchasable {
         public boolean shouldLeave() {
             return Math.random() <= (isFainted() ? 0.25 : 0.01);
         }
-        @Override
-        public String monsterType() { return "Doger"; }
     }
 
     /**
@@ -440,7 +430,9 @@ public abstract class Monster implements Purchasable {
      * The type of monster
      * @return The type of monster as a string
      */
-    public abstract String monsterType();
+    protected String monsterType() {
+        return this.getClass().getSimpleName();
+    }
 
     /**
      * The multiplier computed by level
