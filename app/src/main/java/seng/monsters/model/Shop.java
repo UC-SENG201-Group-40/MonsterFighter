@@ -2,7 +2,7 @@
 //  Shop.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 5:11 PM.
+//  Created by Vincent on 5:11 PM.
 
 //
 package seng.monsters.model;

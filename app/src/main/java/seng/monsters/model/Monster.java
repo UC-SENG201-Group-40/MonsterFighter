@@ -2,7 +2,7 @@
 //  Monster.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 3:29 PM.
+//  Created by Vincent on 3:29 PM.
 //
 package seng.monsters.model;
 

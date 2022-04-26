@@ -2,7 +2,7 @@
 //  Trainer.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 3:32 PM.
+//  Created by Vincent on 3:32 PM.
 
 //
 package seng.monsters.model;

@@ -2,7 +2,7 @@
 //  BattleCLI.java
 //  seng-monsters
 //
-//  Created by d-exclaimation on 7:14 PM.
+//  Created by Vincent on 7:14 PM.
 //
 package seng.monsters.ui.cli;
 

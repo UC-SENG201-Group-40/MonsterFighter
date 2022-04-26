@@ -2,7 +2,7 @@
 //  BattleScreen.java
 //  seng-monsters
 //
-//  Created by d-exclaimation on 10:09 AM.
+//  Created by Vincent on 10:09 AM.
 //
 package seng.monsters.ui.gui;
 

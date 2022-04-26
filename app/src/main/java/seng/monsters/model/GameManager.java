@@ -2,7 +2,7 @@
 //  GameManager.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 9:20 PM.
+//  Created by Vincent on 9:20 PM.
 
 //
 package seng.monsters.model;

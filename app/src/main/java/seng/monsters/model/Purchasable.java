@@ -2,7 +2,7 @@
 //  Purchasable.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 3:19 PM.
+//  Created by Vincent on 3:19 PM.
 
 //
 package seng.monsters.model;

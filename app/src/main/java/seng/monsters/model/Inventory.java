@@ -2,7 +2,7 @@
 //  Inventory.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 4:56 PM.
+//  Created by Vincent on 4:56 PM.
 
 //
 package seng.monsters.model;
