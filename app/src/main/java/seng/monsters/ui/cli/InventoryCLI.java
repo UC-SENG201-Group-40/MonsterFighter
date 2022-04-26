@@ -6,6 +6,7 @@ import seng.monsters.model.Item;
 import seng.monsters.model.Monster;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ public final class InventoryCLI {
     private final GameManager gameManager;
     private final Inventory inventory;
     private final List<Monster> party;
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     ArrayList<Item> itemsReference = new ArrayList<>();
 
@@ -34,7 +35,15 @@ public final class InventoryCLI {
      */
     public void inventoryInterface() throws IllegalArgumentException {
         displayInventoryOptions();
-        selectItem(scanner.nextInt());
+        while (true) {
+            try {
+                selectItem(input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -44,7 +53,15 @@ public final class InventoryCLI {
      */
     public void useItemInterface(Item item, boolean itemUsed) throws IllegalArgumentException {
         displayUseItemOptions(item, itemUsed);
-        useItemOnMonster(item, scanner.nextInt());
+        while (true) {
+            try {
+                useItemOnMonster(item, input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -62,9 +79,9 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            selectItem(scanner.nextInt());
+            selectItem(input.nextInt());
         }
     }
 
@@ -83,15 +100,15 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            useItemOnMonster(item, scanner.nextInt());
-        } catch (Item.NoEffectException ignored) {
+            useItemOnMonster(item, input.nextInt());
+        } catch (Item.NoEffectException e) {
             System.out.println("That item has no effect on this monster!");
-            useItemOnMonster(item, scanner.nextInt());
-        } catch (Inventory.ItemNotExistException ignored) {
+            useItemOnMonster(item, input.nextInt());
+        } catch (Inventory.ItemNotExistException e) {
             System.out.println("You don't have any of that item!");
-            useItemOnMonster(item, scanner.nextInt());
+            useItemOnMonster(item, input.nextInt());
         }
     }
 
@@ -130,8 +147,8 @@ public final class InventoryCLI {
 
     public static void make(GameManager gameManager) {
         try {
-            final var cli = new InventoryCLI(gameManager);
-            cli.inventoryInterface();
+            final var inventoryCLI = new InventoryCLI(gameManager);
+            inventoryCLI.inventoryInterface();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package seng.monsters.ui.cli;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ public final class PartyCLI {
     private final GameManager gameManager;
     private final List<Monster> party;
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     public PartyCLI(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -25,7 +26,15 @@ public final class PartyCLI {
      */
     public void partyStatsInterface(boolean monsterMoved) throws IllegalArgumentException {
         displayPartyStats(monsterMoved);
-        selectMonsterToMove(scanner.nextInt());
+        while (true) {
+            try {
+                selectMonsterToMove(input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -36,7 +45,12 @@ public final class PartyCLI {
      */
     public boolean moveMonsterInterface(Monster mon) {
         displayMoveMonsters(mon);
-        return selectMonsterToSwap(mon, scanner.nextInt());
+        while (true) {
+            try { return selectMonsterToSwap(mon, input.nextInt()); }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -55,12 +69,12 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
-            selectMonsterToMove(scanner.nextInt());
-        } catch (IndexOutOfBoundsException ignored) {
+            selectMonsterToMove(input.nextInt());
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
-            selectMonsterToMove(scanner.nextInt());
+            selectMonsterToMove(input.nextInt());
         }
     }
 
@@ -82,12 +96,12 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
-            selectMonsterToSwap(mon, scanner.nextInt());
-        } catch (IndexOutOfBoundsException ignored) {
+            selectMonsterToSwap(mon, input.nextInt());
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
-            selectMonsterToSwap(mon, scanner.nextInt());
+            selectMonsterToSwap(mon, input.nextInt());
         }
         return monsterMoved;
     }
@@ -133,8 +147,8 @@ public final class PartyCLI {
 
     public static void make(GameManager gameManager) {
         try {
-            final var cli = new PartyCLI(gameManager);
-            cli.partyStatsInterface(false);
+            final var partyCLI = new PartyCLI(gameManager);
+            partyCLI.partyStatsInterface(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
