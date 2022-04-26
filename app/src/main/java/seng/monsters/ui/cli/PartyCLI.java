@@ -3,6 +3,7 @@ package seng.monsters.ui.cli;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,7 +56,7 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException ignored) {
             System.out.println("Invalid input!");
             selectMonsterToMove(input.nextInt());
         } catch (IndexOutOfBoundsException ignored) {
@@ -82,7 +83,7 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException ignored) {
             System.out.println("Invalid input!");
             selectMonsterToSwap(mon, input.nextInt());
         } catch (IndexOutOfBoundsException ignored) {

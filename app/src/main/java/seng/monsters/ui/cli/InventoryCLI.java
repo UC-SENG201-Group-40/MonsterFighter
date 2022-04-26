@@ -6,6 +6,7 @@ import seng.monsters.model.Item;
 import seng.monsters.model.Monster;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,7 +63,7 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException ignored) {
             System.out.println("Invalid input!");
             selectItem(input.nextInt());
         }
@@ -83,7 +84,7 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException ignored) {
             System.out.println("Invalid input!");
             useItemOnMonster(item, input.nextInt());
         } catch (Item.NoEffectException ignored) {
