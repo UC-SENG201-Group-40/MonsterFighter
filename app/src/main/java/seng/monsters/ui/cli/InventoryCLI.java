@@ -5,7 +5,6 @@ import seng.monsters.model.Inventory;
 import seng.monsters.model.Item;
 import seng.monsters.model.Monster;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,16 +15,10 @@ public final class InventoryCLI {
     private final List<Monster> party;
     private final Scanner input = new Scanner(System.in);
 
-    ArrayList<Item> itemsReference = new ArrayList<>();
-
     public InventoryCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         inventory = gameManager.getInventory();
         party = gameManager.getTrainer().getParty();
-
-        itemsReference.add(new Item.Potion());
-        itemsReference.add(new Item.Revive());
-        itemsReference.add(new Item.RareCandy());
     }
 
     /**
@@ -39,10 +32,10 @@ public final class InventoryCLI {
             try {
                 selectItem(input.nextInt());
                 return;
-            }
-            catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 input.next();
-                System.out.println("Invalid input!"); }
+                System.out.println("Invalid input!");
+            }
         }
     }
 
@@ -57,10 +50,10 @@ public final class InventoryCLI {
             try {
                 useItemOnMonster(item, input.nextInt());
                 return;
-            }
-            catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 input.next();
-                System.out.println("Invalid input!"); }
+                System.out.println("Invalid input!");
+            }
         }
     }
 
@@ -73,7 +66,7 @@ public final class InventoryCLI {
     private void selectItem(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
-                var item = itemsReference.get(scannerInput - 1);
+                final var item = Item.all().get(scannerInput - 1);
                 useItemInterface(item, false);
                 inventoryInterface();
             } else if (scannerInput != 0) {
@@ -118,8 +111,9 @@ public final class InventoryCLI {
     private void displayInventoryOptions() {
         System.out.println("\n===========================\n");
         System.out.println("Here is your inventory. Select an item to use, or return to the main menu:");
-        for (int i = 0; i < itemsReference.size(); i++) {
-            var item = itemsReference.get(i);
+        final var items = Item.all();
+        for (var i = 0; i < items.size(); i++) {
+            final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d)%n", i + 1, item.getName(), inventory.getItemNumber(item));
         }
         System.out.println("\n0 - Return to Main Menu");
@@ -139,7 +133,7 @@ public final class InventoryCLI {
         System.out.printf("You have %d %s(s). Select a monster to use one on, or return to the inventory menu:%n"
             , inventory.getItemNumber(item), item.getName());
         for (int i = 0; i < party.size(); i++) {
-            var mon = party.get(i);
+            final var mon = party.get(i);
             System.out.printf("%d - %s (Level %d, %dHp/%dHp)\n", i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
         }
         System.out.println("\n0 - Return to Inventory menu");

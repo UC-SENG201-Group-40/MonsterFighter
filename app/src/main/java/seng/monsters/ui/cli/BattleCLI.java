@@ -2,8 +2,7 @@
 //  BattleCLI.java
 //  seng-monsters
 //
-//  Created by d-exclaimation on 7:14 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+//  Created by Vincent on 7:14 PM.
 //
 package seng.monsters.ui.cli;
 
@@ -26,11 +25,7 @@ public final class BattleCLI implements BattleManager.UI {
         battler = new BattleManager(this, lhs, rhs, Environment.FIELD);
     }
 
-    public void run() throws InterruptedException {
-        final var scanner = new Scanner(System.in);
-        System.out.print("Enter to start the game: ");
-        final var ignored = scanner.nextLine();
-
+    public void run() {
         System.out.println("===========================");
         System.out.println(partyFeed());
         System.out.println("===========================");

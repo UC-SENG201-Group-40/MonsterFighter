@@ -2,8 +2,8 @@
 //  BattleManager.java
 //  seng-monsters
 //
-//  Created by d-exclaimation on 8:35 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+//  Created by Vincent on 8:35 PM.
+
 //
 package seng.monsters.model;
 

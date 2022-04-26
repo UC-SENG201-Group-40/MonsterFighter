@@ -2,8 +2,8 @@
 //  Purchasable.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 3:19 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+//  Created by Vincent on 3:19 PM.
+
 //
 package seng.monsters.model;
 

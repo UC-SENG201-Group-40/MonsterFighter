@@ -2,8 +2,8 @@
 //  GameManager.java
 //  seng-practice
 //
-//  Created by d-exclaimation on 9:20 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+//  Created by Vincent on 9:20 PM.
+
 //
 package seng.monsters.model;
 

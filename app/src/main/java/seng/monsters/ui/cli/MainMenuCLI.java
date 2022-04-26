@@ -21,31 +21,24 @@ public class MainMenuCLI {
     // TODO: Implement primary functionality of Main Menu
 
 
-
-
-
-
-
-
     public static Monster monsterJoinsPartyInterface(Monster mon) {
-
         monsterJoinsPartyMessage(mon);
         monsterJoinsParty(mon);
         return mon;
     }
 
     public static Monster monsterJoinsParty(Monster mon) throws IllegalArgumentException {
-        Scanner input = new Scanner(System.in);
+        final var input = new Scanner(System.in);
         try {
-            String name = input.nextLine();
+            final var name = input.nextLine();
             if (((name.length() >= 3) && (name.length() <= 15) && (name.matches("[a-zA-Z]+")))) {
                 mon.setName(name);
+            } else if (!name.matches("")) {
+                throw new IllegalArgumentException();
             }
-            else if (!name.matches("")) { throw new IllegalArgumentException(); }
-        }
-        catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-            monsterJoinsParty(mon);
+            return monsterJoinsParty(mon);
         }
         return mon;
     }
