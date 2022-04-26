@@ -28,7 +28,6 @@ public class MainMenuCLI {
 
 
     public static Monster monsterJoinsPartyInterface(Monster mon) {
-
         monsterJoinsPartyMessage(mon);
         monsterJoinsParty(mon);
         return mon;

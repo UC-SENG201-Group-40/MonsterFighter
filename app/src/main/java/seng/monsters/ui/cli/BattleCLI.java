@@ -26,11 +26,7 @@ public final class BattleCLI implements BattleManager.UI {
         battler = new BattleManager(this, lhs, rhs, Environment.FIELD);
     }
 
-    public void run() throws InterruptedException {
-        final var scanner = new Scanner(System.in);
-        System.out.print("Enter to start the game: ");
-        final var ignored = scanner.nextLine();
-
+    public void run() {
         System.out.println("===========================");
         System.out.println(partyFeed());
         System.out.println("===========================");

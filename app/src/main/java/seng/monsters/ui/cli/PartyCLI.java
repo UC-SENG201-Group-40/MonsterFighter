@@ -15,7 +15,7 @@ public final class PartyCLI {
 
     public PartyCLI(GameManager gameManager) {
         this.gameManager = gameManager;
-        party = gameManager.getTrainer().getParty();
+        this.party = gameManager.getTrainer().getParty();
     }
 
     /**
@@ -30,10 +30,10 @@ public final class PartyCLI {
             try {
                 selectMonsterToMove(input.nextInt());
                 return;
-            }
-            catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 input.next();
-                System.out.println("Invalid input!"); }
+                System.out.println("Invalid input!");
+            }
         }
     }
 
@@ -46,10 +46,12 @@ public final class PartyCLI {
     public boolean moveMonsterInterface(Monster mon) {
         displayMoveMonsters(mon);
         while (true) {
-            try { return selectMonsterToSwap(mon, input.nextInt()); }
-            catch (InputMismatchException e) {
+            try {
+                return selectMonsterToSwap(mon, input.nextInt());
+            } catch (InputMismatchException e) {
                 input.next();
-                System.out.println("Invalid input!"); }
+                System.out.println("Invalid input!");
+            }
         }
     }
 
@@ -63,8 +65,8 @@ public final class PartyCLI {
     public void selectMonsterToMove(int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
-                var mon = party.get(scannerInput - 1);
-                boolean monsterMoved = moveMonsterInterface(mon);
+                final var mon = party.get(scannerInput - 1);
+                final var monsterMoved = moveMonsterInterface(mon);
                 partyStatsInterface(monsterMoved);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
@@ -88,11 +90,10 @@ public final class PartyCLI {
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
     public boolean selectMonsterToSwap(Monster mon, int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
-        boolean monsterMoved = false;
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
                 gameManager.switchMonsterOnParty(mon, scannerInput - 1);
-                monsterMoved = true;
+                return true;
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -103,7 +104,7 @@ public final class PartyCLI {
             System.out.println("No monster in that position!");
             selectMonsterToSwap(mon, input.nextInt());
         }
-        return monsterMoved;
+        return false;
     }
 
     /**
@@ -118,7 +119,7 @@ public final class PartyCLI {
         }
         System.out.println("Here is your party. Select a monster to move, or return to the main menu:");
         for (int i = 0; i < party.size(); i++) {
-            var mon = party.get(i);
+            final var mon = party.get(i);
             System.out.printf("\n%d - %s (Level %d, %dHp/%dHp)\n", i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
             System.out.printf("Monster Type: %s\n", mon.monsterType());
             System.out.printf("Sell Price: %d Gold\n", mon.sellPrice());
@@ -139,7 +140,7 @@ public final class PartyCLI {
         System.out.println("\n===========================\n");
         System.out.printf("Which monster would you like to swap %s with?\n", mon.getName());
         for (int i = 0; i < party.size(); i++) {
-            var swapMon = party.get(i);
+            final var swapMon = party.get(i);
             System.out.printf("%d - %s\n", i + 1, swapMon.getName());
         }
         System.out.println("\n0 - Cancel");
