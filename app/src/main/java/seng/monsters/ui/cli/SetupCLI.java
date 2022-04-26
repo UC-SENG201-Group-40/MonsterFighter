@@ -91,9 +91,8 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-            chooseName(input.nextLine());
+            return chooseName(input.nextLine());
         }
-        return "";
     }
 
     public int chooseMaxDays(int scannerInput) throws IllegalArgumentException {
@@ -106,9 +105,8 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input! (Must be a number between 5 and 15 inclusive)");
-            chooseMaxDays(input.nextInt());
+            return chooseMaxDays(input.nextInt());
         }
-        return 1;
     }
 
     public int selectDifficulty(int scannerInput) throws IllegalArgumentException {
@@ -121,9 +119,8 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            selectDifficulty(input.nextInt());
+            return selectDifficulty(input.nextInt());
         }
-        return 1;
     }
 
 
@@ -136,9 +133,8 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            selectStartingMonster(input.nextInt());
+            return selectStartingMonster(input.nextInt());
         }
-        return new Monster.Quacker(1);
     }
 
     public void welcomeMessage() {

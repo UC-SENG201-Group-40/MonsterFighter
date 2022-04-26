@@ -99,10 +99,10 @@ public final class PartyCLI {
             }
         } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
-            selectMonsterToSwap(mon, input.nextInt());
+            return selectMonsterToSwap(mon, input.nextInt());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
-            selectMonsterToSwap(mon, input.nextInt());
+            return selectMonsterToSwap(mon, input.nextInt());
         }
         return false;
     }
