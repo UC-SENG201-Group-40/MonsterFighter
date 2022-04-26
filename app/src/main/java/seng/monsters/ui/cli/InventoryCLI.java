@@ -35,7 +35,15 @@ public final class InventoryCLI {
      */
     public void inventoryInterface() throws IllegalArgumentException {
         displayInventoryOptions();
-        selectItem(input.nextInt());
+        while (true) {
+            try {
+                selectItem(input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -45,7 +53,15 @@ public final class InventoryCLI {
      */
     public void useItemInterface(Item item, boolean itemUsed) throws IllegalArgumentException {
         displayUseItemOptions(item, itemUsed);
-        useItemOnMonster(item, input.nextInt());
+        while (true) {
+            try {
+                useItemOnMonster(item, input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -63,7 +79,7 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException | InputMismatchException ignored) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
             selectItem(input.nextInt());
         }
@@ -84,13 +100,13 @@ public final class InventoryCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException | InputMismatchException ignored) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
             useItemOnMonster(item, input.nextInt());
-        } catch (Item.NoEffectException ignored) {
+        } catch (Item.NoEffectException e) {
             System.out.println("That item has no effect on this monster!");
             useItemOnMonster(item, input.nextInt());
-        } catch (Inventory.ItemNotExistException ignored) {
+        } catch (Inventory.ItemNotExistException e) {
             System.out.println("You don't have any of that item!");
             useItemOnMonster(item, input.nextInt());
         }

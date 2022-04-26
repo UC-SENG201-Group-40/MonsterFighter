@@ -26,7 +26,15 @@ public final class PartyCLI {
      */
     public void partyStatsInterface(boolean monsterMoved) throws IllegalArgumentException {
         displayPartyStats(monsterMoved);
-        selectMonsterToMove(input.nextInt());
+        while (true) {
+            try {
+                selectMonsterToMove(input.nextInt());
+                return;
+            }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -37,7 +45,12 @@ public final class PartyCLI {
      */
     public boolean moveMonsterInterface(Monster mon) {
         displayMoveMonsters(mon);
-        return selectMonsterToSwap(mon, input.nextInt());
+        while (true) {
+            try { return selectMonsterToSwap(mon, input.nextInt()); }
+            catch (InputMismatchException e) {
+                input.next();
+                System.out.println("Invalid input!"); }
+        }
     }
 
     /**
@@ -56,10 +69,10 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException | InputMismatchException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
             selectMonsterToMove(input.nextInt());
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
             selectMonsterToMove(input.nextInt());
         }
@@ -83,10 +96,10 @@ public final class PartyCLI {
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException | InputMismatchException ignored) {
+        } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
             selectMonsterToSwap(mon, input.nextInt());
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
             selectMonsterToSwap(mon, input.nextInt());
         }
