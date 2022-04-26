@@ -3,7 +3,7 @@
 //  seng-practice
 //
 //  Created by d-exclaimation on 5:11 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+
 //
 package seng.monsters.model;
 

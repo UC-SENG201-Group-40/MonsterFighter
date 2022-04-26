@@ -120,7 +120,7 @@ public final class PartyCLI {
         System.out.println("Here is your party. Select a monster to move, or return to the main menu:");
         for (int i = 0; i < party.size(); i++) {
             final var mon = party.get(i);
-            System.out.printf("\n%d - %s (Level %d, %dHp/%dHp)\n", i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
+            System.out.printf("\n%d - %s (Level %d, %d/%d HP)\n", i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
             System.out.printf("Monster Type: %s\n", mon.monsterType());
             System.out.printf("Sell Price: %d Gold\n", mon.sellPrice());
             System.out.printf("Attack Damage: %d\n", mon.scaledDamage());

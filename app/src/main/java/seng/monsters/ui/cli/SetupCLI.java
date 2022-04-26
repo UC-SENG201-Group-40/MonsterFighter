@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-//TODO: Needs more testing
+// TODO: Needs more testing
 
 public class SetupCLI {
 
@@ -162,7 +162,7 @@ public class SetupCLI {
         for (int i = 0; i < starterMonsters.size(); i++) {
             final var mon = starterMonsters.get(i);
             System.out.printf("\n%d - %s (Level %d)\n", i + 1, mon.getName(), mon.getLevel());
-            System.out.printf("Max Hp: %dHp\n", mon.maxHp());
+            System.out.printf("Max Hp: %d HP\n", mon.maxHp());
             System.out.printf("Overnight Heal Rate: %d\n", mon.healRate());
             System.out.printf("Attack Damage: %d\n", mon.scaledDamage());
             System.out.printf("Speed: %d\n", mon.speed());

@@ -3,7 +3,7 @@
 //  seng-monsters
 //
 //  Created by d-exclaimation on 8:35 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
+
 //
 package seng.monsters.model;
 

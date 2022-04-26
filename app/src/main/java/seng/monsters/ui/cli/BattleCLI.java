@@ -3,7 +3,6 @@
 //  seng-monsters
 //
 //  Created by d-exclaimation on 7:14 PM.
-//  Copyright © 2022 d-exclaimation. All rights reserved.
 //
 package seng.monsters.ui.cli;
 
