@@ -71,7 +71,7 @@ public final class Inventory {
      * @return An int representing the number of the item in the player's inventory
      */
     public int getItemNumber(Item item) {
-        return items.get(item);
+        return items.getOrDefault(item, 0);
     }
 
     /**
