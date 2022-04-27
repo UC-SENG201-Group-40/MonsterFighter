@@ -38,6 +38,17 @@ class InventoryCLITest extends CLITestBase {
         baseTeardown();
     }
 
+    /**
+     * InventoryCLI's `<code>inventoryInterface</code>:
+     * <ul>
+     * <li>Wait until given input</li>
+     * <li>Exit if given <code>0</code> as input</li>
+     * <li>Not use item that doesn't exist in the inventory</li>
+     * <li>Properly process all exception thrown by model classes</li>
+     * <li>Apply item from inventory to the selected monster, if given valid indices for item and monster</li>
+     * <li>Loop if given an invalid input, prompt user <code>Invalid input!</code>, and continue as normal</li>
+     * </ul>
+     */
     @Test
     void inventoryInterface() {
         // Immediately exit with 0
@@ -78,6 +89,17 @@ class InventoryCLITest extends CLITestBase {
         assertNotEquals(currHp3, labMonster.getCurrentHp());
     }
 
+    /**
+     * InventoryCLI's `<code>useItemInterface</code>:
+     * <ul>
+     * <li>Wait until given input</li>
+     * <li>Exit if given <code>0</code> as input</li>
+     * <li>Not use item that doesn't exist in the inventory</li>
+     * <li>Properly process all exception thrown by model classes</li>
+     * <li>Apply item from inventory to the selected monster, if given valid index for monster</li>
+     * <li>Loop if given an invalid input, prompt user <code>Invalid input!</code>, and continue as normal</li>
+     * </ul>
+     */
     @Test
     void useItemInterface() {
         // Immediately exit with 0
