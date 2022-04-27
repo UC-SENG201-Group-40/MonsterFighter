@@ -6,11 +6,10 @@ import seng.monsters.model.Monster;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainMenuCLI {
+public class MainMenuCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<String> menuOptions = List.of("Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
-    private final Scanner input = new Scanner(System.in);
 
     public MainMenuCLI(GameManager gameManager) {
         this.gameManager = gameManager;

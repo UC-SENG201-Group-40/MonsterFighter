@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * TODO: This is still a testing CLI, it works but need checks and testing to use it in the final application
  */
-public final class BattleCLI implements BattleManager.UI {
+public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     private final BattleManager battler;
     private final Set<String> loggedFeeds = new HashSet<>();
 

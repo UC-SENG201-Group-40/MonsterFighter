@@ -33,6 +33,16 @@ class PartyCLITest extends CLITestBase {
         baseTeardown();
     }
 
+    /**
+     * PartyCLi's <code>partyStatsInterface</code> should:
+     * <ul>
+     * <li>Perform nothing and exit if given <code>"0"</code> user input</li>
+     * <li>Swap monsters if given 2 valid indices user inputs</li>
+     * <li>Not swap monsters if given only 1 valid index user input</li>
+     * <li>Output <code>"Invalid input!</code> if given 1 invalid index</li>
+     * <li>Be able to loop back and perform proper even after given 1 invalid index</li>
+     * </ul>
+     */
     @Test
     void partyStatsInterface() {
         final var trainer = gameManager.getTrainer();
@@ -74,6 +84,15 @@ class PartyCLITest extends CLITestBase {
         assertEquals("2", trainer.getParty().get(1).getName());
     }
 
+    /**
+     * PartyCLi's <code>moveMonsterInterface</code> should:
+     * <ul>
+     * <li>Perform nothing and exit if given <code>"0"</code> user input</li>
+     * <li>Swap monsters if given an existing monster and a valid index user inputs</li>
+     * <li>Output <code>"Invalid input!</code> if given 1 invalid index or non-existing monster</li>
+     * <li>Be able to loop back and perform proper even after given 1 invalid index</li>
+     * </ul>
+     */
     @Test
     void moveMonsterInterface() {
         final var trainer = gameManager.getTrainer();
@@ -107,6 +126,16 @@ class PartyCLITest extends CLITestBase {
         assertEquals("2", trainer.getParty().get(1).getName());
     }
 
+    /**
+     * PartyCLi's <code>selectMonsterToMove</code> should:
+     * <ul>
+     * <li>Perform nothing and exit if given <code>"0"</code> user input</li>
+     * <li>Swap monsters if given 2 valid indices user inputs</li>
+     * <li>Not swap monsters if given only 1 valid index user input</li>
+     * <li>Output <code>"Invalid input!</code> if given 1 invalid index</li>
+     * <li>Be able to loop back and perform proper even after given 1 invalid index</li>
+     * </ul>
+     */
     @Test
     void selectMonsterToMove() {
         final var trainer = gameManager.getTrainer();
@@ -146,6 +175,15 @@ class PartyCLITest extends CLITestBase {
         assertEquals("2", trainer.getParty().get(1).getName());
     }
 
+    /**
+     * PartyCLi's <code>selectMonsterToSwap</code> should:
+     * <ul>
+     * <li>Perform nothing and exit if given <code>"0"</code> user input</li>
+     * <li>Swap monsters if given an existing monster and a valid index user inputs</li>
+     * <li>Output <code>"Invalid input!</code> if given 1 invalid index or non-existing monster</li>
+     * <li>Be able to loop back and perform proper even after given 1 invalid index</li>
+     * </ul>
+     */
     @Test
     void selectMonsterToSwap() {
         final var trainer = gameManager.getTrainer();
@@ -176,6 +214,12 @@ class PartyCLITest extends CLITestBase {
         assertEquals("2", trainer.getParty().get(1).getName());
     }
 
+    /**
+     * PartyCLi's <code>displayPartyStats</code> should:
+     * <ul>
+     * <li>Display all monsters in the player's party full statistics</li>
+     * </ul>
+     */
     @Test
     void displayPartyStats() {
         partyCLI.displayPartyStats(false);
@@ -201,6 +245,12 @@ class PartyCLITest extends CLITestBase {
         );
     }
 
+    /**
+     * PartyCLi's <code>displayPartyStats</code> should:
+     * <ul>
+     * <li>Display all monsters in the player's party, only their name</li>
+     * </ul>
+     */
     @Test
     void displayMoveMonsters() {
         partyCLI.displayMoveMonsters(new Monster.Tree("A", 1));
