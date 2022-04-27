@@ -4,6 +4,7 @@ import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class MainMenuCLI extends TestableCLI {
@@ -20,16 +21,14 @@ public class MainMenuCLI extends TestableCLI {
     // TODO: Implement primary functionality of Main Menu
 
 
-    public static Monster monsterJoinsPartyInterface(Monster mon) {
+    public static Monster monsterJoinsPartyInterface(Scanner input, Monster mon) {
         monsterJoinsPartyMessage(mon);
-        monsterJoinsParty(mon);
-        return mon;
+        return monsterJoinsParty(input, mon);
     }
 
-    public static Monster monsterJoinsParty(Monster mon) throws IllegalArgumentException {
-        final var input = new Scanner(System.in);
+    public static Monster monsterJoinsParty(Scanner input, Monster mon) throws IllegalArgumentException {
         try {
-            final var name = input.nextLine();
+            final var name = input.next();
             if (((name.length() >= 3) && (name.length() <= 15) && (name.matches("[a-zA-Z]+")))) {
                 mon.setName(name);
             } else if (!name.matches("")) {
@@ -37,7 +36,7 @@ public class MainMenuCLI extends TestableCLI {
             }
         } catch (IllegalArgumentException ignored) {
             System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-            return monsterJoinsParty(mon);
+            return monsterJoinsParty(input, mon);
         }
         return mon;
     }

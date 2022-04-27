@@ -35,7 +35,7 @@ public class SetupCLI extends TestableCLI {
         welcomeMessage();
         while (true) {
             try {
-                return chooseName(input().nextLine());
+                return chooseName(input().next());
             } catch (InputMismatchException e) {
                 input().next();
                 System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
@@ -90,7 +90,7 @@ public class SetupCLI extends TestableCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-            return chooseName(input().nextLine());
+            return chooseName(input().next());
         }
     }
 
@@ -126,7 +126,7 @@ public class SetupCLI extends TestableCLI {
     public Monster selectStartingMonster(int scannerInput) {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
-                return MainMenuCLI.monsterJoinsPartyInterface(starterMonsters.get(scannerInput - 1));
+                return MainMenuCLI.monsterJoinsPartyInterface(input(), starterMonsters.get(scannerInput - 1));
             } else {
                 throw new IllegalArgumentException();
             }
