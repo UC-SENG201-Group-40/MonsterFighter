@@ -5,15 +5,13 @@ import seng.monsters.model.Monster;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
-public final class PartyCLI {
+public final class PartyCLI extends TestableCLI {
     private final GameManager gameManager;
     private final List<Monster> party;
 
-    private final Scanner input = new Scanner(System.in);
-
     public PartyCLI(GameManager gameManager) {
+        super();
         this.gameManager = gameManager;
         this.party = gameManager.getTrainer().getParty();
     }
@@ -28,10 +26,10 @@ public final class PartyCLI {
         displayPartyStats(monsterMoved);
         while (true) {
             try {
-                selectMonsterToMove(input.nextInt());
+                selectMonsterToMove(input().nextInt());
                 return;
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid input!");
             }
         }
@@ -47,9 +45,9 @@ public final class PartyCLI {
         displayMoveMonsters(mon);
         while (true) {
             try {
-                return selectMonsterToSwap(mon, input.nextInt());
+                return selectMonsterToSwap(mon, input().nextInt());
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid input!");
             }
         }
@@ -73,10 +71,10 @@ public final class PartyCLI {
             }
         } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
-            selectMonsterToMove(input.nextInt());
+            selectMonsterToMove(input().nextInt());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
-            selectMonsterToMove(input.nextInt());
+            selectMonsterToMove(input().nextInt());
         }
     }
 
@@ -99,10 +97,10 @@ public final class PartyCLI {
             }
         } catch (IllegalArgumentException | InputMismatchException e) {
             System.out.println("Invalid input!");
-            return selectMonsterToSwap(mon, input.nextInt());
+            return selectMonsterToSwap(mon, input().nextInt());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("No monster in that position!");
-            return selectMonsterToSwap(mon, input.nextInt());
+            return selectMonsterToSwap(mon, input().nextInt());
         }
         return false;
     }

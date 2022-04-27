@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 // TODO: Needs more testing
 
-public class SetupCLI {
+public class SetupCLI extends TestableCLI {
 
     private final List<Monster> starterMonsters = List.of(
         new Monster.Quacker(1),
@@ -18,7 +18,6 @@ public class SetupCLI {
         new Monster.Tree(1)
     );
     private final List<String> difficulties = List.of("Normal", "Hard", "Utterly Impossible");
-    private final Scanner input = new Scanner(System.in);
 
 
     public void setup() {
@@ -36,9 +35,9 @@ public class SetupCLI {
         welcomeMessage();
         while (true) {
             try {
-                return chooseName(input.nextLine());
+                return chooseName(input().next());
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
             }
         }
@@ -48,9 +47,9 @@ public class SetupCLI {
         dayNumberMessage();
         while (true) {
             try {
-                return chooseMaxDays(input.nextInt());
+                return chooseMaxDays(input().nextInt());
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid input! (Must be a number between 5 and 15 inclusive)");
             }
         }
@@ -60,9 +59,9 @@ public class SetupCLI {
         displayDifficulties();
         while (true) {
             try {
-                return selectDifficulty(input.nextInt());
+                return selectDifficulty(input().nextInt());
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid input!");
             }
         }
@@ -72,9 +71,9 @@ public class SetupCLI {
         displayStartingMonsters();
         while (true) {
             try {
-                return selectStartingMonster(input.nextInt());
+                return selectStartingMonster(input().nextInt());
             } catch (InputMismatchException e) {
-                input.next();
+                input().next();
                 System.out.println("Invalid input!");
             }
         }
@@ -91,7 +90,7 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-            return chooseName(input.nextLine());
+            return chooseName(input().next());
         }
     }
 
@@ -105,7 +104,7 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input! (Must be a number between 5 and 15 inclusive)");
-            return chooseMaxDays(input.nextInt());
+            return chooseMaxDays(input().nextInt());
         }
     }
 
@@ -119,7 +118,7 @@ public class SetupCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            return selectDifficulty(input.nextInt());
+            return selectDifficulty(input().nextInt());
         }
     }
 
@@ -127,13 +126,13 @@ public class SetupCLI {
     public Monster selectStartingMonster(int scannerInput) {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
-                return MainMenuCLI.monsterJoinsPartyInterface(starterMonsters.get(scannerInput - 1));
+                return MainMenuCLI.monsterJoinsPartyInterface(input(), starterMonsters.get(scannerInput - 1));
             } else {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            return selectStartingMonster(input.nextInt());
+            return selectStartingMonster(input().nextInt());
         }
     }
 
