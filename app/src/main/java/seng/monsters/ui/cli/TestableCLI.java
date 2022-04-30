@@ -37,7 +37,7 @@ public abstract class TestableCLI {
 
     private static Scanner customInputScanner() {
         final var inputScanner = new Scanner(System.in);
-        inputScanner.useDelimiter("\\n");
+        inputScanner.useDelimiter("\\n|\\r\\n|\\r");
         return inputScanner;
     }
 }
