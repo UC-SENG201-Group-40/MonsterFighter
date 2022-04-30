@@ -4,29 +4,12 @@
 package seng.monsters;
 
 
-import seng.monsters.model.GameManager;
-import seng.monsters.ui.cli.InventoryCLI;
-import seng.monsters.ui.cli.PartyCLI;
-import seng.monsters.ui.cli.SetupCLI;
-
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        final var setup = new SetupCLI();
 
-        final var name = setup.chooseNameInterface();
-        final var maxDays = setup.chooseMaxDaysInterface();
-        final var difficulty = setup.selectDifficultyInterface();
-        final var gameManager = new GameManager(100, 4, maxDays, difficulty, name);
-        final var mon = setup.selectStartingMonsterInterface();
-
-        gameManager.getTrainer().add(mon);
-
-        InventoryCLI.make(gameManager);
-
-        PartyCLI.make(gameManager);
     }
 }
