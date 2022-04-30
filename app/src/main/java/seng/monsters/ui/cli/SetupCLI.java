@@ -3,10 +3,8 @@ package seng.monsters.ui.cli;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 // TODO: Needs more testing
 

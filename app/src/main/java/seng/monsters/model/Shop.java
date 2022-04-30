@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * A shop where you can buy or sell purchasable
  */
-final class Shop {
+public final class Shop {
     /**
      * Signals that the desired purchasable is not available in the Shop at this current state
      */

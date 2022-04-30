@@ -7,7 +7,6 @@ import seng.monsters.model.Monster;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public final class InventoryCLI extends TestableCLI {
     private final GameManager gameManager;
