@@ -2,124 +2,57 @@ package seng.monsters.ui.cli;
 
 import seng.monsters.model.*;
 
-import java.util.InputMismatchException;
-import java.util.List;
-
-public class MonsterShopCLI extends TestableCLI {
-
-    private final GameManager gameManager;
-    private final Shop shop;
-    private final List<Monster> party;
+public class MonsterShopCLI extends ShopCLI {
 
     public MonsterShopCLI(GameManager gameManager) {
-        this.gameManager = gameManager;
-        shop = gameManager.getShop();
-        party = gameManager.getTrainer().getParty();
+        super(gameManager);
     }
 
-    private void shopTypeInterface() {
-        displayShopTypes();
-        selectShopType(input().nextInt());
-    }
-
-    private void buyMonsterInterface() {
-        while (true) {
-            try {
-                displayMonsterBuy();
-                buyMonster(input().nextInt());
-                return;
-            } catch (InputMismatchException e) {
-                input().next();
-                System.out.println("Invalid input!");
-            }
-        }
-    }
-
-    private void sellMonsterInterface(Monster mon, boolean wasMonSold) {
-        if (!party.isEmpty()) {
-            while (true) {
-                try {
-                    displayMonstersSell(mon, wasMonSold);
-                    sellMonster(input().nextInt());
-                    return;
-                } catch (InputMismatchException e) {
-                    input().next();
-                    System.out.println("Invalid input!");
-                }
-            }
-        } else {
-            System.out.println("You have no monsters to sell!");
-        }
-    }
-
-    private void selectShopType(int scannerInput) throws IllegalArgumentException {
+    public void buyPurchasable(int scannerInput) throws IllegalArgumentException, Trainer.PartyFullException{
         try {
-            switch (scannerInput) {
-                case 1:
-                    buyMonsterInterface();
-                    displayShopTypes();
-                case 2:
-                    sellMonsterInterface(null, false);
-                    displayShopTypes();
-                case 0:
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid input!");
-            selectShopType(input().nextInt());
-        }
-    }
-
-    private void buyMonster(int scannerInput) throws IllegalArgumentException{
-        try {
-            if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size())) {
+            if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size()+1)) {
                 final var mon = shop.getMonsterStock().get(scannerInput - 1);
+                if (party.size() == 4) {
+                    throw new Trainer.PartyFullException("Cannot add more than 4 monster");
+                }
                 gameManager.buy(mon);
                 MainMenuCLI.monsterJoinsPartyInterface(input(), mon);
-                buyMonsterInterface();
+                buyPurchasableInterface(mon, true);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            buyMonster(input().nextInt());
+            buyPurchasable(input().nextInt());
         } catch (Shop.InsufficientFundsException e) {
             System.out.println("You're too poor! Come back when you're a little, mmmm... RICHER!");
-            buyMonster(input().nextInt());
+            buyPurchasable(input().nextInt());
+        } catch (Trainer.PartyFullException e) {
+            System.out.println("Your party is full!");
+            buyPurchasable(input().nextInt());
         }
     }
 
-    private void sellMonster(int scannerInput) throws IllegalArgumentException {
+    public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
-            if ((scannerInput > 0) && (scannerInput < party.size())) {
+            if ((scannerInput > 0) && (scannerInput < party.size()+1)) {
                 final var mon = party.get(scannerInput - 1);
                 gameManager.sell(mon);
-                sellMonsterInterface(mon, true);
+                sellPurchasableInterface(mon, true);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            sellMonster(input().nextInt());
-        } catch (Inventory.ItemNotExistException e) {
-            System.out.println("You don't have any of that item!");
-            sellMonster(input().nextInt());
+            sellPurchasable(input().nextInt());
         }
     }
 
-    private void displayShopTypes() {
+    public void displayBuyPurchasableOptions(Purchasable boughtMon, boolean wasMonsterBought) {
         System.out.println("\n===========================\n");
-        System.out.printf("Gold: %d\n", gameManager.getGold());
-        System.out.println("Would you like to buy or sell monsters?");
-        System.out.println("1 - Buy Monsters");
-        System.out.println("2 - Sell Monsters");
-        System.out.println("\n0 - Return to Shop Menu");
-    }
-
-    private void displayMonsterBuy() {
-        System.out.println("\n===========================\n");
+        if (wasMonsterBought) {
+            System.out.printf("%s bought!\n", boughtMon.getName());
+        }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a monster to buy:");
         final var shopMonsters = shop.getMonsterStock();
@@ -136,10 +69,10 @@ public class MonsterShopCLI extends TestableCLI {
         System.out.println("\n0 - Cancel");
     }
 
-    private void displayMonstersSell(Monster soldMonster, boolean wasMonSold) {
+    public void displaySellPurchasableOptions(Purchasable soldMonster, boolean wasMonSold) {
         System.out.println("\n===========================\n");
         if (wasMonSold) {
-            System.out.printf("%n%s bought!", soldMonster.getName());
+            System.out.printf("%s sold!\n", soldMonster.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a monster to sell:");
@@ -152,13 +85,6 @@ public class MonsterShopCLI extends TestableCLI {
 
     public static void make(GameManager gameManager) {
         MonsterShopCLI monsterShopCLI = new MonsterShopCLI(gameManager);
-        monsterShopCLI.shopTypeInterface();
+        monsterShopCLI.shopTypeInterface("monsters");
     }
 }
-
-
-
-
-
-
-

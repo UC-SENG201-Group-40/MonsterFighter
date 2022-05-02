@@ -91,6 +91,9 @@ class ShopTest {
                 public int sellPrice() {
                     return 0;
                 }
+
+                @Override
+                public String getName() { return "purchasable";}
             })
         );
     }

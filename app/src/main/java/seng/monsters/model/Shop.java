@@ -106,7 +106,8 @@ public final class Shop {
      */
     public Map<Item, Integer> randomItemStock() {
         final var rng = new Random();
-        final List<Item> allItems = List.of(new Item.Potion(), new Item.Revive(), new Item.RareCandy());
+        final List<Item> allItems = List.of(
+                new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {

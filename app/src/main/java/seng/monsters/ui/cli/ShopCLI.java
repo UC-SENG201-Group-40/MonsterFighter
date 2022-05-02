@@ -1,30 +1,81 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.GameManager;
+import seng.monsters.model.*;
 
-//TODO: Still buggy, needs refactoring and testing
+import java.util.InputMismatchException;
+import java.util.List;
 
+public abstract class ShopCLI extends TestableCLI {
 
-public class ShopCLI extends TestableCLI {
-    private final GameManager gameManager;
+    public final GameManager gameManager;
+    public final Shop shop;
+    public final List<Monster> party;
 
     public ShopCLI(GameManager gameManager) {
         this.gameManager = gameManager;
+        shop = gameManager.getShop();
+        party = gameManager.getTrainer().getParty();
     }
 
-    private void selectShopInterface() {
-        displayShopChoices();
-        selectShop(input().nextInt());
+    public void shopTypeInterface(String shopType) {
+        displayShopTypes(shopType);
+        while (true) {
+            try {
+                selectShopType(input().nextInt(), shopType);
+                return;
+            } catch (InputMismatchException e) {
+                input().next();
+                System.out.println("Invalid input!");
+            }
+        }
     }
 
-    private void selectShop(int scannerInput) throws IllegalArgumentException {
+    public void buyPurchasableInterface(Purchasable purchasable, boolean wasPurchasableBought) {
+        displayBuyPurchasableOptions(purchasable, wasPurchasableBought);
+        while (true) {
+            try {
+                buyPurchasable(input().nextInt());
+                return;
+            } catch (InputMismatchException e) {
+                input().next();
+                System.out.println("Invalid input!");
+            }
+        }
+    }
+
+    public void sellPurchasableInterface(Purchasable purchasable, boolean wasPurchasableSold) {
+        displaySellPurchasableOptions(purchasable, wasPurchasableSold);
+        while (true) {
+            try {
+                sellPurchasable(input().nextInt());
+                return;
+            } catch (InputMismatchException e) {
+                input().next();
+                System.out.println("Invalid input!");
+            }
+        }
+    }
+
+    public void selectShopType(int scannerInput, String shopType) throws IllegalArgumentException {
         try {
             switch (scannerInput) {
                 case 1:
-                    ItemShopCLI.make(gameManager);
+                    buyPurchasableInterface(null, false);
+                    displayShopTypes(shopType);
+                    selectShopType(input().nextInt(), shopType);
                     break;
                 case 2:
-                    MonsterShopCLI.make(gameManager);
+                    if (shopType.equals("items")) {
+                        sellPurchasableInterface(null, false);
+                    } else {
+                        if (!party.isEmpty()) {
+                            sellPurchasableInterface(null, false);
+                        } else {
+                            System.out.println("You have no monsters to sell!");
+                        }
+                    }
+                    displayShopTypes(shopType);
+                    selectShopType(input().nextInt(), shopType);
                     break;
                 case 0:
                     break;
@@ -33,45 +84,24 @@ public class ShopCLI extends TestableCLI {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid input!");
-            selectShop(input().nextInt());
+            selectShopType(input().nextInt(), shopType);
         }
     }
 
-    private void displayShopChoices() {
+    public void displayShopTypes(String shopType) {
         System.out.println("\n===========================\n");
         System.out.printf("Gold: %d\n", gameManager.getGold());
-        System.out.println("Select a shop to enter:");
-        System.out.println("1 - Item Shop");
-        System.out.println("2 - Monster Shop");
-        System.out.println("\n0 - Return to Main Menu");
+        System.out.printf("Would you like to buy or sell %s?%n", shopType);
+        System.out.printf("1 - Buy %s%n", shopType);
+        System.out.printf("2 - Sell %s%n", shopType);
+        System.out.println("\n0 - Return to shop menu");
     }
 
-    public static void make(GameManager gameManager) {
-        ShopCLI shopCLI = new ShopCLI(gameManager);
-        shopCLI.selectShopInterface();
-    }
+    public abstract void buyPurchasable(int scannerInput);
+
+    public abstract void sellPurchasable(int scannerInput);
+
+    public abstract void displayBuyPurchasableOptions(Purchasable boughtItem, boolean wasPurchasableBought);
+
+    public abstract void displaySellPurchasableOptions(Purchasable purchasable, boolean wasItemSold);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
