@@ -6,8 +6,6 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
-// TODO: Needs more testing
-
 public class SetupCLI extends TestableCLI {
 
     private final List<Monster> starterMonsters = List.of(
@@ -106,7 +104,8 @@ public class SetupCLI extends TestableCLI {
      */
     public String chooseName(String scannerInput) throws IllegalArgumentException {
         try {
-            if ((scannerInput.length() >= 3) && (scannerInput.length() <= 15) && (scannerInput.matches("[a-zA-Z]+"))) {
+            if ((scannerInput.length() >= 3) && (scannerInput.length() <= 15)
+                    && (scannerInput.matches("[a-zA-Z]+"))) {
                 System.out.printf("\nName \"%s\" chosen.", scannerInput);
                 return scannerInput;
             } else {
@@ -120,8 +119,8 @@ public class SetupCLI extends TestableCLI {
 
     /**
      * Takes the player's input as the number of maximum days to play.
-     * @param scannerInput The player's input as an integer.
-     * @return The maximum number of days to play as an integer.
+     * @param scannerInput The player's input as an int.
+     * @return The maximum number of days to play as an int.
      * @throws IllegalArgumentException if an invalid input is passed.
      */
     public int chooseMaxDays(int scannerInput) throws IllegalArgumentException {
@@ -140,7 +139,7 @@ public class SetupCLI extends TestableCLI {
 
     /**
      * Takes the player's input and chooses the difficulty accordingly.
-     * @param scannerInput The player's input as an integer.
+     * @param scannerInput The player's input as an int.
      * @return The difficulty as an integer multiplier.
      * @throws IllegalArgumentException if an invalid input is passed.
      */

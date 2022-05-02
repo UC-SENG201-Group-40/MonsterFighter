@@ -8,6 +8,10 @@ public class MonsterShopCLI extends ShopCLI {
         super(gameManager);
     }
 
+    /**
+     * Takes player input and attempts to buy the selected monster.
+     * @param scannerInput The player's input as an int.
+     */
     public void buyPurchasable(int scannerInput) throws IllegalArgumentException, Trainer.PartyFullException{
         try {
             if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size()+1)) {
@@ -33,6 +37,10 @@ public class MonsterShopCLI extends ShopCLI {
         }
     }
 
+    /**
+     * Takes player input and attempts to sell the selected monster.
+     * @param scannerInput The player's input as an int.
+     */
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < party.size()+1)) {
@@ -48,6 +56,11 @@ public class MonsterShopCLI extends ShopCLI {
         }
     }
 
+    /**
+     * Prints the monster options to buy.
+     * @param boughtMon The last monster bought, null otherwise.
+     * @param wasMonsterBought a boolean flagging if a monster had been bought previously.
+     */
     public void displayBuyPurchasableOptions(Purchasable boughtMon, boolean wasMonsterBought) {
         System.out.println("\n===========================\n");
         if (wasMonsterBought) {
@@ -69,10 +82,15 @@ public class MonsterShopCLI extends ShopCLI {
         System.out.println("\n0 - Cancel");
     }
 
-    public void displaySellPurchasableOptions(Purchasable soldMonster, boolean wasMonSold) {
+    /**
+     * Prints the monster options to sell.
+     * @param soldMon The last monster sold, null otherwise.
+     * @param wasMonSold a boolean flagging if a monster had been sold previously.
+     */
+    public void displaySellPurchasableOptions(Purchasable soldMon, boolean wasMonSold) {
         System.out.println("\n===========================\n");
         if (wasMonSold) {
-            System.out.printf("%s sold!\n", soldMonster.getName());
+            System.out.printf("%s sold!\n", soldMon.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a monster to sell:");

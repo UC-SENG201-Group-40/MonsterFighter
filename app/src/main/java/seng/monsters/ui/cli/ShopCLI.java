@@ -17,8 +17,13 @@ public abstract class ShopCLI extends TestableCLI {
         party = gameManager.getTrainer().getParty();
     }
 
+    /**
+     * Prints buy and sell shop options to output and selects one based on player input.
+     * Type of purchasables depends on shop type.
+     * @param shopType The string "items" or "monsters" depending on the type of shop.
+     */
     public void shopTypeInterface(String shopType) {
-        displayShopTypes(shopType);
+        displayShopOptions(shopType);
         while (true) {
             try {
                 selectShopType(input().nextInt(), shopType);
@@ -30,6 +35,11 @@ public abstract class ShopCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Prints the purchasable options to buy and attempts to buy purchasables based on player input.
+     * @param purchasable The last purchasable bought, null otherwise.
+     * @param wasPurchasableBought a boolean flagging if a purchasable had been bought previously.
+     */
     public void buyPurchasableInterface(Purchasable purchasable, boolean wasPurchasableBought) {
         displayBuyPurchasableOptions(purchasable, wasPurchasableBought);
         while (true) {
@@ -43,6 +53,11 @@ public abstract class ShopCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Prints the purchasable options to sell and attempts to sell purchasables based on player input.
+     * @param purchasable The last purchasable sold, null otherwise.
+     * @param wasPurchasableSold a boolean flagging if a purchasable had been sold previously.
+     */
     public void sellPurchasableInterface(Purchasable purchasable, boolean wasPurchasableSold) {
         displaySellPurchasableOptions(purchasable, wasPurchasableSold);
         while (true) {
@@ -56,12 +71,19 @@ public abstract class ShopCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Takes player input and selects to either buy or sell purchasables.
+     * Type of purchasables depends on the shop type.
+     * @param scannerInput The player's input as an int.
+     * @param shopType The string "items" or "monsters" depending on the type of shop.
+     * @throws IllegalArgumentException if an invalid input is passed.
+     */
     public void selectShopType(int scannerInput, String shopType) throws IllegalArgumentException {
         try {
             switch (scannerInput) {
                 case 1:
                     buyPurchasableInterface(null, false);
-                    displayShopTypes(shopType);
+                    displayShopOptions(shopType);
                     selectShopType(input().nextInt(), shopType);
                     break;
                 case 2:
@@ -74,7 +96,7 @@ public abstract class ShopCLI extends TestableCLI {
                             System.out.println("You have no monsters to sell!");
                         }
                     }
-                    displayShopTypes(shopType);
+                    displayShopOptions(shopType);
                     selectShopType(input().nextInt(), shopType);
                     break;
                 case 0:
@@ -88,7 +110,11 @@ public abstract class ShopCLI extends TestableCLI {
         }
     }
 
-    public void displayShopTypes(String shopType) {
+    /**
+     * Prints buy and sell shop options to output.
+     * @param shopType The string "items" or "monsters" depending on the type of shop.
+     */
+    public void displayShopOptions(String shopType) {
         System.out.println("\n===========================\n");
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.printf("Would you like to buy or sell %s?%n", shopType);
@@ -97,11 +123,29 @@ public abstract class ShopCLI extends TestableCLI {
         System.out.println("\n0 - Return to shop menu");
     }
 
+    /**
+     * Takes player input and attempts to buy the selected purchasable.
+     * @param scannerInput The player's input as an int.
+     */
     public abstract void buyPurchasable(int scannerInput);
 
+    /**
+     * Takes player input and attempts to sell the selected purchasable.
+     * @param scannerInput The player's input as an int.
+     */
     public abstract void sellPurchasable(int scannerInput);
 
-    public abstract void displayBuyPurchasableOptions(Purchasable boughtItem, boolean wasPurchasableBought);
+    /**
+     * Prints the purchasable options to buy.
+     * @param boughtPurchasable The last purchasable bought, null otherwise.
+     * @param wasPurchasableBought a boolean flagging if a purchasable had been bought previously.
+     */
+    public abstract void displayBuyPurchasableOptions(Purchasable boughtPurchasable, boolean wasPurchasableBought);
 
-    public abstract void displaySellPurchasableOptions(Purchasable purchasable, boolean wasItemSold);
+    /**
+     * Prints the purchasable options to sell.
+     * @param soldPurchasable The last purchasable sold, null otherwise.
+     * @param wasPurchasableSold a boolean flagging if a purchasable had been sold previously.
+     */
+    public abstract void displaySellPurchasableOptions(Purchasable soldPurchasable, boolean wasPurchasableSold);
 }

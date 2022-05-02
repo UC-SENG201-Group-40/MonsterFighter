@@ -11,6 +11,10 @@ public class ItemShopCLI extends ShopCLI{
         inventory = gameManager.getInventory();
     }
 
+    /**
+     * Takes player input and attempts to buy the selected item.
+     * @param scannerInput The player's input as an int.
+     */
     public void buyPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
             final var items = shop.getItemStock();
@@ -33,6 +37,10 @@ public class ItemShopCLI extends ShopCLI{
         }
     }
 
+    /**
+     * Takes player input and attempts to sell the selected item.
+     * @param scannerInput The player's input as an int.
+     */
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
@@ -51,6 +59,11 @@ public class ItemShopCLI extends ShopCLI{
         }
     }
 
+    /**
+     * Prints the item options to buy.
+     * @param boughtItem The last item bought, null otherwise.
+     * @param wasItemBought a boolean flagging if an item had been bought previously.
+     */
     public void displayBuyPurchasableOptions(Purchasable boughtItem, boolean wasItemBought) {
         System.out.println("\n===========================\n");
         if (wasItemBought) {
@@ -61,11 +74,17 @@ public class ItemShopCLI extends ShopCLI{
         final var items = shop.getItemStock();
         for (var i = 0; i < items.size(); i++) {
             final var item = items.get(i);
-            System.out.printf("%d - %s (Stock: %d, Price: %d)%n", i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
+            System.out.printf("%d - %s (Stock: %d, Price: %d)%n",
+                    i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
         }
         System.out.println("\n0 - Cancel");
     }
 
+    /**
+     * Prints the item options to sell.
+     * @param soldItem The last item sold, null otherwise.
+     * @param wasItemSold a boolean flagging if an item had been sold previously.
+     */
     public void displaySellPurchasableOptions(Purchasable soldItem, boolean wasItemSold) {
         System.out.println("\n===========================\n");
         if (wasItemSold) {
@@ -76,7 +95,8 @@ public class ItemShopCLI extends ShopCLI{
         final var items = Item.all();
         for (var i = 0; i < items.size(); i++) {
             final var item = items.get(i);
-            System.out.printf("%d - %s (Stock: %d, Sell Price: %d)%n", i + 1, item.getName(), inventory.getItemNumber(item), item.sellPrice());
+            System.out.printf("%d - %s (Stock: %d, Sell Price: %d)%n",
+                    i + 1, item.getName(), inventory.getItemNumber(item), item.sellPrice());
         }
         System.out.println("\n0 - Cancel");
     }

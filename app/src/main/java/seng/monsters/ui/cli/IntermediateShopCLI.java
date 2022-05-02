@@ -9,11 +9,19 @@ public class IntermediateShopCLI extends TestableCLI {
         this.gameManager = gameManager;
     }
 
+    /**
+     * Prints shop options to output and takes the player's input to select the shop.
+     */
     private void selectShopInterface() {
-        displayIntermediateShopChoices();
+        displayIntermediateShopTypes();
         selectShop(input().nextInt());
     }
 
+    /**
+     * Takes the player's input to select which shop to enter.
+     * @param scannerInput The player's input as an int.
+     * @throws IllegalArgumentException If an invalid input is entered.
+     */
     private void selectShop(int scannerInput) throws IllegalArgumentException {
         try {
             switch (scannerInput) {
@@ -36,7 +44,10 @@ public class IntermediateShopCLI extends TestableCLI {
         }
     }
 
-    private void displayIntermediateShopChoices() {
+    /**
+     * Prints the shop options to output.
+     */
+    private void displayIntermediateShopTypes() {
         System.out.println("\n===========================\n");
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a shop to enter:");
@@ -50,27 +61,3 @@ public class IntermediateShopCLI extends TestableCLI {
         shopCLI.selectShopInterface();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

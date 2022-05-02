@@ -10,7 +10,8 @@ import java.util.Scanner;
 public class MainMenuCLI extends TestableCLI {
 
     private final GameManager gameManager;
-    private final List<String> menuOptions = List.of("Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
+    private final List<String> menuOptions = List.of(
+            "Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
 
     public MainMenuCLI(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -43,7 +44,10 @@ public class MainMenuCLI extends TestableCLI {
 
     public static void monsterJoinsPartyMessage(Monster mon) {
         System.out.printf("Congratulations! %s has joined your party!", mon.getName());
-        System.out.println("\nWould you like to give it a name? \n(Must be between 3 and 15 letters inclusive, no symbols or numbers. Leave blank for default name):");
+        System.out.println("""
+
+                Would you like to give it a name?\s
+                (Must be between 3 and 15 letters inclusive, no symbols or numbers. Leave blank for default name):""");
     }
 
     public static void make(GameManager gameManager) {
