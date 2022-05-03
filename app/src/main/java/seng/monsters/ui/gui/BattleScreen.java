@@ -44,9 +44,9 @@ public final class BattleScreen implements BattleManager.UI {
     /**
      * Create the application.
      */
-    public BattleScreen(Trainer lhs, Trainer rhs) {
+    public BattleScreen(BattleManager manager) {
         frmBattle = new JFrame();
-        battleManager = new BattleManager(this, lhs, rhs, Environment.FIELD);
+        battleManager = manager;
         initialize();
     }
 
@@ -320,9 +320,9 @@ public final class BattleScreen implements BattleManager.UI {
         timer.stop();
     }
 
-    public static void make(Trainer trainer1, Trainer trainer2) {
+    public static void make(BattleManager battleManager) {
         EventQueue.invokeLater(() -> {
-            final var screen = new BattleScreen(trainer1, trainer2);
+            final var screen = new BattleScreen(battleManager);
         });
     }
 }

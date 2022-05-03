@@ -3,6 +3,9 @@
  */
 package seng.monsters;
 
+import java.awt.EventQueue;
+
+import seng.monsters.ui.gui.GUI;
 
 public class App {
     public String getGreeting() {
@@ -10,6 +13,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-
+        EventQueue.invokeLater(() -> {
+        		final var gui = new GUI();
+        	});
     }
 }
