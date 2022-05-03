@@ -1,6 +1,11 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.*;
+import seng.monsters.model.GameManager;
+import seng.monsters.model.Inventory;
+import seng.monsters.model.Shop;
+import seng.monsters.model.Purchasable;
+import seng.monsters.model.Item;
+
 
 public class ItemShopCLI extends ShopCLI{
 
@@ -21,7 +26,7 @@ public class ItemShopCLI extends ShopCLI{
             if ((scannerInput > 0) && (scannerInput < items.size()+1)) {
                 final var item = items.get(scannerInput - 1).getKey();
                 gameManager.buy(item);
-                buyPurchasableInterface(item, true);
+                buyPurchasableInterface(item);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -46,7 +51,7 @@ public class ItemShopCLI extends ShopCLI{
             if ((scannerInput > 0) && (scannerInput < 5)) {
                 final var item = Item.all().get(scannerInput - 1);
                 gameManager.sell(item);
-                sellPurchasableInterface(item, true);
+                sellPurchasableInterface(item);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -62,11 +67,10 @@ public class ItemShopCLI extends ShopCLI{
     /**
      * Prints the item options to buy.
      * @param boughtItem The last item bought, null otherwise.
-     * @param wasItemBought a boolean flagging if an item had been bought previously.
      */
-    public void displayBuyPurchasableOptions(Purchasable boughtItem, boolean wasItemBought) {
+    public void displayBuyPurchasableOptions(Purchasable boughtItem) {
         System.out.println("\n===========================\n");
-        if (wasItemBought) {
+        if (boughtItem != null) {
             System.out.printf("%s bought!\n", boughtItem.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
@@ -83,11 +87,10 @@ public class ItemShopCLI extends ShopCLI{
     /**
      * Prints the item options to sell.
      * @param soldItem The last item sold, null otherwise.
-     * @param wasItemSold a boolean flagging if an item had been sold previously.
      */
-    public void displaySellPurchasableOptions(Purchasable soldItem, boolean wasItemSold) {
+    public void displaySellPurchasableOptions(Purchasable soldItem) {
         System.out.println("\n===========================\n");
-        if (wasItemSold) {
+        if (soldItem != null) {
             System.out.printf("%s sold!\n", soldItem.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());

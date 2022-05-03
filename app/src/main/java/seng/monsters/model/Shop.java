@@ -149,4 +149,21 @@ public final class Shop {
     public List<Map.Entry<Item, Integer>> getItemStock() {
         return itemStock.entrySet().stream().filter(entry -> entry.getValue() > 0).toList();
     }
+
+    /**
+     * Sets the stock for a specific item.
+     * For testing only.
+     * @param item the item to be set.
+     * @param stock the number of items in stock.
+     */
+    public void setItemStock(Item item, int stock) {
+        itemStock.put(item, stock);
+    }
+
+    /**
+     * Gets the stock for a specific item.
+     * For testing only.
+     * @param item the item to be set.=
+     */
+    public int getItemStock(Item item) { return itemStock.get(item); }
 }

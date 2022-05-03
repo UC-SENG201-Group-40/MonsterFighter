@@ -1,6 +1,9 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.*;
+import seng.monsters.model.GameManager;
+import seng.monsters.model.Shop;
+import seng.monsters.model.Purchasable;
+import seng.monsters.model.Monster;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -38,10 +41,9 @@ public abstract class ShopCLI extends TestableCLI {
     /**
      * Prints the purchasable options to buy and attempts to buy purchasables based on player input.
      * @param purchasable The last purchasable bought, null otherwise.
-     * @param wasPurchasableBought a boolean flagging if a purchasable had been bought previously.
      */
-    public void buyPurchasableInterface(Purchasable purchasable, boolean wasPurchasableBought) {
-        displayBuyPurchasableOptions(purchasable, wasPurchasableBought);
+    public void buyPurchasableInterface(Purchasable purchasable) {
+        displayBuyPurchasableOptions(purchasable);
         while (true) {
             try {
                 buyPurchasable(input().nextInt());
@@ -56,10 +58,9 @@ public abstract class ShopCLI extends TestableCLI {
     /**
      * Prints the purchasable options to sell and attempts to sell purchasables based on player input.
      * @param purchasable The last purchasable sold, null otherwise.
-     * @param wasPurchasableSold a boolean flagging if a purchasable had been sold previously.
      */
-    public void sellPurchasableInterface(Purchasable purchasable, boolean wasPurchasableSold) {
-        displaySellPurchasableOptions(purchasable, wasPurchasableSold);
+    public void sellPurchasableInterface(Purchasable purchasable) {
+        displaySellPurchasableOptions(purchasable);
         while (true) {
             try {
                 sellPurchasable(input().nextInt());
@@ -82,21 +83,22 @@ public abstract class ShopCLI extends TestableCLI {
         try {
             switch (scannerInput) {
                 case 1:
-                    buyPurchasableInterface(null, false);
+                    buyPurchasableInterface(null);
                     displayShopOptions(shopType);
                     selectShopType(input().nextInt(), shopType);
                     break;
                 case 2:
                     if (shopType.equals("items")) {
-                        sellPurchasableInterface(null, false);
+                        sellPurchasableInterface(null);
+                        displayShopOptions(shopType);
                     } else {
                         if (!party.isEmpty()) {
-                            sellPurchasableInterface(null, false);
+                            sellPurchasableInterface(null);
+                            displayShopOptions(shopType);
                         } else {
                             System.out.println("You have no monsters to sell!");
                         }
                     }
-                    displayShopOptions(shopType);
                     selectShopType(input().nextInt(), shopType);
                     break;
                 case 0:
@@ -138,14 +140,12 @@ public abstract class ShopCLI extends TestableCLI {
     /**
      * Prints the purchasable options to buy.
      * @param boughtPurchasable The last purchasable bought, null otherwise.
-     * @param wasPurchasableBought a boolean flagging if a purchasable had been bought previously.
      */
-    public abstract void displayBuyPurchasableOptions(Purchasable boughtPurchasable, boolean wasPurchasableBought);
+    public abstract void displayBuyPurchasableOptions(Purchasable boughtPurchasable);
 
     /**
      * Prints the purchasable options to sell.
      * @param soldPurchasable The last purchasable sold, null otherwise.
-     * @param wasPurchasableSold a boolean flagging if a purchasable had been sold previously.
      */
-    public abstract void displaySellPurchasableOptions(Purchasable soldPurchasable, boolean wasPurchasableSold);
+    public abstract void displaySellPurchasableOptions(Purchasable soldPurchasable);
 }

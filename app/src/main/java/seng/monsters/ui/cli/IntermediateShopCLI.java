@@ -2,6 +2,8 @@ package seng.monsters.ui.cli;
 
 import seng.monsters.model.GameManager;
 
+import java.util.InputMismatchException;
+
 public class IntermediateShopCLI extends TestableCLI {
     private final GameManager gameManager;
 
@@ -12,9 +14,17 @@ public class IntermediateShopCLI extends TestableCLI {
     /**
      * Prints shop options to output and takes the player's input to select the shop.
      */
-    private void selectShopInterface() {
+    public void selectShopInterface() {
         displayIntermediateShopTypes();
-        selectShop(input().nextInt());
+        while (true) {
+            try {
+                selectShop(input().nextInt());
+                return;
+            } catch (InputMismatchException e) {
+                input().next();
+                System.out.println("Invalid input!");
+            }
+        }
     }
 
     /**

@@ -1,6 +1,9 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.*;
+import seng.monsters.model.GameManager;
+import seng.monsters.model.Shop;
+import seng.monsters.model.Purchasable;
+import seng.monsters.model.Trainer;
 
 public class MonsterShopCLI extends ShopCLI {
 
@@ -21,7 +24,7 @@ public class MonsterShopCLI extends ShopCLI {
                 }
                 gameManager.buy(mon);
                 MainMenuCLI.monsterJoinsPartyInterface(input(), mon);
-                buyPurchasableInterface(mon, true);
+                buyPurchasableInterface(mon);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -46,7 +49,7 @@ public class MonsterShopCLI extends ShopCLI {
             if ((scannerInput > 0) && (scannerInput < party.size()+1)) {
                 final var mon = party.get(scannerInput - 1);
                 gameManager.sell(mon);
-                sellPurchasableInterface(mon, true);
+                sellPurchasableInterface(mon);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -59,11 +62,10 @@ public class MonsterShopCLI extends ShopCLI {
     /**
      * Prints the monster options to buy.
      * @param boughtMon The last monster bought, null otherwise.
-     * @param wasMonsterBought a boolean flagging if a monster had been bought previously.
      */
-    public void displayBuyPurchasableOptions(Purchasable boughtMon, boolean wasMonsterBought) {
+    public void displayBuyPurchasableOptions(Purchasable boughtMon) {
         System.out.println("\n===========================\n");
-        if (wasMonsterBought) {
+        if (boughtMon != null) {
             System.out.printf("%s bought!\n", boughtMon.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
@@ -85,11 +87,10 @@ public class MonsterShopCLI extends ShopCLI {
     /**
      * Prints the monster options to sell.
      * @param soldMon The last monster sold, null otherwise.
-     * @param wasMonSold a boolean flagging if a monster had been sold previously.
      */
-    public void displaySellPurchasableOptions(Purchasable soldMon, boolean wasMonSold) {
+    public void displaySellPurchasableOptions(Purchasable soldMon) {
         System.out.println("\n===========================\n");
-        if (wasMonSold) {
+        if (soldMon != null) {
             System.out.printf("%s sold!\n", soldMon.getName());
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
