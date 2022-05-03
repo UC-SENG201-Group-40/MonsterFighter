@@ -82,7 +82,7 @@ public class TitleScreen implements Screen {
 				return;
 			}
 			gameManager.setTrainerName(input);
-			gui.navigateTo(new TitleScreen(gui, gameManager));
+			gui.navigateTo(new SettingsScreen(gui, gameManager));
 		});
 		
 		frame.setVisible(true);
