@@ -26,6 +26,9 @@ public class TitleScreen implements Screen {
 		this.gameManager = gameManager;
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	public void initialize() {
 		frame = new JFrame();
@@ -62,11 +65,23 @@ public class TitleScreen implements Screen {
 		submitButton.setBounds(350, 374, 117, 29);
 		frame.getContentPane().add(submitButton);
 		
+		JLabel errorLabel = new JLabel("");
+		errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		errorLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
+		errorLabel.setForeground(new Color(255, 0, 0));
+		errorLabel.setBounds(6, 346, 807, 16);
+		errorLabel.setVisible(false);
+		frame.getContentPane().add(errorLabel);
+		
 		
 		submitButton.addActionListener(e -> {
 			final var input = nameTextField.getText();
+			if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
+				errorLabel.setVisible(true);
+				errorLabel.setText("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
+				return;
+			}
 			gameManager.setTrainerName(input);
-			
 			gui.navigateTo(new TitleScreen(gui, gameManager));
 		});
 		

@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * TODO: This is still a testing GUI, it works but need checks and testing to use it in the final application
  */
-public final class BattleScreen implements BattleManager.UI {
+public final class BattleScreen implements BattleManager.UI, Screen {
 
     private final JFrame frmBattle;
 
@@ -47,13 +47,10 @@ public final class BattleScreen implements BattleManager.UI {
     public BattleScreen(BattleManager manager) {
         frmBattle = new JFrame();
         battleManager = manager;
-        initialize();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() {
+    @Override
+    public void initialize() {
         frmBattle.setTitle("Battle");
         frmBattle.setBounds(100, 100, 819, 487);
         frmBattle.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -318,6 +315,11 @@ public final class BattleScreen implements BattleManager.UI {
         repaintFeeds();
         repaintParties();
         timer.stop();
+    }
+    
+    @Override
+    public void dispose() {
+    	frmBattle.dispose();
     }
 
     public static void make(BattleManager battleManager) {
