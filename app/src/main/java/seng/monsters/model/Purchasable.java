@@ -12,16 +12,23 @@ package seng.monsters.model;
  */
 public interface Purchasable {
     /**
-     * The cost of the item when bought
+     * The cost of the purchasable when bought
      *
      * @return The price as integer
      */
     int buyPrice();
 
     /**
-     * The cost of the item when sold back
+     * The cost of the purchasable when sold back
      *
      * @return The price as integer
      */
     int sellPrice();
+
+    /**
+     * The name of the purchasable
+     *
+     * @return The name of the purchasable as string
+     */
+    String getName();
 }
