@@ -72,6 +72,7 @@ public class SettingsScreen implements Screen {
 		frame.getContentPane().add(impossibleDifficultyLabel);
 		
 		maxDaysTextField = new JTextField();
+		maxDaysTextField.setToolTipText("Must be between 5 to 15 days");
 		maxDaysTextField.setText("5");
 		maxDaysTextField.setBounds(181, 242, 263, 26);
 		frame.getContentPane().add(maxDaysTextField);
@@ -126,14 +127,7 @@ public class SettingsScreen implements Screen {
 			gameManager.setDifficulty(difficulty);
 			gameManager.refreshCurrentDay();
 			
-			System.out.printf("Result:\n Name: %s\n Difficulty: %d\n Days: %d/%d\n", 
-				gameManager.getTrainer().getName(),
-				gameManager.getDifficulty(),
-				gameManager.getCurrentDay(),
-				gameManager.getMaxDays()
-			);
-			
-			frame.dispose();
+			gui.navigateTo(new StartingMonsterScreen(gui, gameManager));
 		});
 		
 		frame.setVisible(true);
