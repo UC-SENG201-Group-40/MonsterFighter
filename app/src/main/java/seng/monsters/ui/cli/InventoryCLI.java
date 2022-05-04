@@ -9,6 +9,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 
 public final class InventoryCLI extends TestableCLI {
+
     private final GameManager gameManager;
     private final Inventory inventory;
     private final List<Monster> party;
@@ -114,6 +115,8 @@ public final class InventoryCLI extends TestableCLI {
             final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d)%n",
                     i + 1, item.getName(), inventory.getItemNumber(item));
+            System.out.printf("    %s%n%n",
+                    item.getDesc());
         }
         System.out.println("\n0 - Return to Main Menu");
     }

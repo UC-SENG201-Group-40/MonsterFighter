@@ -106,7 +106,7 @@ class SetupCLITest extends CLITestBase {
         provideMultipleInput(List.of("1", "Honkers"));
         final var startingMonster1 = setupCLI.selectStartingMonsterInterface();
         assertEquals("Quacker", startingMonster1.monsterType());
-        assertEquals(1, startingMonster1.getLevel());
+        assertEquals(3, startingMonster1.getLevel());
         assertEquals("Honkers", startingMonster1.getName());
 
 
@@ -115,7 +115,7 @@ class SetupCLITest extends CLITestBase {
         final var startingMonster2 = setupCLI.selectStartingMonsterInterface();
         assertTrue(acquireOutput().contains("Invalid input!"));
         assertEquals("Raver", startingMonster2.monsterType());
-        assertEquals(1, startingMonster2.getLevel());
+        assertEquals(3, startingMonster2.getLevel());
         assertEquals("Crab", startingMonster2.getName());
     }
 
@@ -193,7 +193,7 @@ class SetupCLITest extends CLITestBase {
         provideInput("Honkers");
         final var startingMonster1 = setupCLI.selectStartingMonster(1);
         assertEquals("Quacker", startingMonster1.monsterType());
-        assertEquals(1, startingMonster1.getLevel());
+        assertEquals(3, startingMonster1.getLevel());
         assertEquals("Honkers", startingMonster1.getName());
 
 
@@ -202,7 +202,7 @@ class SetupCLITest extends CLITestBase {
         final var startingMonster2 = setupCLI.selectStartingMonster(100);
         assertTrue(acquireOutput().contains("Invalid input!"));
         assertEquals("Raver", startingMonster2.monsterType());
-        assertEquals(1, startingMonster2.getLevel());
+        assertEquals(3, startingMonster2.getLevel());
         assertEquals("Crab", startingMonster2.getName());
     }
 }

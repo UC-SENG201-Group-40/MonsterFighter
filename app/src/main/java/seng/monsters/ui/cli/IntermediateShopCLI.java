@@ -4,7 +4,7 @@ import seng.monsters.model.GameManager;
 
 import java.util.InputMismatchException;
 
-public final class IntermediateShopCLI extends TestableCLI {
+public class IntermediateShopCLI extends TestableCLI {
     private final GameManager gameManager;
 
     public IntermediateShopCLI(GameManager gameManager) {
