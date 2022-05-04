@@ -18,11 +18,10 @@ public abstract class Item implements Purchasable {
     /** Potion to heal monsters */
     public static class Potion extends Item {
         /**
-         * Create a new Item with a name
+         * Create a new Item with a name and description
          */
-        public Potion() {
-            super("Potion");
-        }
+        public Potion() { super("Potion",
+                "Heals a monster by 25 Hp."); }
 
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
@@ -48,10 +47,11 @@ public abstract class Item implements Purchasable {
     public static class Revive extends Item {
 
         /**
-         * Create a new Item with a name
+         * Create a new Item with a name and description
          */
         public Revive() {
-            super("Revive");
+            super("Revive",
+                    "Revives a fainted monster to 25% of its Hp.");
         }
 
         @Override
@@ -72,18 +72,19 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** RareCandy to level up a monster */
-    public static class RareCandy extends Item {
+    /** FullRestore restores health to full regardless if monster is fainted or not */
+    public static class FullRestore extends Item {
         /**
-         * Create a new Item with a name
+         * Create a new Item with a name and description
          */
-        public RareCandy() {
-            super("RareCandy");
-        }
+        public FullRestore() { super("FullRestore",
+                "Fully heals a monster, even if it's fainted."); }
 
         @Override
-        public void applyTo( Monster mon) throws NoEffectException {
-            mon.levelUp();
+        public void applyTo(Monster mon) throws NoEffectException {
+            if (mon.getCurrentHp() == mon.maxHp())
+                throw new NoEffectException("The monster hp is full");
+            mon.healSelf(mon.maxHp());
         }
 
         @Override
@@ -97,25 +98,24 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** FullRestore restores health to full regardless if monster is fainted or not */
-    public static class FullRestore extends Item {
+    /** RareCandy to level up a monster */
+    public static class RareCandy extends Item {
         /**
-         * Create a new Item with a name
+         * Create a new Item with a name and description
          */
-        public FullRestore() {
-            super("FullRestore");
+        public RareCandy() {
+            super("RareCandy",
+                    "Levels up a monster, reviving it in the process if fainted.");
         }
 
         @Override
-        public void applyTo(Monster mon) throws NoEffectException {
-            if (mon.getCurrentHp() == mon.maxHp())
-                throw new NoEffectException("The monster hp is full");
-            mon.healSelf(mon.maxHp());
+        public void applyTo( Monster mon) throws NoEffectException {
+            mon.levelUp();
         }
 
         @Override
         public int buyPrice() {
-            return 1000;
+            return 300;
         }
 
         @Override
@@ -123,8 +123,9 @@ public abstract class Item implements Purchasable {
             return buyPrice() / 2;
         }
     }
+
     /**
-     * Signals that aan item has been applied to a monster but produce no result
+     * Signals that an item has been applied to a monster but produce no result
      */
     public static final class NoEffectException extends IllegalStateException {
         public NoEffectException(String desc) {
@@ -138,12 +139,18 @@ public abstract class Item implements Purchasable {
     private final String name;
 
     /**
+     * The description of the item
+     */
+    private final String desc;
+
+    /**
      * Create a new Item with a name
      *
      * @param name The name of the item
      */
-    public Item(String name) {
+    public Item(String name, String desc) {
         this.name = name;
+        this.desc = desc;
     }
 
     /**
@@ -168,6 +175,13 @@ public abstract class Item implements Purchasable {
     public String getName() {
         return name;
     }
+
+    /**
+     * Get the description of this item
+     *
+     * @return The description of this item
+     */
+    public String getDesc() { return desc; }
 
     /**
      * Comparing the item with another
