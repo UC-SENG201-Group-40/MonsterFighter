@@ -64,6 +64,16 @@ public class GameManager {
      */
     private final ArrayList<Trainer> availableBattles = new ArrayList<>();
 
+    /**
+     * The list of monsters that left the party in the previous night
+     */
+    private final ArrayList<Monster> lastLeftParty = new ArrayList<>();
+
+    /**
+     * The list of monsters that levelled up in the previous night
+     */
+    private final ArrayList<Monster> lastLevelledUp = new ArrayList<>();
+
     public GameManager() {
         trainer = new Trainer("Anonymous");
         inventory = new Inventory();
@@ -158,6 +168,20 @@ public class GameManager {
     }
 
     /**
+     * Get the monsters that left the party in the previous night
+     *
+     * @return the monsters that left in the previous night as list
+     */
+    public List<Monster> getLastLeftParty() { return lastLeftParty; }
+
+    /**
+     * Get the monsters that levelled up in the previous night
+     *
+     * @return the monsters that levelled up in the previous night as list
+     */
+    public List<Monster> getLastLevelledUp() { return lastLevelledUp; }
+
+    /**
      * Get the score
      *
      * @return The score points
@@ -216,7 +240,7 @@ public class GameManager {
      */
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
-        final var hasEnded = getCurrentDay() >= getMaxDays();
+        final var hasEnded = getCurrentDay() > getMaxDays();
 
         if (!hasEnded)
             triggerNightEvents();
@@ -261,8 +285,11 @@ public class GameManager {
      * Only remove one monster at once to prevent indexing errors.
      */
     protected void partyMonstersLeave() {
+        lastLeftParty.clear();
         for (int i = 0; i < trainer.getParty().size(); i++) {
-            if (trainer.getParty().get(i).shouldLeave()) {
+            final var mon = trainer.getParty().get(i);
+            if (mon.shouldLeave()) {
+                lastLeftParty.add(mon);
                 trainer.remove(i);
                 return;
             }
@@ -285,8 +312,10 @@ public class GameManager {
      * Levels up each monster in the party that meets level up prerequisites
      */
     protected void partyMonstersLevelUp() {
+        lastLevelledUp.clear();
         for (final var mon : trainer.getParty()) {
             if (mon.shouldLevelUp()) {
+                lastLevelledUp.add(mon);
                 mon.levelUp();
             }
         }
