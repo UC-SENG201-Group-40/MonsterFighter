@@ -331,8 +331,8 @@ public final class BattleManager {
      * The gold total rewarded for this battle
      * @return The amount gold should be received by the winner
      */
-    public int goldReward() {
-        return loser().getParty()
+    public static int goldReward(Trainer loser) {
+        return loser.getParty()
             .stream()
             .mapToInt(Monster::sellPrice)
             .sum();
@@ -342,8 +342,8 @@ public final class BattleManager {
      * The score total rewarded for this battle
      * @return The amount score should be received by the winner
      */
-    public int scoreReward() {
-        return loser().getParty()
+    public static int scoreReward(Trainer loser) {
+        return loser.getParty()
             .stream()
             .mapToInt(Monster::getLevel)
             .sum();
