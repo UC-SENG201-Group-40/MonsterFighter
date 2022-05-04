@@ -1,0 +1,129 @@
+package seng.monsters.ui.gui;
+
+import seng.monsters.model.Monster;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
+import java.util.function.Consumer;
+
+/**
+ * Monster joining party pop up screen that prompts the user to rename their monster
+ * <p>
+ * This is not a Screen and not replaced the current active window
+ */
+public class MonsterJoiningPopUp {
+
+    /**
+     * Window frame
+     */
+    private JFrame frame;
+    /**
+     * Monster that has joined
+     */
+    private final Monster monster;
+
+    /**
+     * The ending callback
+     */
+    private Consumer<ActionEvent> onEnd = e -> {
+    };
+
+    /**
+     * The text-field for renaming the monster
+     */
+    private JTextField textField;
+
+    /**
+     * Create the application.
+     */
+    public MonsterJoiningPopUp(Monster monster) {
+        this.monster = monster;
+        initialize();
+    }
+
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+        // Set the frame and its boundary
+        frame = new JFrame();
+        frame.getContentPane().setBackground(new Color(255, 255, 204));
+        frame.getContentPane().setForeground(new Color(0, 0, 0));
+        frame.getContentPane().setLayout(null);
+        frame.setBounds(100, 100, 660, 399);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Title label using the name of the monster
+        JLabel titleLabel = new JLabel(
+            String.format("%s has joined your party!", monster.getName())
+        );
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
+        titleLabel.setBounds(100, 58, 460, 39);
+        frame.getContentPane().add(titleLabel);
+
+        // Prompt label to ask for renaming the monster
+        JLabel promptLabel = new JLabel("Name your monster:");
+        promptLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        promptLabel.setBounds(100, 128, 229, 16);
+        frame.getContentPane().add(promptLabel);
+
+        // Textfield to renaming with the current name as text
+        textField = new JTextField();
+        textField.setToolTipText("Must be 3 to 15 characters");
+        textField.setText(monster.getName());
+        textField.setBounds(100, 156, 229, 26);
+        frame.getContentPane().add(textField);
+        textField.setColumns(10);
+
+        // The icon for the monster joining
+        JLabel iconLabel = new JLabel("");
+        iconLabel.setIcon(new ImageIcon(
+            Objects.requireNonNull(this.getClass().getResource(
+                String.format("/images/%s.gif", monster.monsterType())
+            ))
+        ));
+        iconLabel.setBounds(380, 128, 146, 171);
+        frame.getContentPane().add(iconLabel);
+
+        // The button to apply the name change and trigger the onEnd callback
+        JButton doneButton = new JButton("Apply");
+        doneButton.setBounds(281, 320, 117, 29);
+        frame.getContentPane().add(doneButton);
+
+        // The error label for the name
+        JLabel errorLabel = new JLabel("Name your monster:");
+        errorLabel.setForeground(new Color(255, 0, 0));
+        errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        errorLabel.setBounds(100, 197, 229, 16);
+        errorLabel.setVisible(false);
+        frame.getContentPane().add(errorLabel);
+
+        doneButton.addActionListener(e -> {
+            final var input = textField.getText();
+
+            if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
+                errorLabel.setText("Must be 3 to 15 characters!");
+                errorLabel.setVisible(true);
+                return;
+            }
+
+            monster.setName(input);
+            onEnd.accept(e);
+            frame.dispose();
+        });
+
+        frame.setVisible(true);
+    }
+
+    /**
+     * Added a <code>onEnd</code> callback to be run when the <code>done</code> button is pressed.
+     *
+     * @param callback The callback to be called
+     */
+    public void onEnd(Consumer<ActionEvent> callback) {
+        this.onEnd = callback;
+    }
+}

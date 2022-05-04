@@ -512,7 +512,7 @@ public class GameManager {
      *
      * @param difficulty The new difficulty multiplier
      */
-    protected void setDifficulty(int difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 }

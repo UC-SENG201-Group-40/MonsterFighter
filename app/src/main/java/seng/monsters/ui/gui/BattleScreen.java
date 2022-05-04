@@ -7,8 +7,6 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.BattleManager;
-import seng.monsters.model.Environment;
-import seng.monsters.model.Trainer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +17,7 @@ import java.util.Objects;
 /**
  * TODO: This is still a testing GUI, it works but need checks and testing to use it in the final application
  */
-public final class BattleScreen implements BattleManager.UI {
+public final class BattleScreen implements BattleManager.UI, Screen {
 
     private final JFrame frmBattle;
 
@@ -44,16 +42,16 @@ public final class BattleScreen implements BattleManager.UI {
     /**
      * Create the application.
      */
-    public BattleScreen(Trainer lhs, Trainer rhs) {
+    public BattleScreen(BattleManager manager) {
         frmBattle = new JFrame();
-        battleManager = new BattleManager(this, lhs, rhs, Environment.FIELD);
-        initialize();
+        battleManager = manager;
     }
 
     /**
-     * Initialize the contents of the frame.
+     * @wbp.parser.entryPoint
      */
-    private void initialize() {
+    @Override
+    public void initialize() {
         frmBattle.setTitle("Battle");
         frmBattle.setBounds(100, 100, 819, 487);
         frmBattle.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -320,9 +318,14 @@ public final class BattleScreen implements BattleManager.UI {
         timer.stop();
     }
 
-    public static void make(Trainer trainer1, Trainer trainer2) {
+    @Override
+    public void dispose() {
+        frmBattle.dispose();
+    }
+
+    public static void make(BattleManager battleManager) {
         EventQueue.invokeLater(() -> {
-            final var screen = new BattleScreen(trainer1, trainer2);
+            final var screen = new BattleScreen(battleManager);
         });
     }
 }
