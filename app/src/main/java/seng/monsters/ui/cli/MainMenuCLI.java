@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class MainMenuCLI extends TestableCLI {
+public final class MainMenuCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<String> menuOptions = List.of(

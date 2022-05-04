@@ -6,7 +6,7 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class SetupCLI extends TestableCLI {
+public final class SetupCLI extends TestableCLI {
 
     private final List<Monster> starterMonsters = List.of(
         new Monster.Quacker(1),

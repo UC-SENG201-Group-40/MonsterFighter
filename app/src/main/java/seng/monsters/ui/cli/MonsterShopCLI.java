@@ -5,7 +5,7 @@ import seng.monsters.model.Shop;
 import seng.monsters.model.Purchasable;
 import seng.monsters.model.Trainer;
 
-public class MonsterShopCLI extends ShopCLI {
+public final class MonsterShopCLI extends ShopCLI {
 
     public MonsterShopCLI(GameManager gameManager) {
         super(gameManager);

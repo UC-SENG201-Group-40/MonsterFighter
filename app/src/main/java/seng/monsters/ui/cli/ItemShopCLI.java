@@ -7,7 +7,7 @@ import seng.monsters.model.Purchasable;
 import seng.monsters.model.Item;
 
 
-public class ItemShopCLI extends ShopCLI{
+public final class ItemShopCLI extends ShopCLI{
 
     private final Inventory inventory;
 
