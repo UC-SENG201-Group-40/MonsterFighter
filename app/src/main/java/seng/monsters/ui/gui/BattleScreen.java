@@ -7,8 +7,6 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.BattleManager;
-import seng.monsters.model.Environment;
-import seng.monsters.model.Trainer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +47,9 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         battleManager = manager;
     }
 
+    /**
+     * @wbp.parser.entryPoint
+     */
     @Override
     public void initialize() {
         frmBattle.setTitle("Battle");
@@ -316,10 +317,10 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         repaintParties();
         timer.stop();
     }
-    
+
     @Override
     public void dispose() {
-    	frmBattle.dispose();
+        frmBattle.dispose();
     }
 
     public static void make(BattleManager battleManager) {

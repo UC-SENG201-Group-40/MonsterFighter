@@ -7,10 +7,10 @@ public interface Screen {
 	/**
 	 * Initialize the Screen and all its content
 	 */
-	public void initialize();
+	void initialize();
 	
 	/**
 	 * Close the Screen and dispose it
 	 */
-	public void dispose();
+	void dispose();
 }
