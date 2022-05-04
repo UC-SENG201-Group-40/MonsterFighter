@@ -56,7 +56,7 @@ public final class PartyCLI extends TestableCLI {
     /**
      * Takes the player's input and chooses the first monster to swap.
      *
-     * @param scannerInput The player's input.
+     * @param scannerInput The player's input as an int.
      * @throws IllegalArgumentException  if an invalid parameter is passed.
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
@@ -82,12 +82,13 @@ public final class PartyCLI extends TestableCLI {
      * Takes the player's input and attempts to swap the first monster with the second monster (chosen via input).
      *
      * @param mon          The monster that is to be swapped.
-     * @param scannerInput The player's input.
+     * @param scannerInput The player's input as an int.
      * @return A boolean that flags if a monster had been swapped.
      * @throws IllegalArgumentException  if an invalid parameter is passed.
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
-    public boolean selectMonsterToSwap(Monster mon, int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
+    public boolean selectMonsterToSwap(Monster mon, int scannerInput)
+            throws IllegalArgumentException, IndexOutOfBoundsException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
                 gameManager.switchMonsterOnParty(mon, scannerInput - 1);
@@ -118,7 +119,8 @@ public final class PartyCLI extends TestableCLI {
         System.out.println("Here is your party. Select a monster to move, or return to the main menu:");
         for (int i = 0; i < party.size(); i++) {
             final var mon = party.get(i);
-            System.out.printf("\n%d - %s (Level %d, %d/%d HP)\n", i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
+            System.out.printf("\n%d - %s (Level %d, %d/%d HP)\n",
+                    i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
             System.out.printf("Monster Type: %s\n", mon.monsterType());
             System.out.printf("Sell Price: %d Gold\n", mon.sellPrice());
             System.out.printf("Attack Damage: %d\n", mon.scaledDamage());

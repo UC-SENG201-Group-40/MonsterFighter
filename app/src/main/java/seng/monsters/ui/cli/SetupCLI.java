@@ -3,12 +3,8 @@ package seng.monsters.ui.cli;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
-
-// TODO: Needs more testing
 
 public class SetupCLI extends TestableCLI {
 
@@ -19,7 +15,10 @@ public class SetupCLI extends TestableCLI {
     );
     private final List<String> difficulties = List.of("Normal", "Hard", "Utterly Impossible");
 
-
+    /**
+     * Runs each setup interface method and makes the main menu CLI
+     * out of the returned values.
+     */
     public void setup() {
         final var name = chooseNameInterface();
         final var maxDays = chooseMaxDaysInterface();
@@ -31,7 +30,12 @@ public class SetupCLI extends TestableCLI {
         MainMenuCLI.make(gameManager);
     }
 
-    public String chooseNameInterface() throws IllegalArgumentException {
+    /**
+     * Prints a message introducing the player to the game and prompts them for their name
+     * and takes the player's input as their name.
+     * @return The player's name as a string.
+     */
+    public String chooseNameInterface() {
         welcomeMessage();
         while (true) {
             try {
@@ -43,7 +47,12 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
-    public int chooseMaxDaysInterface() throws IllegalArgumentException {
+    /**
+     * Prints a message prompting the player to enter the number of days they want to play
+     * and takes the player input as that.
+     * @return The maximum number of days to play as an integer.
+     */
+    public int chooseMaxDaysInterface() {
         dayNumberMessage();
         while (true) {
             try {
@@ -55,7 +64,11 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
-    public int selectDifficultyInterface() throws IllegalArgumentException {
+    /**
+     * Prints difficulty options and takes player input to choose a difficulty.
+     * @return The difficulty as an integer multiplier.
+     */
+    public int selectDifficultyInterface() {
         displayDifficulties();
         while (true) {
             try {
@@ -67,7 +80,11 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
-    public Monster selectStartingMonsterInterface() throws IllegalArgumentException {
+    /**
+     * Prints the starting monster choices and takes player input to pick a starting monster.
+     * @return The player's starting monster.
+     */
+    public Monster selectStartingMonsterInterface() {
         displayStartingMonsters();
         while (true) {
             try {
@@ -79,10 +96,16 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
-
+    /**
+     * Takes the player's input as their name.
+     * @param scannerInput The player's input as a string.
+     * @return The player's name as a string.
+     * @throws IllegalArgumentException if an invalid input is passed.
+     */
     public String chooseName(String scannerInput) throws IllegalArgumentException {
         try {
-            if ((scannerInput.length() >= 3) && (scannerInput.length() <= 15) && (scannerInput.matches("[a-zA-Z]+"))) {
+            if ((scannerInput.length() >= 3) && (scannerInput.length() <= 15)
+                    && (scannerInput.matches("[a-zA-Z]+"))) {
                 System.out.printf("\nName \"%s\" chosen.", scannerInput);
                 return scannerInput;
             } else {
@@ -94,6 +117,12 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Takes the player's input as the number of maximum days to play.
+     * @param scannerInput The player's input as an int.
+     * @return The maximum number of days to play as an int.
+     * @throws IllegalArgumentException if an invalid input is passed.
+     */
     public int chooseMaxDays(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput >= 5) && (scannerInput <= 15)) {
@@ -108,6 +137,12 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Takes the player's input and chooses the difficulty accordingly.
+     * @param scannerInput The player's input as an int.
+     * @return The difficulty as an integer multiplier.
+     * @throws IllegalArgumentException if an invalid input is passed.
+     */
     public int selectDifficulty(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
@@ -122,8 +157,13 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
-
-    public Monster selectStartingMonster(int scannerInput) {
+    /**
+     * Takes player input and chooses a starting monster accordingly.
+     * @param scannerInput The player's input as an integer.
+     * @return The selected starting monster.
+     * @throws IllegalArgumentException if an invalid input is passed.
+     */
+    public Monster selectStartingMonster(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
                 return MainMenuCLI.monsterJoinsPartyInterface(input(), starterMonsters.get(scannerInput - 1));
@@ -136,17 +176,26 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Prints out a message introducing the game and prompting the player to choose a name.
+     */
     public void welcomeMessage() {
         System.out.println("\n===========================\n");
         System.out.println("Welcome to Monster Fighter!");
         System.out.println("Choose a name (Must be between 3 and 15 letters inclusive, no symbols or numbers):");
     }
 
+    /**
+     * Prints out a message prompting the player to choose a number of days to play.
+     */
     public void dayNumberMessage() {
         System.out.println("\n===========================\n");
         System.out.println("Choose a number of days to play (Must be between 5 and 15 inclusive):");
     }
 
+    /**
+     * Prints out the difficulty choices.
+     */
     public void displayDifficulties() {
         System.out.println("\n===========================\n");
         System.out.println("Select a difficulty (1-3):");
@@ -155,6 +204,9 @@ public class SetupCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Prints out the starting monster choices.
+     */
     public void displayStartingMonsters() {
         System.out.println("\n===========================\n");
         System.out.println("Select a starting monster (1-3):");

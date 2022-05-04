@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * A shop where you can buy or sell purchasable
  */
-final class Shop {
+public final class Shop {
     /**
      * Signals that the desired purchasable is not available in the Shop at this current state
      */
@@ -106,7 +106,8 @@ final class Shop {
      */
     public Map<Item, Integer> randomItemStock() {
         final var rng = new Random();
-        final List<Item> allItems = List.of(new Item.Potion(), new Item.Revive(), new Item.RareCandy());
+        final List<Item> allItems = List.of(
+                new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
@@ -148,4 +149,21 @@ final class Shop {
     public List<Map.Entry<Item, Integer>> getItemStock() {
         return itemStock.entrySet().stream().filter(entry -> entry.getValue() > 0).toList();
     }
+
+    /**
+     * Sets the stock for a specific item.
+     * For testing only.
+     * @param item the item to be set.
+     * @param stock the number of items in stock.
+     */
+    public void setItemStock(Item item, int stock) {
+        itemStock.put(item, stock);
+    }
+
+    /**
+     * Gets the stock for a specific item.
+     * For testing only.
+     * @param item the item to be set.=
+     */
+    public int getItemStock(Item item) { return itemStock.get(item); }
 }
