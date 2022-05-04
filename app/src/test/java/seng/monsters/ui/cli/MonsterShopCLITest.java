@@ -36,7 +36,6 @@ public class MonsterShopCLITest extends CLITestBase {
         baseTeardown();
     }
 
-    // TODO: Needs comments
     @Test
     void shopTypeInterface() {
         // Immediately exit with 0
