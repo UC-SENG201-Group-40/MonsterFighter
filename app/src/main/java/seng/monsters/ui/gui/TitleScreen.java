@@ -59,7 +59,7 @@ public class TitleScreen extends Screen {
         frame.getContentPane().add(errorLabel);
 
         submitButton.addActionListener(
-            submitAction(nameTextField.getText(), errorLabel)
+            submitAction(nameTextField, errorLabel)
         );
 
         frame.setVisible(true);
@@ -67,12 +67,13 @@ public class TitleScreen extends Screen {
 
     /**
      * The action when the user submitted their name
-     * @param input The chosen name
+     * @param textField The text field to get input
      * @param errorLabel The error label to display error in the name input
      * @return An action listener for the submit button
      */
-    private ActionListener submitAction(String input, JLabel errorLabel) {
+    private ActionListener submitAction(JTextField textField, JLabel errorLabel) {
         return e -> {
+            final var input = textField.getText();
             if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");

@@ -64,7 +64,7 @@ public class StartingMonsterScreen extends Screen {
 		selectedMonster.onChange(panel::refresh);
 
 		startingMonsterComboBox.addActionListener(
-			comboBoxAction(startingMonsterComboBox.getSelectedIndex())
+			comboBoxAction(startingMonsterComboBox)
 		);
 
 		submitButton.addActionListener(
@@ -76,11 +76,12 @@ public class StartingMonsterScreen extends Screen {
 
 	/**
 	 * The action performed when the combo box selection changed
-	 * @param index The index of the new selected
+	 * @param comboBox The combo box to get the selection
 	 * @return An action listener for the combobox
 	 */
-	private ActionListener comboBoxAction(int index) {
+	private ActionListener comboBoxAction(JComboBox<String> comboBox) {
 		return e -> {
+			final var index = comboBox.getSelectedIndex();
 			if (index < 0)
 				return;
 			selectedMonster.set(startingMonsters.get(index));

@@ -45,7 +45,7 @@ public class MonsterJoiningPopUp extends PopUp {
         );
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-        titleLabel.setBounds(125, 72, 460, 39);
+        titleLabel.setBounds(179, 52, 460, 39);
         frame.getContentPane().add(titleLabel);
 
         // Prompt label to ask for renaming the monster

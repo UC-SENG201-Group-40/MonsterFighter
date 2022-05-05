@@ -8,6 +8,7 @@ import seng.monsters.ui.gui.state.State;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -61,19 +62,13 @@ public final class SelectPartyPopUp extends PopUp {
         // Setting the on change callback for the selected monster
         chosenMonster.onChange(panel::refresh);
 
-        partyComboBox.addActionListener(e -> {
-            if (partyComboBox.getSelectedIndex() < 0)
-                return;
-            chosenMonster.set(party.get(partyComboBox.getSelectedIndex()));
-        });
+        partyComboBox.addActionListener(
+            comboBoxSelectionAction(partyComboBox)
+        );
 
-        submitButton.addActionListener(e -> {
-            final var monster = chosenMonster.get();
-            partyComboBox.setEnabled(false);
-
-            onChosen.accept(e, monster);
-            frame.dispose();
-        });
+        submitButton.addActionListener(
+            submitAction(partyComboBox)
+        );
 
         frame.setVisible(true);
     }
@@ -84,5 +79,33 @@ public final class SelectPartyPopUp extends PopUp {
      */
     public void onChosen(BiConsumer<ActionEvent, Monster> function) {
         onChosen = function;
+    }
+
+    /**
+     * The action performed when a selection is made in the combox
+     * @param comboBox The combo box to get the selection
+     * @return An action listener for the combo box
+     */
+    private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
+        return e -> {
+            final var index = comboBox.getSelectedIndex();
+            if (index < 0)
+                return;
+            chosenMonster.set(party.get(index));
+        };
+    }
+    /**
+     * The action performed when the selection is submitted
+     * @param comboBox The combo box to disable changes
+     * @return An action listener for the submit button
+     */
+    private ActionListener submitAction(JComboBox<String> comboBox) {
+        return e -> {
+            final var monster = chosenMonster.get();
+            comboBox.setEnabled(false);
+
+            onChosen.accept(e, monster);
+            frame.dispose();
+        };
     }
 }
