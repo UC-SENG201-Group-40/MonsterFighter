@@ -119,7 +119,7 @@ public final class DetailedMonsterPanel {
      * @param y The vertical location
      */
     public void setBounds(int x, int y) {
-        monsterDisplayPanel.setBounds(x, y, 300, 251);
+        monsterDisplayPanel.setBounds(x, y, WIDTH, HEIGHT);
         monsterDisplayPanel.setLayout(null);
     }
 
@@ -285,4 +285,7 @@ public final class DetailedMonsterPanel {
             return new Color(196, 120, 0);
         return new Color(46, 139, 87);
     }
+    
+    public static final int WIDTH = 300;
+    public static final int HEIGHT = 251;
 }

@@ -446,8 +446,9 @@ public abstract class Monster implements Purchasable {
      * Increase the level of the monster and all its properties
      */
     public void levelUp() {
+    	final var hpPercentage = this.currentHp * 100 / maxHp();
         level += 1;
-        this.currentHp = maxHp();
+        	this.currentHp = hpPercentage * maxHp() / 100;
     }
 
     /**

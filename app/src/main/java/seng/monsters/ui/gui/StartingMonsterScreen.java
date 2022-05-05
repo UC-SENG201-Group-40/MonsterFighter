@@ -95,17 +95,12 @@ public class StartingMonsterScreen implements Screen {
 			final var monster = selectedMonster.get();
 			startingMonsterComboBox.setEnabled(false);
 
+			monster.takeDamage(monster.maxHp());
 			final var popUp = new MonsterJoiningPopUp(monster);
 			popUp.onEnd(ev -> {
 				gameManager.getTrainer().add(monster);
 
-				// TODO: Navigate to MainMenu
-				System.out.printf("Name: %s\n", gameManager.getTrainer().getName());
-				for (final var mon : gameManager.getTrainer().getParty()) {
-					System.out.printf("- %s (%s) lv %d\n", mon.getName(), mon.monsterType(), mon.getLevel());
-				}
-				System.out.printf("Difficulty: %d, Days: %d\n", gameManager.getDifficulty(), gameManager.getMaxDays());
-				gui.quit();
+				gui.navigateTo(new InventoryScreen(gui, gameManager));
 			});
 		});
 
