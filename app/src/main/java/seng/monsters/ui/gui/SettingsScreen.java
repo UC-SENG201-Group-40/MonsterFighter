@@ -1,59 +1,36 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
+import seng.monsters.ui.gui.state.State;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * A screen as part of the setup process to prompt user to select difficulty and choose the amount of days for the game
  */
-public class SettingsScreen implements Screen {
-    /**
-     * The GUI manager for navigation
-     */
-    private final GUI gui;
-
-    /**
-     * The game manager to perform actions onto the model and retrieve data
-     */
-    private final GameManager gameManager;
-
+public class SettingsScreen extends Screen {
     /**
      * The difficulty local state before applied to model
      */
     private final State<Integer> difficulty = State.of(1);
+
     /**
      * The max days local state before applied to the model
      */
     private final State<Integer> maxDays = State.of(5);
 
-    /**
-     * The window screen
-     */
-    private JFrame frame;
-
-    /**
-     * Create the application.
-     */
     public SettingsScreen(GUI gui, GameManager gameManager) {
-        this.gui = gui;
-        this.gameManager = gameManager;
+        super(gui, gameManager);
     }
 
     /**
      * @wbp.parser.entryPoint
      */
     @Override
-    public void initialize() {
-        frame = new JFrame();
-        frame.getContentPane().setBackground(new Color(255, 255, 204));
-        frame.getContentPane().setForeground(new Color(0, 0, 0));
-        frame.setBounds(100, 100, 819, 487);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(null);
-
+    public void render() {
         JLabel difficultyPromptLabel = new JLabel("Choose difficulty:");
         difficultyPromptLabel.setBounds(145, 68, 153, 16);
         frame.getContentPane().add(difficultyPromptLabel);
@@ -121,7 +98,23 @@ public class SettingsScreen implements Screen {
         impossibleDifficultyLabel.addActionListener(e -> difficulty.set(3));
         normalDifficultyButton.addActionListener(e -> difficulty.set(1));
 
-        verifyMaxDaysButton.addActionListener(e -> {
+        verifyMaxDaysButton.addActionListener(
+            verifyMaxDaysAction(maxDaysTextField, errorLabel)
+        );
+
+        submitButton.addActionListener(submitAction());
+
+        frame.setVisible(true);
+    }
+
+    /**
+     * The action performed when verifying the max days input
+     * @param maxDaysTextField The text-field to get the text input
+     * @param errorLabel The error label to display error in input
+     * @return The action listener for the verify button
+     */
+    private ActionListener verifyMaxDaysAction(JTextField maxDaysTextField, JLabel errorLabel) {
+        return e -> {
             final var input = maxDaysTextField.getText();
             try {
                 final int maxDaysInput = Integer.decode(input);
@@ -133,21 +126,20 @@ public class SettingsScreen implements Screen {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Invalid number of max days! (Must be a number between 5 and 15 inclusive)");
             }
-        });
+        };
+    }
 
-        submitButton.addActionListener(e -> {
+    /**
+     * The action performed when user submitted the settings
+     * @return The action listener for the submit button
+     */
+    private ActionListener submitAction() {
+        return e -> {
             gameManager.setMaxDays(maxDays.get());
             gameManager.setDifficulty(difficulty.get());
             gameManager.refreshCurrentDay();
 
             gui.navigateTo(new StartingMonsterScreen(gui, gameManager));
-        });
-
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void dispose() {
-        frame.dispose();
+        };
     }
 }

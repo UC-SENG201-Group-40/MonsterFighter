@@ -1,4 +1,4 @@
-package seng.monsters.ui.gui;
+package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.Monster;
 
@@ -103,13 +103,13 @@ public final class DetailedMonsterPanel {
     public DetailedMonsterPanel(Monster monster) {
         this.monster = monster;
         this.showBuying = true;
-        initialize();
+        render();
     }
 
     public DetailedMonsterPanel(Monster monster, boolean showBuying) {
         this.monster = monster;
         this.showBuying = showBuying;
-        initialize();
+        render();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class DetailedMonsterPanel {
     /**
      * Initialize the UI element for this panel
      */
-    private void initialize() {
+    private void render() {
         monsterDisplayPanel = new JPanel();
         monsterDisplayPanel.setBackground(new Color(255, 250, 240));
 
@@ -285,7 +285,14 @@ public final class DetailedMonsterPanel {
             return new Color(196, 120, 0);
         return new Color(46, 139, 87);
     }
-    
+
+    /**
+     * The width of the panel
+     */
     public static final int WIDTH = 300;
+
+    /**
+     * The height of the panel
+     */
     public static final int HEIGHT = 251;
 }
