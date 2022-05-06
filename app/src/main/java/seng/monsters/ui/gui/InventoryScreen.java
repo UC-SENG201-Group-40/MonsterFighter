@@ -128,8 +128,9 @@ public class InventoryScreen extends Screen {
                 gameManager.useItemFromInventory(item, monster);
 
                 final var newCount = inventory.getItemNumber(item);
+                	System.out.println(newCount);
                 countLabel.setText(String.format("%dx", newCount));
-                useButton.setEnabled(newCount > 0);
+                useButton.setEnabled(newCount >= 0);
                 errorLabel.setVisible(false);
             } catch (Inventory.ItemNotExistException err) {
                 errorLabel.setText("There is no such item in your inventory");
