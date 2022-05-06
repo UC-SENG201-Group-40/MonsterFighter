@@ -20,12 +20,18 @@ public class InventoryScreen extends Screen {
      * All the list of items
      */
     private final List<Item> items = Item.all();
+    
+    /**
+     * The inventory of the player
+     */
+    private final Inventory inventory;
 
     /**
      * Create the application.
      */
     public InventoryScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
+        inventory = gameManager.getInventory();
     }
 
     /**
@@ -92,7 +98,7 @@ public class InventoryScreen extends Screen {
      */
     private ActionListener useItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton) {
         return e -> {
-            final int count = gameManager.getInventory().getItemNumber(item);
+            final int count = inventory.getItemNumber(item);
 
             // Do not proceed if the trainer has no monster and the item count is 0
             if (gameManager.getTrainer().getParty().size() <= 0 || count <= 0) {
@@ -123,7 +129,7 @@ public class InventoryScreen extends Screen {
             try {
                 gameManager.useItemFromInventory(item, monster);
 
-                final var newCount = gameManager.getInventory().getItemNumber(item);
+                final var newCount = inventory.getItemNumber(item);
                 countLabel.setText(String.format("%dx", newCount));
                 useButton.setEnabled(newCount > 0);
                 errorLabel.setVisible(false);
@@ -148,7 +154,6 @@ public class InventoryScreen extends Screen {
     private ActionListener backToMainMenuAction() {
         return e -> {
             final var trainer = gameManager.getTrainer();
-            final var inventory = gameManager.getInventory();
 
 
             // TODO: Back to main screen

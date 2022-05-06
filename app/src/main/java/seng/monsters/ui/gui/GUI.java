@@ -2,6 +2,7 @@ package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Item;
+import seng.monsters.model.Monster;
 
 /**
  * The GUI class manager to handle window navigation and closing
@@ -28,6 +29,10 @@ public final class GUI {
         inv.add(new Item.RareCandy());
         inv.add(new Item.RareCandy());
         inv.add(new Item.RareCandy());
+        
+        final var trainer = gameManager.getTrainer();
+        	trainer.add(new Monster.Eel("LongBoy", 1));
+        	trainer.add(new Monster.Tree("TreeBoy", 1));
 
         activeScreen = new TitleScreen(this, gameManager);
         activeScreen.render();
