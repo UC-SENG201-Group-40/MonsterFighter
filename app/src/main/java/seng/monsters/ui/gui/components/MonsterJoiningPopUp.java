@@ -5,6 +5,7 @@ import seng.monsters.model.Monster;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -24,11 +25,6 @@ public class MonsterJoiningPopUp extends PopUp {
      */
     private Consumer<ActionEvent> onEnd = e -> {
     };
-
-    /**
-     * The text-field for renaming the monster
-     */
-    private JTextField textField;
 
     /**
      * Create the application.
@@ -55,7 +51,7 @@ public class MonsterJoiningPopUp extends PopUp {
         frame.getContentPane().add(promptLabel);
 
         // Textfield to renaming with the current name as text
-        textField = new JTextField();
+        JTextField textField = new JTextField();
         textField.setToolTipText("Must be 3 to 15 characters");
         textField.setText(monster.getName());
         textField.setBounds(125, 195, 229, 26);
@@ -85,19 +81,7 @@ public class MonsterJoiningPopUp extends PopUp {
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
 
-        doneButton.addActionListener(e -> {
-            final var input = textField.getText();
-
-            if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
-                errorLabel.setText("Must be 3 to 15 characters!");
-                errorLabel.setVisible(true);
-                return;
-            }
-
-            monster.setName(input);
-            onEnd.accept(e);
-            frame.dispose();
-        });
+        doneButton.addActionListener(doneAction(textField, errorLabel));
 
         frame.setVisible(true);
     }
@@ -109,5 +93,27 @@ public class MonsterJoiningPopUp extends PopUp {
      */
     public void onEnd(Consumer<ActionEvent> callback) {
         this.onEnd = callback;
+    }
+
+    /**
+     * The action performed when the user has chosen a name for the monster
+     * @param textField The text field input
+     * @param errorLabel The error label to display error in input
+     * @return An action listener for the done button
+     */
+    private ActionListener doneAction(JTextField textField, JLabel errorLabel) {
+        return e -> {
+            final var input = textField.getText();
+
+            if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
+                errorLabel.setText("Must be 3 to 15 characters!");
+                errorLabel.setVisible(true);
+                return;
+            }
+
+            monster.setName(input);
+            onEnd.accept(e);
+            frame.dispose();
+        };
     }
 }

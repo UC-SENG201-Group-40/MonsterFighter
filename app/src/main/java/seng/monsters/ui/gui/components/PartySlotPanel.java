@@ -59,6 +59,16 @@ public final class PartySlotPanel {
     public void applyToFrame(JFrame frame) {
         frame.getContentPane().add(panel);
     }
+
+
+    /**
+     * Add this panel to another panel
+     *
+     * @param panel The panel to be displayed into (<b>Must use absolute positioning</b>)
+     */
+    public void applyToPanel(JPanel parentPanel) {
+        parentPanel.add(panel);
+    }
     
     /**
      * Refresh the panel with a new monster

@@ -34,9 +34,7 @@ public class InventoryScreen extends Screen {
         inventory = gameManager.getInventory();
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
+
     @Override
     public void render() {
         JLabel errorLabel = new JLabel("No monster in party");
