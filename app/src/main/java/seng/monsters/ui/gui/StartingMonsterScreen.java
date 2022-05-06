@@ -2,35 +2,26 @@ package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
+import seng.monsters.ui.gui.components.DetailedMonsterPanel;
+import seng.monsters.ui.gui.components.MonsterJoiningPopUp;
+import seng.monsters.ui.gui.state.LabelComboboxModel;
+import seng.monsters.ui.gui.state.State;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * A screen as part of the setup process to prompt the user with a selection of monster to start with
  */
-public class StartingMonsterScreen implements Screen {
+public class StartingMonsterScreen extends Screen {
 
 	/**
 	 * The options of monsters available
 	 */
 	private final List<Monster> startingMonsters = Monster.all(1).subList(0, 3);
-
-	/**
-	 * The GUi for navigation
-	 */
-	private final GUI gui;
-
-	/**
-	 * The game manager as the model
-	 */
-	private final GameManager gameManager;
-
-	/**
-	 * The window frame
-	 */
-	private JFrame frame;
 
 	/**
 	 * The selected monster state
@@ -41,30 +32,17 @@ public class StartingMonsterScreen implements Screen {
 	 * Create the application.
 	 */
 	public StartingMonsterScreen(GUI gui, GameManager gameManager) {
-		this.gui = gui;
-		this.gameManager = gameManager;
+		super(gui, gameManager);
 	}
 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	@Override
-	public void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(255, 255, 204));
-		frame.getContentPane().setForeground(new Color(0, 0, 0));
-		frame.setBounds(100, 100, 819, 487);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-
+	public void render() {
 		JComboBox<String> startingMonsterComboBox = new JComboBox<>();
 		startingMonsterComboBox.setModel(
-			new DefaultComboBoxModel<>(startingMonsters
-				.stream()
-				.map(Monster::monsterType)
-				.toList()
-				.toArray(new String[startingMonsters.size()])
-			)
+			new LabelComboboxModel<>(startingMonsters, Monster::monsterType)
 		);
 		startingMonsterComboBox.setSelectedIndex(0);
 		startingMonsterComboBox.setBounds(66, 140, 238, 27);
@@ -85,35 +63,58 @@ public class StartingMonsterScreen implements Screen {
 		// Setting the on change callback for the selected monster
 		selectedMonster.onChange(panel::refresh);
 
-		startingMonsterComboBox.addActionListener(e -> {
-			if (startingMonsterComboBox.getSelectedIndex() < 0)
-				return;
-			selectedMonster.set(startingMonsters.get(startingMonsterComboBox.getSelectedIndex()));
-		});
+		startingMonsterComboBox.addActionListener(
+			comboBoxAction(startingMonsterComboBox)
+		);
 
-		submitButton.addActionListener(e -> {
-			final var monster = selectedMonster.get();
-			startingMonsterComboBox.setEnabled(false);
-
-			final var popUp = new MonsterJoiningPopUp(monster);
-			popUp.onEnd(ev -> {
-				gameManager.getTrainer().add(monster);
-
-				// TODO: Navigate to MainMenu
-				System.out.printf("Name: %s\n", gameManager.getTrainer().getName());
-				for (final var mon : gameManager.getTrainer().getParty()) {
-					System.out.printf("- %s (%s) lv %d\n", mon.getName(), mon.monsterType(), mon.getLevel());
-				}
-				System.out.printf("Difficulty: %d, Days: %d\n", gameManager.getDifficulty(), gameManager.getMaxDays());
-				gui.quit();
-			});
-		});
+		submitButton.addActionListener(
+			submitAction(startingMonsterComboBox)
+		);
 
 		frame.setVisible(true);
 	}
 
-	@Override
-	public void dispose() {
-		frame.dispose();
+	/**
+	 * The action performed when the combo box selection changed
+	 * @param comboBox The combo box to get the selection
+	 * @return An action listener for the combobox
+	 */
+	private ActionListener comboBoxAction(JComboBox<String> comboBox) {
+		return e -> {
+			final var index = comboBox.getSelectedIndex();
+			if (index < 0)
+				return;
+			selectedMonster.set(startingMonsters.get(index));
+		};
+	}
+
+	/**
+	 * The action performed when the user has chosen their starting monster
+	 * @param comboBox The combo box for the starting monster
+	 * @return The action listener for the submit button
+	 */
+	private ActionListener submitAction(JComboBox<String> comboBox) {
+		return e -> {
+			final var monster = selectedMonster.get();
+			comboBox.setEnabled(false);
+
+			final var popUp = new MonsterJoiningPopUp(monster);
+			popUp.onEnd(
+				popUpRenameAction(monster)
+			);
+		};
+	}
+
+	/**
+	 * The action after the user chose a new name for the monster in the pop-up
+	 * @param monster The monster to be renamed
+	 * @return The action for the pop-up after renaming
+	 */
+	private Consumer<ActionEvent> popUpRenameAction(Monster monster) {
+		return e -> {
+			gameManager.getTrainer().add(monster);
+
+			gui.navigateTo(new MainMenuScreen(gui, gameManager));
+		};
 	}
 }

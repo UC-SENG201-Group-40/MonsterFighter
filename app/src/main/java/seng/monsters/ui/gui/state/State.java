@@ -5,7 +5,7 @@
 //  Created by d-exclaimation on 21:04.
 //  Copyright © 2022 d-exclaimation. All rights reserved.
 //
-package seng.monsters.ui.gui;
+package seng.monsters.ui.gui.state;
 
 import java.util.Objects;
 import java.util.function.Consumer;

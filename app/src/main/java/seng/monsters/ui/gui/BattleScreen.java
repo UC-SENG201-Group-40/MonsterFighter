@@ -7,6 +7,7 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.BattleManager;
+import seng.monsters.model.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +18,7 @@ import java.util.Objects;
 /**
  * TODO: This is still a testing GUI, it works but need checks and testing to use it in the final application
  */
-public final class BattleScreen implements BattleManager.UI, Screen {
-
-    private final JFrame frmBattle;
+public final class BattleScreen extends Screen implements BattleManager.UI {
 
     private final BattleManager battleManager;
     private Timer timer;
@@ -42,22 +41,14 @@ public final class BattleScreen implements BattleManager.UI, Screen {
     /**
      * Create the application.
      */
-    public BattleScreen(BattleManager manager) {
-        frmBattle = new JFrame();
-        battleManager = manager;
+    public BattleScreen(GUI gui, GameManager gameManager, int index) {
+        super(gui, gameManager);
+        battleManager = gameManager.prepareBattle(this, index);
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
-    public void initialize() {
-        frmBattle.setTitle("Battle");
-        frmBattle.setBounds(100, 100, 819, 487);
-        frmBattle.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frmBattle.getContentPane().setLayout(null);
-
-        frmBattle.setContentPane(new JLabel(new ImageIcon(Objects.requireNonNull(BattleScreen.class.getResource("/images/beach.jpeg")))));
+    public void render() {
+        frame.setContentPane(new JLabel(new ImageIcon(Objects.requireNonNull(BattleScreen.class.getResource("/images/beach.jpeg")))));
 
         mon1Image = new JLabel();
         mon1Image.setHorizontalAlignment(SwingConstants.CENTER);
@@ -67,7 +58,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         ImageIcon mon1Icon = new ImageIcon(mon1Url);
         mon1Image.setIcon(mon1Icon);
         mon1Image.setBounds(62, 94, 200, 150);
-        frmBattle.getContentPane().add(mon1Image);
+        frame.getContentPane().add(mon1Image);
 
         mon2Image = new JLabel();
         mon2Image.setHorizontalAlignment(SwingConstants.CENTER);
@@ -77,7 +68,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         ImageIcon mon2Icon = new ImageIcon(mon2Url);
         mon2Image.setIcon(mon2Icon);
         mon2Image.setBounds(551, 94, 200, 150);
-        frmBattle.getContentPane().add(mon2Image);
+        frame.getContentPane().add(mon2Image);
 
         mon1Label0 = new JLabel(String.format(
             "%s (lvl: %d)", battleManager.getMon1().getName(), battleManager.getMon1().getLevel()
@@ -86,7 +77,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         mon1Label0.setHorizontalAlignment(SwingConstants.CENTER);
         mon1Label0.setBounds(62, 256, 200, 33);
         mon1Label0.setOpaque(true);
-        frmBattle.getContentPane().add(mon1Label0);
+        frame.getContentPane().add(mon1Label0);
 
         mon1Label1 = new JLabel(String.format(
             "HP: %d/%d", battleManager.getMon1().getCurrentHp(), battleManager.getMon1().maxHp()
@@ -95,7 +86,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         mon1Label1.setHorizontalAlignment(SwingConstants.CENTER);
         mon1Label1.setBounds(62, 289, 200, 33);
         mon1Label1.setOpaque(true);
-        frmBattle.getContentPane().add(mon1Label1);
+        frame.getContentPane().add(mon1Label1);
 
         mon2Label0 = new JLabel(String.format(
             "%s (lvl: %d)", battleManager.getMon2().getName(), battleManager.getMon2().getLevel()
@@ -104,7 +95,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         mon2Label0.setHorizontalAlignment(SwingConstants.CENTER);
         mon2Label0.setBackground(Color.LIGHT_GRAY);
         mon2Label0.setBounds(551, 256, 200, 33);
-        frmBattle.getContentPane().add(mon2Label0);
+        frame.getContentPane().add(mon2Label0);
 
         mon2Label1 = new JLabel(String.format(
             "HP: %d/%d", battleManager.getMon2().getCurrentHp(), battleManager.getMon2().maxHp()
@@ -113,29 +104,29 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         mon2Label1.setHorizontalAlignment(SwingConstants.CENTER);
         mon2Label1.setBounds(551, 289, 200, 33);
         mon2Label1.setOpaque(true);
-        frmBattle.getContentPane().add(mon2Label1);
+        frame.getContentPane().add(mon2Label1);
 
         JButton startBattle = new JButton("Start");
         startBattle.setBounds(678, 400, 117, 29);
-        frmBattle.getContentPane().add(startBattle);
+        frame.getContentPane().add(startBattle);
 
         quitBattle = new JButton("End");
         quitBattle.setBounds(40, 400, 117, 29);
         quitBattle.setEnabled(false);
         quitBattle.setVisible(false);
-        frmBattle.getContentPane().add(quitBattle);
+        frame.getContentPane().add(quitBattle);
 
         punchImg = new JLabel();
         punchImg.setEnabled(true);
         punchImg.setVisible(false);
         punchImg.setHorizontalAlignment(SwingConstants.CENTER);
         punchImg.setBounds(350, 237, 108, 86);
-        frmBattle.getContentPane().add(punchImg);
+        frame.getContentPane().add(punchImg);
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
         panel.setBounds(193, 330, 457, 118);
-        frmBattle.getContentPane().add(panel);
+        frame.getContentPane().add(panel);
         panel.setLayout(null);
 
         feed0 = new JLabel("");
@@ -160,7 +151,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
 
         JPanel party1 = new JPanel();
         party1.setBounds(62, 26, 148, 33);
-        frmBattle.getContentPane().add(party1);
+        frame.getContentPane().add(party1);
 
         JRadioButton party1Check0 = new JRadioButton();
         party1.add(party1Check0);
@@ -178,7 +169,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
 
         JPanel party2 = new JPanel();
         party2.setBounds(603, 26, 148, 33);
-        frmBattle.getContentPane().add(party2);
+        frame.getContentPane().add(party2);
 
         JRadioButton party2Check3 = new JRadioButton();
         party2.add(party2Check3);
@@ -210,7 +201,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         });
         quitBattle.addActionListener(onQuit());
 
-        frmBattle.setVisible(true);
+        frame.setVisible(true);
 
     }
 
@@ -254,7 +245,7 @@ public final class BattleScreen implements BattleManager.UI, Screen {
 
 
     private ActionListener onQuit() {
-        return e -> frmBattle.dispose();
+        return e -> frame.dispose();
     }
 
     public void onStart() {
@@ -317,15 +308,12 @@ public final class BattleScreen implements BattleManager.UI, Screen {
         repaintParties();
         timer.stop();
     }
-
     @Override
     public void dispose() {
-        frmBattle.dispose();
-    }
-
-    public static void make(BattleManager battleManager) {
-        EventQueue.invokeLater(() -> {
-            final var screen = new BattleScreen(battleManager);
-        });
+        if (battleManager.hasPlayerWon()) {
+            gameManager.setGold(gameManager.getGold() + battleManager.goldReward());
+            gameManager.setScore(gameManager.getScore() + battleManager.scoreReward());
+        }
+        super.dispose();
     }
 }
