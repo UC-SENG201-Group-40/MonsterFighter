@@ -64,15 +64,6 @@ public class GameManager {
      */
     private final ArrayList<Trainer> availableBattles = new ArrayList<>();
 
-    /**
-     * The list of monsters that left the party in the previous night
-     */
-    private final ArrayList<Monster> lastLeftParty = new ArrayList<>();
-
-    /**
-     * The list of monsters that levelled up in the previous night
-     */
-    private final ArrayList<Monster> lastLevelledUp = new ArrayList<>();
 
     public GameManager() {
         trainer = new Trainer("Anonymous");
@@ -168,20 +159,6 @@ public class GameManager {
     }
 
     /**
-     * Get the monsters that left the party in the previous night
-     *
-     * @return the monsters that left in the previous night as list
-     */
-    public List<Monster> getLastLeftParty() { return lastLeftParty; }
-
-    /**
-     * Get the monsters that levelled up in the previous night
-     *
-     * @return the monsters that levelled up in the previous night as list
-     */
-    public List<Monster> getLastLevelledUp() { return lastLevelledUp; }
-
-    /**
      * Get the score
      *
      * @return The score points
@@ -264,10 +241,7 @@ public class GameManager {
      */
     protected void triggerNightEvents() {
         changeEnvironment();
-        partyMonstersLeave();
         partyMonstersHeal();
-        partyMonstersLevelUp();
-        monsterJoinsParty();
         shop.restock();
         updateAvailableBattles();
     }
@@ -283,17 +257,17 @@ public class GameManager {
     /**
      * Removes a monster from the party if their leave prerequisites are met.
      * Only remove one monster at once to prevent indexing errors.
+     * @return the monster leaving the party, or null otherwise.
      */
-    protected void partyMonstersLeave() {
-        lastLeftParty.clear();
+    public Monster partyMonstersLeave() {
         for (int i = 0; i < trainer.getParty().size(); i++) {
             final var mon = trainer.getParty().get(i);
             if (mon.shouldLeave()) {
-                lastLeftParty.add(mon);
                 trainer.remove(i);
-                return;
+                return mon;
             }
         }
+        return null;
     }
 
     /**
@@ -310,15 +284,17 @@ public class GameManager {
 
     /**
      * Levels up each monster in the party that meets level up prerequisites
+     * @return a list of any monsters that levelled up.
      */
-    protected void partyMonstersLevelUp() {
-        lastLevelledUp.clear();
+    public List<Monster> partyMonstersLevelUp() {
+        final ArrayList<Monster> lastLevelledUp = new ArrayList<>();
         for (final var mon : trainer.getParty()) {
             if (mon.shouldLevelUp()) {
                 lastLevelledUp.add(mon);
                 mon.levelUp();
             }
         }
+        return lastLevelledUp;
     }
 
     /**
@@ -327,15 +303,14 @@ public class GameManager {
      * Joining chance:
      * <code> base = 0.01 </code> <p>
      * <code> f(d, c, m) = base x d x c / m</code>
+     * @return the monster that is joining the party, or null otherwise.
      */
-    protected void monsterJoinsParty() {
+    public Monster monsterJoinsParty() {
         final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
         final var isLucky = Math.random() <= chance;
         if (trainer.getParty().size() >= 4 || !isLucky)
-            return;
-
-        final var joining = shop.randomMonster();
-        trainer.add(joining);
+            return null;
+        return shop.randomMonster();
     }
 
     /**

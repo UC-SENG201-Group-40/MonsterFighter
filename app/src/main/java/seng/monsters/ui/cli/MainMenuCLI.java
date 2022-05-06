@@ -86,12 +86,16 @@ public final class MainMenuCLI extends TestableCLI {
     }
 
     private void displayNightEvents() {
-        final var leftParty = gameManager.getLastLeftParty();
-        final var levelledUp = gameManager.getLastLevelledUp();
+        final var leftParty = gameManager.partyMonstersLeave();
+        final var levelledUp = gameManager.partyMonstersLevelUp();
+        final var monsterJoining = gameManager.monsterJoinsParty();
         System.out.printf("%nThe environment has been changed to a(n) %s environment!%n",
                 gameManager.getEnvironment());
-        for (final var mon : leftParty) {
-            System.out.printf("%s has expired...%n", mon.getName());
+        if (leftParty != null) {
+            System.out.printf("%s has expired...%n", leftParty.getName());
+        }
+        if (monsterJoining != null) {
+            monsterJoinsPartyInterface(input(), monsterJoining);
         }
         for (final var mon : levelledUp) {
             System.out.printf("%s has levelled up from %d to %d!%n", mon.getName(), mon.getLevel()-1, mon.getLevel());
@@ -109,7 +113,11 @@ public final class MainMenuCLI extends TestableCLI {
         }
         final var day = gameManager.getCurrentDay();
         if (day == gameManager.getMaxDays()+1) {
-            System.out.printf("YOU SUCCEEDED IN %d DAYS%n%n", day-1);
+            if (gameManager.getScore() == 0) {
+                System.out.println("YOU CHEESED THE GAME%n");
+            } else {
+                System.out.printf("YOU SUCCEEDED IN %d DAYS%n%n", day - 1);
+            }
         } else {
             System.out.printf("YOU FAILED IN %d DAYS%n", day);
             System.out.println("Try harder next time\n!");
