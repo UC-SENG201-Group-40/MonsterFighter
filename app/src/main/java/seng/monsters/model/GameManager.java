@@ -212,11 +212,11 @@ public class GameManager {
     /**
      * Proceed to the following day and update all state accordingly
      *
-     * @return A boolean signalling if the game is finished
+     * @return A boolean signaling if the game is finished
      */
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
-        final var hasEnded = getCurrentDay() >= getMaxDays();
+        final var hasEnded = getCurrentDay() > getMaxDays();
 
         if (!hasEnded)
             triggerNightEvents();

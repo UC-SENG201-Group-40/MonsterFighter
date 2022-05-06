@@ -158,6 +158,7 @@ public final class DetailedMonsterPanel {
         monsterCurrHpLabel.setText(
             String.format("%d/%d", monster.getCurrentHp(), monster.maxHp())
         );
+        monsterCurrHpLabel.setForeground(hpColor());
 
         priceLabel.setText(
             String.format("%s price: %d Gold",

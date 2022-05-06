@@ -138,39 +138,6 @@ public class PartyScreen extends Screen {
      * The action performed when the user chose to return the main menu
      */
     private ActionListener backToMainMenuAction() {
-        return e -> {
-            final var inventory = gameManager.getInventory();
-
-
-            // TODO: Back to main screen
-            System.out.printf("Name: %s\n", trainer.getName());
-
-            System.out.println("-- Party --");
-            trainer.getParty()
-                .stream()
-                .map(mon ->
-                    String.format(
-                        "%s (%s) lvl %d\nHP: %d/%d\nATK: %d\nHEAL:%d\nSPEED:%d\n",
-                        mon.getName(),
-                        mon.monsterType(),
-                        mon.getLevel(),
-                        mon.getCurrentHp(),
-                        mon.maxHp(),
-                        mon.scaledDamage(),
-                        mon.healRate(),
-                        mon.speed()
-                    )
-                )
-                .map(str -> "=======\n" + str)
-                .forEachOrdered(System.out::println);
-
-            System.out.println("-- Inventory --");
-            inventory.getItemEntries()
-                .stream()
-                .map(entry -> String.format("- %s (%dx)", entry.getKey().getName(), entry.getValue()))
-                .forEachOrdered(System.out::println);
-
-            gui.quit();
-        };
+        return e -> gui.navigateBackToMainMenu();
     }
 }

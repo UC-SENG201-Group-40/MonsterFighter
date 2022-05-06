@@ -114,7 +114,7 @@ public class StartingMonsterScreen extends Screen {
 		return e -> {
 			gameManager.getTrainer().add(monster);
 
-			gui.navigateTo(new PartyScreen(gui, gameManager));
+			gui.navigateTo(new MainMenuScreen(gui, gameManager));
 		};
 	}
 }
