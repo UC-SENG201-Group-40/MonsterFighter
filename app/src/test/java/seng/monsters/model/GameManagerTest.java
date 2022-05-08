@@ -337,7 +337,7 @@ class GameManagerTest {
         manager.setCurrentDay(1);
         manager.setDifficulty(100);
 
-        manager.monsterJoinsParty().ifPresent(manager.getTrainer()::add);
+        assertTrue(manager.monsterJoinsParty().isPresent());
         assertEquals(1, manager.getTrainer().getParty().size());
     }
 
