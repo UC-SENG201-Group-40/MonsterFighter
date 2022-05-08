@@ -149,18 +149,18 @@ public class MainMenuScreen extends Screen {
             final var isEnded = gameManager.nextDay();
 
             if (isEnded) {
-                gui.quit();
+                gui.navigateTo(new EndScreen(gui, gameManager));
                 return;
             }
 
             gui.navigateBackToMainMenu();
 
+            final var maybeLeaving = gameManager.partyMonstersLeave();
+            maybeLeaving.ifPresent(LeavingPopUp::new);
+
             final var levelledUp = gameManager.partyMonstersLevelUp();
             if (!levelledUp.isEmpty())
                 new LevelledUpPopUp(levelledUp);
-
-            final var maybeLeaving = gameManager.partyMonstersLeave();
-            maybeLeaving.ifPresent(LeavingPopUp::new);
 
             final var maybeJoining = gameManager.monsterJoinsParty();
             maybeJoining.ifPresent(JoiningPopUp::new);
