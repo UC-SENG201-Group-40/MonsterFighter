@@ -239,6 +239,8 @@ class GameManagerTest {
         // Refreshed battles
         assertNotEquals(availableBattles, manager.getAvailableBattles().size());
 
+        assertFalse(manager.nextDay());
+
         assertTrue(manager.nextDay());
     }
 
