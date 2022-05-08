@@ -150,6 +150,7 @@ public final class Trainer {
 
     /**
      * Check if the trainer has any monster active
+     *
      * @return true if all monster is fainted
      */
     public boolean isWhitedOut() {

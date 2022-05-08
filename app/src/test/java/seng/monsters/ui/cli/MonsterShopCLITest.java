@@ -29,7 +29,9 @@ public class MonsterShopCLITest extends CLITestBase {
     }
 
     @Override
-    public TestableCLI cli() { return monsterShopCLI; }
+    public TestableCLI cli() {
+        return monsterShopCLI;
+    }
 
     @AfterEach
     void tearDown() {

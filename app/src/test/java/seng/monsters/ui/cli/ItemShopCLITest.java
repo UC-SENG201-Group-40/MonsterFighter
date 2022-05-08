@@ -10,7 +10,8 @@ import seng.monsters.model.Shop;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ItemShopCLITest extends CLITestBase {
 
@@ -29,7 +30,9 @@ public class ItemShopCLITest extends CLITestBase {
     }
 
     @Override
-    public TestableCLI cli() { return itemShopCLI; }
+    public TestableCLI cli() {
+        return itemShopCLI;
+    }
 
     @AfterEach
     void tearDown() {

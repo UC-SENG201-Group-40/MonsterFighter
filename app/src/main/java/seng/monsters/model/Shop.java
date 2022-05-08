@@ -8,7 +8,6 @@
 package seng.monsters.model;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * A shop where you can buy or sell purchasable
@@ -107,11 +106,11 @@ public final class Shop {
     public Map<Item, Integer> randomItemStock() {
         final var rng = new Random();
         final List<Item> allItems = List.of(
-                new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
+            new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
-                final var count = rng.nextInt( manager.getCurrentDay() * manager.getDifficulty()) + 1;
+                final var count = rng.nextInt(manager.getCurrentDay() * manager.getDifficulty()) + 1;
                 map.put(item, count);
             });
         return map;
@@ -153,7 +152,8 @@ public final class Shop {
     /**
      * Sets the stock for a specific item.
      * For testing only.
-     * @param item the item to be set.
+     *
+     * @param item  the item to be set.
      * @param stock the number of items in stock.
      */
     public void setItemStock(Item item, int stock) {
@@ -163,7 +163,10 @@ public final class Shop {
     /**
      * Gets the stock for a specific item.
      * For testing only.
+     *
      * @param item the item to be set.=
      */
-    public int getItemStock(Item item) { return itemStock.get(item); }
+    public int getItemStock(Item item) {
+        return itemStock.get(item);
+    }
 }
