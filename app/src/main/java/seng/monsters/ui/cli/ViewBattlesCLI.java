@@ -33,14 +33,8 @@ public final class ViewBattlesCLI extends TestableCLI {
     private void selectBattle(int scannerInput) {
         try {
             if ((scannerInput > 0) && (scannerInput < availableBattles.size()+1)) {
-                final var battleTrainer = availableBattles.get(scannerInput-1);
-                BattleCLI.make(player, battleTrainer);
-                if (!player.isWhitedOut()) {
-                    battleRewards(battleTrainer);
-                    displayBattleRewards(battleTrainer);
-                } else {
-                    System.out.println("You whited out!");
-                }
+                final var battle = new BattleCLI(player, availableBattles.get(scannerInput-1), gameManager);
+                battle.run();
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
             }
@@ -48,11 +42,6 @@ public final class ViewBattlesCLI extends TestableCLI {
             System.out.println("Invalid input!");
             selectBattle(input().nextInt());
         }
-    }
-
-    private void battleRewards(Trainer loser) {
-        gameManager.setGold(gameManager.getGold() + BattleManager.goldReward(loser));
-        gameManager.setScore(gameManager.getScore() + BattleManager.scoreReward(loser));
     }
 
     private void displayBattleOptions() {
@@ -69,13 +58,6 @@ public final class ViewBattlesCLI extends TestableCLI {
             System.out.print("\n");
         }
         System.out.println("0 - Return to Main Menu");
-    }
-
-    private void displayBattleRewards(Trainer loser) {
-        System.out.printf("The enemy payed out %d gold!%n",
-                BattleManager.goldReward(loser));
-        System.out.printf("You gained %d score!%n",
-                BattleManager.scoreReward(loser));
     }
 
     public static void make(GameManager gameManager) {

@@ -215,13 +215,6 @@ class GameManagerTest {
         assertNotEquals(currentHp, perfectMon.getCurrentHp());
         assertEquals(perfectMon.maxHp(), perfectMon.getCurrentHp());
 
-        // Trigger level up night event
-        assertNotEquals(currentLevel, perfectMon.getLevel());
-        assertEquals(currentLevel + 1, perfectMon.getLevel());
-
-        // Trigger leave night event
-        assertFalse(manager.getTrainer().getParty().contains(ejectMon));
-
         // New item stock
         assertFalse(manager.getShop()
             .getItemStock()
@@ -281,9 +274,11 @@ class GameManagerTest {
     void partyMonstersLeave() {
         manager.getTrainer().add(ejectMon);
 
-        manager.partyMonstersLeave();
+        final var leaveMon = manager.partyMonstersLeave();
 
         assertTrue(manager.getTrainer().isWhitedOut());
+
+        assertEquals(ejectMon, leaveMon);
 
         manager.getTrainer().add(perfectMon);
 
@@ -323,8 +318,9 @@ class GameManagerTest {
 
         final var currentLevel = perfectMon.getLevel();
 
-        manager.partyMonstersLevelUp();
+        final var levelledUpMons = manager.partyMonstersLevelUp();
 
+        assertTrue(levelledUpMons.contains(perfectMon));
         assertNotEquals(currentLevel, perfectMon.getLevel());
         assertEquals(currentLevel + 1, perfectMon.getLevel());
     }
@@ -341,7 +337,7 @@ class GameManagerTest {
         manager.setCurrentDay(1);
         manager.setDifficulty(100);
 
-        manager.monsterJoinsParty();
+        manager.getTrainer().add(manager.monsterJoinsParty());
 
         assertEquals(1, manager.getTrainer().getParty().size());
     }

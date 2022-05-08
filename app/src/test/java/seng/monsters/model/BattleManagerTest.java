@@ -225,7 +225,7 @@ class BattleManagerTest {
         battleManager.nextIteration();
 
         assertTrue(battleManager.isSettled());
-        assertEquals(dead1.sellPrice() + dead2.sellPrice(), BattleManager.goldReward(enemy));
-        assertEquals(dead1.getLevel() + dead2.getLevel(), BattleManager.scoreReward(enemy));
+        assertEquals(dead1.sellPrice() + dead2.sellPrice(), battleManager.goldReward());
+        assertEquals(dead1.getLevel() + dead2.getLevel(), battleManager.scoreReward());
     }
 }
