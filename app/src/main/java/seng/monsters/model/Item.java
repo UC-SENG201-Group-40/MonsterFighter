@@ -31,11 +31,11 @@ public abstract class Item implements Purchasable {
         public int buyPrice() {
             return 25;
         }
-        
-		@Override
-		public String description() {
-			return "+50 HP (Heal only)";
-		}
+
+        @Override
+        public String description() {
+            return "+50 HP (Heal only)";
+        }
 
         @Override
         public int sellPrice() {
@@ -52,11 +52,11 @@ public abstract class Item implements Purchasable {
                 throw new NoEffectException("The monster is not dead");
             mon.healSelf(mon.maxHp() / 4);
         }
-        
-		@Override
-		public String description() {
-			return "+25% HP (Revive only)";
-		}
+
+        @Override
+        public String description() {
+            return "+25% HP (Revive only)";
+        }
 
         @Override
         public int buyPrice() {
@@ -69,17 +69,18 @@ public abstract class Item implements Purchasable {
         }
     }
 
+    /** RareCandy to level up a monster */
+    public static class RareCandy extends Item {
+
         @Override
-        public void applyTo(Monster mon) throws NoEffectException {
-            if (mon.getCurrentHp() == mon.maxHp())
-                throw new NoEffectException("The monster hp is full");
-            mon.healSelf(mon.maxHp());
+        public void applyTo( Monster mon) throws NoEffectException {
+            mon.levelUp();
         }
-        
-		@Override
-		public String description() {
-			return "+1 Level";
-		}
+
+        @Override
+        public String description() {
+            return "+1 Level";
+        }
 
         @Override
         public int buyPrice() {
@@ -92,19 +93,24 @@ public abstract class Item implements Purchasable {
         }
     }
 
+    /** FullRestore restores health to full regardless if monster is fainted or not */
+    public static class FullRestore extends Item {
+
         @Override
-        public void applyTo( Monster mon) throws NoEffectException {
-            mon.levelUp();
+        public void applyTo(Monster mon) throws NoEffectException {
+            if (mon.getCurrentHp() == mon.maxHp())
+                throw new NoEffectException("The monster hp is full");
+            mon.healSelf(mon.maxHp());
         }
-        
-		@Override
-		public String description() {
-			return "+100% HP";
-		}
+
+        @Override
+        public String description() {
+            return "+100% HP";
+        }
 
         @Override
         public int buyPrice() {
-            return 300;
+            return 1000;
         }
 
         @Override
@@ -112,7 +118,6 @@ public abstract class Item implements Purchasable {
             return buyPrice() / 2;
         }
     }
-
     /**
      * Signals that an item has been applied to a monster but produce no result
      */
@@ -122,13 +127,14 @@ public abstract class Item implements Purchasable {
         }
     }
 
+    /**
      * Apply this item to a monster
      *
      * @param mon The target monster
      * @throws NoEffectException if the effect gave no changes
      */
     public abstract void applyTo(Monster mon) throws NoEffectException;
-    
+
     /**
      * A quick description of what this item does
      * @return
@@ -149,13 +155,6 @@ public abstract class Item implements Purchasable {
     public String getName() {
         return this.getClass().getSimpleName();
     }
-
-    /**
-     * Get the description of this item
-     *
-     * @return The description of this item
-     */
-    public String getDesc() { return desc; }
 
     /**
      * Comparing the item with another

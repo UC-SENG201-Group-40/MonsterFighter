@@ -169,6 +169,7 @@ public class GameManager {
 
     /**
      * Get the current shop
+     *
      * @return The shop
      */
     public Shop getShop() {
@@ -257,6 +258,7 @@ public class GameManager {
     /**
      * Removes a monster from the party if their leave prerequisites are met.
      * Only remove one monster at once to prevent indexing errors.
+     *
      * @return the monster leaving the party, or null otherwise.
      */
     public Monster partyMonstersLeave() {
@@ -284,6 +286,7 @@ public class GameManager {
 
     /**
      * Levels up each monster in the party that meets level up prerequisites
+     *
      * @return a list of any monsters that levelled up.
      */
     public List<Monster> partyMonstersLevelUp() {
@@ -303,6 +306,7 @@ public class GameManager {
      * Joining chance:
      * <code> base = 0.01 </code> <p>
      * <code> f(d, c, m) = base x d x c / m</code>
+     *
      * @return the monster that is joining the party, or null otherwise.
      */
     public Monster monsterJoinsParty() {

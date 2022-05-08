@@ -427,6 +427,7 @@ public abstract class Monster implements Purchasable {
 
     /**
      * The type of monster
+     *
      * @return The type of monster as a string
      */
     public String monsterType() {
@@ -446,9 +447,9 @@ public abstract class Monster implements Purchasable {
      * Increase the level of the monster and all its properties
      */
     public void levelUp() {
-    	final var hpPercentage = this.currentHp * 100 / maxHp();
+        final var hpPercentage = this.currentHp * 100 / maxHp();
         level += 1;
-        	this.currentHp = hpPercentage * maxHp() / 100;
+        this.currentHp = hpPercentage * maxHp() / 100;
     }
 
     /**

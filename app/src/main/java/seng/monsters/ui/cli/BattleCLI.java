@@ -12,7 +12,6 @@ import seng.monsters.model.GameManager;
 import seng.monsters.model.Trainer;
 
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -125,9 +124,9 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
 
     private void displayBattleRewards() {
         System.out.printf("The enemy payed out %d gold!%n",
-                battler.goldReward());
+            battler.goldReward());
         System.out.printf("You gained %d score!%n",
-                battler.scoreReward());
+            battler.scoreReward());
     }
 
     private void battleRewards() {

@@ -33,6 +33,7 @@ public final class SetupCLI extends TestableCLI {
     /**
      * Prints a message introducing the player to the game and prompts them for their name
      * and takes the player's input as their name.
+     *
      * @return The player's name as a string.
      */
     public String chooseNameInterface() {
@@ -50,6 +51,7 @@ public final class SetupCLI extends TestableCLI {
     /**
      * Prints a message prompting the player to enter the number of days they want to play
      * and takes the player input as that.
+     *
      * @return The maximum number of days to play as an integer.
      */
     public int chooseMaxDaysInterface() {
@@ -66,6 +68,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Prints difficulty options and takes player input to choose a difficulty.
+     *
      * @return The difficulty as an integer multiplier.
      */
     public int selectDifficultyInterface() {
@@ -82,6 +85,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Prints the starting monster choices and takes player input to pick a starting monster.
+     *
      * @return The player's starting monster.
      */
     public Monster selectStartingMonsterInterface() {
@@ -98,6 +102,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Takes the player's input as their name.
+     *
      * @param scannerInput The player's input as a string.
      * @return The player's name as a string.
      * @throws IllegalArgumentException if an invalid input is passed.
@@ -105,7 +110,7 @@ public final class SetupCLI extends TestableCLI {
     public String chooseName(String scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput.length() >= 3) && (scannerInput.length() <= 15)
-                    && (scannerInput.matches("[a-zA-Z]+"))) {
+                && (scannerInput.matches("[a-zA-Z]+"))) {
                 System.out.printf("\nName \"%s\" chosen.", scannerInput);
                 return scannerInput;
             } else {
@@ -119,6 +124,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Takes the player's input as the number of maximum days to play.
+     *
      * @param scannerInput The player's input as an int.
      * @return The maximum number of days to play as an int.
      * @throws IllegalArgumentException if an invalid input is passed.
@@ -139,6 +145,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Takes the player's input and chooses the difficulty accordingly.
+     *
      * @param scannerInput The player's input as an int.
      * @return The difficulty as an integer multiplier.
      * @throws IllegalArgumentException if an invalid input is passed.
@@ -159,6 +166,7 @@ public final class SetupCLI extends TestableCLI {
 
     /**
      * Takes player input and chooses a starting monster accordingly.
+     *
      * @param scannerInput The player's input as an integer.
      * @return The selected starting monster.
      * @throws IllegalArgumentException if an invalid input is passed.

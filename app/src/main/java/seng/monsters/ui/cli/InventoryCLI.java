@@ -116,7 +116,7 @@ public final class InventoryCLI extends TestableCLI {
             System.out.printf("%d - %s (Stock: %d)%n",
                     i + 1, item.getName(), inventory.getItemNumber(item));
             System.out.printf("    %s%n%n",
-                    item.getDesc());
+                    item.description());
         }
         System.out.println("\n0 - Return to Main Menu");
     }

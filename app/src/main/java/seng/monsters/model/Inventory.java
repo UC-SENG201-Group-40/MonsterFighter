@@ -67,6 +67,7 @@ public final class Inventory {
 
     /**
      * Returns the amount of a specified item in the player's inventory
+     *
      * @param item The specified item to retrieve the count of
      * @return An int representing the number of the item in the player's inventory
      */
@@ -90,6 +91,7 @@ public final class Inventory {
 
     /**
      * Get all item in the inventory as an entry
+     *
      * @return The items and its count as entries in a ArrayList
      */
     public List<Map.Entry<Item, Integer>> getItemEntries() {

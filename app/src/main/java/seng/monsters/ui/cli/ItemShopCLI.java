@@ -1,13 +1,9 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.GameManager;
-import seng.monsters.model.Inventory;
-import seng.monsters.model.Shop;
-import seng.monsters.model.Purchasable;
-import seng.monsters.model.Item;
+import seng.monsters.model.*;
 
 
-public final class ItemShopCLI extends ShopCLI{
+public final class ItemShopCLI extends ShopCLI {
 
     private final Inventory inventory;
 
@@ -18,13 +14,14 @@ public final class ItemShopCLI extends ShopCLI{
 
     /**
      * Takes player input and attempts to buy the selected item.
+     *
      * @param scannerInput The player's input as an int.
      */
     public void buyPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
-            final var items = shop.getItemStock();
-            if ((scannerInput > 0) && (scannerInput < items.size()+1)) {
-                final var item = items.get(scannerInput - 1).getKey();
+            final var items = Item.all();
+            if ((scannerInput > 0) && (scannerInput < items.size() + 1)) {
+                final var item = items.get(scannerInput - 1);
                 gameManager.buy(item);
                 buyPurchasableInterface(item);
             } else if (scannerInput != 0) {
@@ -44,6 +41,7 @@ public final class ItemShopCLI extends ShopCLI{
 
     /**
      * Takes player input and attempts to sell the selected item.
+     *
      * @param scannerInput The player's input as an int.
      */
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
@@ -66,6 +64,7 @@ public final class ItemShopCLI extends ShopCLI{
 
     /**
      * Prints the item options to buy.
+     *
      * @param boughtItem The last item bought, null otherwise.
      */
     public void displayBuyPurchasableOptions(Purchasable boughtItem) {
@@ -79,15 +78,16 @@ public final class ItemShopCLI extends ShopCLI{
         for (var i = 0; i < items.size(); i++) {
             final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d, Price: %d)%n",
-                    i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
+                i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
 
-            System.out.printf("    %s%n%n", item.getKey().getDesc());
+            System.out.printf("    %s%n%n", item.getKey().description());
         }
         System.out.println("\n0 - Cancel");
     }
 
     /**
      * Prints the item options to sell.
+     *
      * @param soldItem The last item sold, null otherwise.
      */
     public void displaySellPurchasableOptions(Purchasable soldItem) {
@@ -101,7 +101,7 @@ public final class ItemShopCLI extends ShopCLI{
         for (var i = 0; i < items.size(); i++) {
             final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d, Sell Price: %d)%n",
-                    i + 1, item.getName(), inventory.getItemNumber(item), item.sellPrice());
+                i + 1, item.getName(), inventory.getItemNumber(item), item.sellPrice());
         }
         System.out.println("\n0 - Cancel");
     }

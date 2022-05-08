@@ -8,7 +8,6 @@
 package seng.monsters.ui.cli;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  * Base for a Testable CLI that takes input from the <code>System.in</code>
