@@ -59,7 +59,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() <= 0.4;
+            return Math.random() <= 1;
         }
 
         @Override

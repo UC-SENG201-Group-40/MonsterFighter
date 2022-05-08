@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * <p>
  * This is not a Screen and not replaced the current active window
  */
-public class MonsterJoiningPopUp extends PopUp {
+public class JoiningPopUp extends PopUp {
     /**
      * Monster that has joined
      */
@@ -29,7 +29,7 @@ public class MonsterJoiningPopUp extends PopUp {
     /**
      * Create the application.
      */
-    public MonsterJoiningPopUp(Monster monster) {
+    public JoiningPopUp(Monster monster) {
         this.monster = monster;
         render();
     }

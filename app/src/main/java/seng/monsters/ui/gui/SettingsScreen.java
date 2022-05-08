@@ -109,9 +109,8 @@ public class SettingsScreen extends Screen {
 
     /**
      * The action performed when verifying the max days input
-     *
      * @param maxDaysTextField The text-field to get the text input
-     * @param errorLabel       The error label to display error in input
+     * @param errorLabel The error label to display error in input
      * @return The action listener for the verify button
      */
     private ActionListener verifyMaxDaysAction(JTextField maxDaysTextField, JLabel errorLabel) {
@@ -119,7 +118,7 @@ public class SettingsScreen extends Screen {
             final var input = maxDaysTextField.getText();
             try {
                 final int maxDaysInput = Integer.decode(input);
-                if (maxDaysInput < 5 || maxDaysInput > 1500)
+                if (maxDaysInput < 5 || maxDaysInput > 15)
                     throw new NumberFormatException();
                 maxDays.set(maxDaysInput);
                 errorLabel.setVisible(false);
@@ -132,7 +131,6 @@ public class SettingsScreen extends Screen {
 
     /**
      * The action performed when user submitted the settings
-     *
      * @return The action listener for the submit button
      */
     private ActionListener submitAction() {

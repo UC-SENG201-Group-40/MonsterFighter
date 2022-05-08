@@ -291,7 +291,12 @@ public class GameManager {
      * @return a list of any monsters that levelled up.
      */
     public List<Monster> partyMonstersLevelUp() {
-        final var lastLevelledUp = trainer.getParty().stream().filter(Monster::shouldLevelUp).toList();
+        final var lastLevelledUp = trainer
+            .getParty()
+            .stream()
+            .filter(mon -> !mon.isFainted())
+            .filter(Monster::shouldLevelUp)
+            .toList();
         lastLevelledUp.forEach(Monster::levelUp);
         return lastLevelledUp;
     }

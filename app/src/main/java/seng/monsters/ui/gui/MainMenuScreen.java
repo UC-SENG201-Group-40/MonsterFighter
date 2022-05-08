@@ -1,8 +1,9 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
-import seng.monsters.ui.gui.components.MonsterJoiningPopUp;
-import seng.monsters.ui.gui.components.MonsterLeavingPopUp;
+import seng.monsters.ui.gui.components.JoiningPopUp;
+import seng.monsters.ui.gui.components.LeavingPopUp;
+import seng.monsters.ui.gui.components.LevelledUpPopUp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -151,18 +152,18 @@ public class MainMenuScreen extends Screen {
                 gui.quit();
                 return;
             }
-            final var levelledUp = gameManager.partyMonstersLevelUp();
 
+            gui.navigateBackToMainMenu();
+
+            final var levelledUp = gameManager.partyMonstersLevelUp();
+            if (!levelledUp.isEmpty())
+                new LevelledUpPopUp(levelledUp);
 
             final var maybeLeaving = gameManager.partyMonstersLeave();
-            maybeLeaving.ifPresent(MonsterLeavingPopUp::new);
+            maybeLeaving.ifPresent(LeavingPopUp::new);
 
             final var maybeJoining = gameManager.monsterJoinsParty();
-            if (maybeJoining.isPresent()) {
-                new MonsterJoiningPopUp(maybeJoining.get()).onEnd(ignore -> gui.navigateBackToMainMenu());
-            } else {
-                gui.navigateBackToMainMenu();
-            }
+            maybeJoining.ifPresent(JoiningPopUp::new);
         };
     }
 }

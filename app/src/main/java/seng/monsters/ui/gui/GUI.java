@@ -32,14 +32,14 @@ public final class GUI {
         inv.add(new Item.RareCandy());
         inv.add(new Item.RareCandy());
         inv.add(new Item.RareCandy());
-        
+
         final var trainer = gameManager.getTrainer();
-        	final var mon1 = new Monster.Eel("LongBoy", 1);
-        	mon1.takeDamage(mon1.maxHp());
-        	final var mon2 = new Monster.Tree("TreeBoy", 1);
-        	mon2.takeDamage(1);
-        	trainer.add(mon1);
-        	trainer.add(mon2);
+        final var mon1 = new Monster.Eel("LongBoy", 1);
+        mon1.takeDamage(mon1.maxHp());
+        final var mon2 = new Monster.Tree("TreeBoy", 1);
+        mon2.takeDamage(1);
+        trainer.add(mon1);
+        trainer.add(mon2);
 
         activeScreen = new TitleScreen(this, gameManager);
         activeScreen.render();
@@ -67,11 +67,11 @@ public final class GUI {
     public void quit() {
         activeScreen.dispose();
     }
-    
+
     /**
      * Navigate back to main menu
      */
     public void navigateBackToMainMenu() {
-    	navigateTo(new MainMenuScreen(this, gameManager));
+        navigateTo(new MainMenuScreen(this, gameManager));
     }
 }

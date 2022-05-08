@@ -3,7 +3,7 @@ package seng.monsters.ui.gui;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
 import seng.monsters.ui.gui.components.DetailedMonsterPanel;
-import seng.monsters.ui.gui.components.MonsterJoiningPopUp;
+import seng.monsters.ui.gui.components.JoiningPopUp;
 import seng.monsters.ui.gui.state.LabelComboboxModel;
 import seng.monsters.ui.gui.state.State;
 
@@ -98,7 +98,7 @@ public class StartingMonsterScreen extends Screen {
 			final var monster = selectedMonster.get();
 			comboBox.setEnabled(false);
 
-			final var popUp = new MonsterJoiningPopUp(monster);
+			final var popUp = new JoiningPopUp(monster);
 			popUp.onEnd(
 				popUpRenameAction(monster)
 			);
