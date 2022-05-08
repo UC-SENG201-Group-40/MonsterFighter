@@ -57,6 +57,8 @@ public final class Trainer {
     public void add(Monster mon) throws PartyFullException {
         if (party.size() >= 4)
             throw new PartyFullException("Cannot add more than 4 monster");
+        if (party.contains(mon))
+            return;
         party.add(mon);
     }
 

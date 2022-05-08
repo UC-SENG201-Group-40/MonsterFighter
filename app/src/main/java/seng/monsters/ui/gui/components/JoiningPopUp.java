@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * <p>
  * This is not a Screen and not replaced the current active window
  */
-public class MonsterJoiningPopUp extends PopUp {
+public class JoiningPopUp extends PopUp {
     /**
      * Monster that has joined
      */
@@ -29,7 +29,7 @@ public class MonsterJoiningPopUp extends PopUp {
     /**
      * Create the application.
      */
-    public MonsterJoiningPopUp(Monster monster) {
+    public JoiningPopUp(Monster monster) {
         this.monster = monster;
         render();
     }
@@ -97,7 +97,8 @@ public class MonsterJoiningPopUp extends PopUp {
 
     /**
      * The action performed when the user has chosen a name for the monster
-     * @param textField The text field input
+     *
+     * @param textField  The text field input
      * @param errorLabel The error label to display error in input
      * @return An action listener for the done button
      */
@@ -106,7 +107,7 @@ public class MonsterJoiningPopUp extends PopUp {
             final var input = textField.getText();
 
             if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
-                errorLabel.setText("Must be 3 to 15 characters!");
+                errorLabel.setText("Must be 3 to 15 characters and not contain only contains letters!");
                 errorLabel.setVisible(true);
                 return;
             }

@@ -9,6 +9,7 @@ package seng.monsters.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The Game Manager that the model of the game
@@ -261,15 +262,15 @@ public class GameManager {
      *
      * @return the monster leaving the party, or null otherwise.
      */
-    public Monster partyMonstersLeave() {
+    public Optional<Monster> partyMonstersLeave() {
         for (int i = 0; i < trainer.getParty().size(); i++) {
             final var mon = trainer.getParty().get(i);
             if (mon.shouldLeave()) {
                 trainer.remove(i);
-                return mon;
+                return Optional.of(mon);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -290,13 +291,13 @@ public class GameManager {
      * @return a list of any monsters that levelled up.
      */
     public List<Monster> partyMonstersLevelUp() {
-        final ArrayList<Monster> lastLevelledUp = new ArrayList<>();
-        for (final var mon : trainer.getParty()) {
-            if (mon.shouldLevelUp()) {
-                lastLevelledUp.add(mon);
-                mon.levelUp();
-            }
-        }
+        final var lastLevelledUp = trainer
+            .getParty()
+            .stream()
+            .filter(mon -> !mon.isFainted())
+            .filter(Monster::shouldLevelUp)
+            .toList();
+        lastLevelledUp.forEach(Monster::levelUp);
         return lastLevelledUp;
     }
 
@@ -309,12 +310,18 @@ public class GameManager {
      *
      * @return the monster that is joining the party, or null otherwise.
      */
-    public Monster monsterJoinsParty() {
+    public Optional<Monster> monsterJoinsParty() {
         final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
         final var isLucky = Math.random() <= chance;
-        if (trainer.getParty().size() >= 4 || !isLucky)
-            return null;
-        return shop.randomMonster();
+        if (!isLucky)
+            return Optional.empty();
+        try {
+            final var joining = shop.randomMonster();
+            trainer.add(joining);
+            return Optional.of(joining);
+        } catch (Trainer.PartyFullException err) {
+            return Optional.empty();
+        }
     }
 
     /**

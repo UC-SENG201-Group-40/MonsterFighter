@@ -30,7 +30,7 @@ public abstract class PopUp {
         frame.getContentPane().setLayout(null);
         frame.setBounds(100, 100, WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+//        frame.setResizable(false);
     }
 
     /**

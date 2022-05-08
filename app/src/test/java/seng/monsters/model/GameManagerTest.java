@@ -278,7 +278,7 @@ class GameManagerTest {
 
         assertTrue(manager.getTrainer().isWhitedOut());
 
-        assertEquals(ejectMon, leaveMon);
+        assertEquals(ejectMon, leaveMon.orElseThrow());
 
         manager.getTrainer().add(perfectMon);
 
@@ -337,8 +337,7 @@ class GameManagerTest {
         manager.setCurrentDay(1);
         manager.setDifficulty(100);
 
-        manager.getTrainer().add(manager.monsterJoinsParty());
-
+        assertTrue(manager.monsterJoinsParty().isPresent());
         assertEquals(1, manager.getTrainer().getParty().size());
     }
 

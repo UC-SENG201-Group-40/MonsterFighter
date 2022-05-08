@@ -1,6 +1,9 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
+import seng.monsters.ui.gui.components.JoiningPopUp;
+import seng.monsters.ui.gui.components.LeavingPopUp;
+import seng.monsters.ui.gui.components.LevelledUpPopUp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -138,18 +141,29 @@ public class MainMenuScreen extends Screen {
      */
     private ActionListener sleepAction(JLabel errorLabel) {
         return e -> {
-            // TODO: Uncomment this
-//			if (gameManager.hasNotBattleOnce()) {
-//				errorLabel.setVisible(true);
-//				errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
-//				return;
-//			}
+//            if (gameManager.hasNotBattleOnce()) {
+//                errorLabel.setVisible(true);
+//                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
+//                return;
+//            }
             final var isEnded = gameManager.nextDay();
+
             if (isEnded) {
                 gui.quit();
-            } else {
-                gui.navigateBackToMainMenu();
+                return;
             }
+
+            gui.navigateBackToMainMenu();
+
+            final var levelledUp = gameManager.partyMonstersLevelUp();
+            if (!levelledUp.isEmpty())
+                new LevelledUpPopUp(levelledUp);
+
+            final var maybeLeaving = gameManager.partyMonstersLeave();
+            maybeLeaving.ifPresent(LeavingPopUp::new);
+
+            final var maybeJoining = gameManager.monsterJoinsParty();
+            maybeJoining.ifPresent(JoiningPopUp::new);
         };
     }
 }
