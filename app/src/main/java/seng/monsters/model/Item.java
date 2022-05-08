@@ -69,12 +69,11 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** RareCandy to level up a monster */
-    public static class RareCandy extends Item {
-
         @Override
-        public void applyTo( Monster mon) throws NoEffectException {
-            mon.levelUp();
+        public void applyTo(Monster mon) throws NoEffectException {
+            if (mon.getCurrentHp() == mon.maxHp())
+                throw new NoEffectException("The monster hp is full");
+            mon.healSelf(mon.maxHp());
         }
         
 		@Override
@@ -93,14 +92,9 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** FullRestore restores health to full regardless if monster is fainted or not */
-    public static class FullRestore extends Item {
-    	
         @Override
-        public void applyTo(Monster mon) throws NoEffectException {
-            if (mon.getCurrentHp() == mon.maxHp())
-                throw new NoEffectException("The monster hp is full");
-            mon.healSelf(mon.maxHp());
+        public void applyTo( Monster mon) throws NoEffectException {
+            mon.levelUp();
         }
         
 		@Override
@@ -110,7 +104,7 @@ public abstract class Item implements Purchasable {
 
         @Override
         public int buyPrice() {
-            return 1000;
+            return 300;
         }
 
         @Override
@@ -118,6 +112,7 @@ public abstract class Item implements Purchasable {
             return buyPrice() / 2;
         }
     }
+
     /**
      * Signals that an item has been applied to a monster but produce no result
      */
@@ -127,7 +122,6 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /**
      * Apply this item to a monster
      *
      * @param mon The target monster
@@ -155,6 +149,13 @@ public abstract class Item implements Purchasable {
     public String getName() {
         return this.getClass().getSimpleName();
     }
+
+    /**
+     * Get the description of this item
+     *
+     * @return The description of this item
+     */
+    public String getDesc() { return desc; }
 
     /**
      * Comparing the item with another

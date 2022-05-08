@@ -176,10 +176,10 @@ public final class BattleManager {
         def.takeDamage(dmg);
 
         feeds.add(String.format(
-            "%s's %s attacked %s's %s dealing %d",
-            atkTrainer.getName(), atk.getName(),
-            defTrainer.getName(), def.getName(),
-            dmg
+                "%s's %s attacked %s's %s dealing %d",
+                atkTrainer.getName(), atk.getName(),
+                defTrainer.getName(), def.getName(),
+                dmg
         ));
 
         if (def.isFainted()) {
@@ -205,10 +205,10 @@ public final class BattleManager {
      */
     private void endGame() {
         feeds.add(String.format(
-            "%s win with %d monster left and %s lost",
-            winner().getName(),
-            winner().getParty().stream().filter(m -> !m.isFainted()).toList().size(),
-            loser().getName()
+                "%s win with %d monster left and %s lost",
+                winner().getName(),
+                winner().getParty().stream().filter(m -> !m.isFainted()).toList().size(),
+                loser().getName()
         ));
         isSettled.set(true);
         ui.onEnd(isMon1Turn);
@@ -343,9 +343,9 @@ public final class BattleManager {
      */
     public int goldReward() {
         return loser().getParty()
-            .stream()
-            .mapToInt(Monster::sellPrice)
-            .sum();
+                .stream()
+                .mapToInt(Monster::sellPrice)
+                .sum();
     }
 
     /**
@@ -355,8 +355,8 @@ public final class BattleManager {
      */
     public int scoreReward() {
         return loser().getParty()
-            .stream()
-            .mapToInt(Monster::getLevel)
-            .sum();
+                .stream()
+                .mapToInt(Monster::getLevel)
+                .sum();
     }
 }

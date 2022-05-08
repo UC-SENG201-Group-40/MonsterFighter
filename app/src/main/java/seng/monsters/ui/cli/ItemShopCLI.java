@@ -7,7 +7,7 @@ import seng.monsters.model.Purchasable;
 import seng.monsters.model.Item;
 
 
-public class ItemShopCLI extends ShopCLI{
+public final class ItemShopCLI extends ShopCLI{
 
     private final Inventory inventory;
 
@@ -80,6 +80,8 @@ public class ItemShopCLI extends ShopCLI{
             final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d, Price: %d)%n",
                     i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
+
+            System.out.printf("    %s%n%n", item.getKey().getDesc());
         }
         System.out.println("\n0 - Cancel");
     }

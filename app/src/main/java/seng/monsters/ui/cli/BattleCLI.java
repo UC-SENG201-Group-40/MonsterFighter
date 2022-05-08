@@ -8,6 +8,7 @@ package seng.monsters.ui.cli;
 
 import seng.monsters.model.BattleManager;
 import seng.monsters.model.Environment;
+import seng.monsters.model.GameManager;
 import seng.monsters.model.Trainer;
 
 import java.util.HashSet;
@@ -20,9 +21,11 @@ import java.util.Set;
 public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     private final BattleManager battler;
     private final Set<String> loggedFeeds = new HashSet<>();
+    private final GameManager gameManager;
 
-    public BattleCLI(Trainer lhs, Trainer rhs) {
+    public BattleCLI(Trainer lhs, Trainer rhs, GameManager gameManager) {
         battler = new BattleManager(this, lhs, rhs, Environment.FIELD);
+        this.gameManager = gameManager;
     }
 
     public void run() {
@@ -113,12 +116,28 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
         System.out.println("===========================");
         System.out.println(feeds.get(feeds.size() - 1));
         System.out.println(partyFeed());
+        if (!gameManager.getTrainer().isWhitedOut()) {
+            displayBattleRewards();
+            battleRewards();
+        }
         System.out.println("===========================");
     }
 
-    public static void make(Trainer trainer1, Trainer trainer2) {
+    private void displayBattleRewards() {
+        System.out.printf("The enemy payed out %d gold!%n",
+                battler.goldReward());
+        System.out.printf("You gained %d score!%n",
+                battler.scoreReward());
+    }
+
+    private void battleRewards() {
+        gameManager.setGold(gameManager.getGold() + battler.goldReward());
+        gameManager.setScore(gameManager.getScore() + battler.scoreReward());
+    }
+
+    public static void make(Trainer trainer1, Trainer trainer2, GameManager gameManager) {
         try {
-            final var cli = new BattleCLI(trainer1, trainer2);
+            final var cli = new BattleCLI(trainer1, trainer2, gameManager);
             cli.run();
         } catch (Exception e) {
             e.printStackTrace();
