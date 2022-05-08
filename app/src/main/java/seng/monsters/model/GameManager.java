@@ -263,6 +263,8 @@ public class GameManager {
      * @return the monster leaving the party, or null otherwise.
      */
     public Optional<Monster> partyMonstersLeave() {
+        if (trainer.getParty().size() < 2)
+            return Optional.empty();
         for (int i = 0; i < trainer.getParty().size(); i++) {
             final var mon = trainer.getParty().get(i);
             if (mon.shouldLeave()) {
