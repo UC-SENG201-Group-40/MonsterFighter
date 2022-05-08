@@ -328,7 +328,17 @@ public final class BattleManager {
     }
 
     /**
+     * Check if the player1 has won
+     *
+     * @return True if all player 2 monster is fainted, otherwise false
+     */
+    public boolean hasPlayerWon() {
+        return player2.getParty().stream().allMatch(Monster::isFainted);
+    }
+
+    /**
      * The gold total rewarded for this battle
+     *
      * @return The amount gold should be received by the winner
      */
     public int goldReward() {
@@ -340,6 +350,7 @@ public final class BattleManager {
 
     /**
      * The score total rewarded for this battle
+     *
      * @return The amount score should be received by the winner
      */
     public int scoreReward() {
