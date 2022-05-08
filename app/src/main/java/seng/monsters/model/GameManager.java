@@ -179,6 +179,14 @@ public class GameManager {
 
     // MARK: -- Rule checking methods --
 
+    /**
+     * Checks if the player has completed the final day (the win condition).
+     *
+     * @return true if the player has completed the final day.
+     */
+    public boolean hasEnded() {
+        return (getCurrentDay() > getMaxDays());
+    }
 
     /**
      * Check if the player has no monster and not enough funds to purchase a monster
@@ -219,12 +227,11 @@ public class GameManager {
      */
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
-        final var hasEnded = getCurrentDay() > getMaxDays();
 
-        if (!hasEnded)
+        if (!hasEnded())
             triggerNightEvents();
 
-        return hasEnded
+        return hasEnded()
             || hasNotEnoughMoneyForMonster()
             || hasNoPossibilityForRevive();
     }
