@@ -6,12 +6,12 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class SetupCLI extends TestableCLI {
+public final class SetupCLI extends TestableCLI {
 
     private final List<Monster> starterMonsters = List.of(
-        new Monster.Quacker(1),
-        new Monster.Raver(1),
-        new Monster.Tree(1)
+        new Monster.Quacker(3),
+        new Monster.Raver(3),
+        new Monster.Tree(3)
     );
     private final List<String> difficulties = List.of("Normal", "Hard", "Utterly Impossible");
 

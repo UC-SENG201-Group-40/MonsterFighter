@@ -66,7 +66,7 @@ public class ItemShopCLITest extends CLITestBase {
 
     @Test
     void buyPurchasableInterface() {
-        gameManager.setGold(1050);
+        gameManager.setGold(150);
 
         // Immediately exit with 0
         provideInput("0");
@@ -114,21 +114,21 @@ public class ItemShopCLITest extends CLITestBase {
         provideMultipleInput(List.of("3", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(0, inventory.getItemNumber(rareCandy));
-        assertEquals(50, gameManager.getGold());
+        assertEquals(150, gameManager.getGold());
         assertTrue(acquireOutput().contains("RareCandy sold!"));
 
         // Attempt to sell an item that the player does not have
         provideMultipleInput(List.of("3", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(0, inventory.getItemNumber(rareCandy));
-        assertEquals(50, gameManager.getGold());
+        assertEquals(150, gameManager.getGold());
         assertTrue(acquireOutput().contains("You don't have any of that item!"));
 
         // Invalid input, then sell an item
         provideMultipleInput(List.of("bhjagsdf", "1", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(1, inventory.getItemNumber(potion));
-        assertEquals(62, gameManager.getGold());
+        assertEquals(162, gameManager.getGold());
         assertTrue(acquireOutput().contains("Potion sold!"));
     }
 

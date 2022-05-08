@@ -56,7 +56,7 @@ public class IntermediateShopCLITest extends CLITestBase {
         assertTrue(acquireOutput().contains("Would you like to buy or sell items?"));
 
         // Enter invalid input, then monster shop, then exit
-        provideMultipleInput(List.of("(￣﹏￣；)", "2", "0", "0"));
+        provideMultipleInput(List.of("(-_-)", "2", "0", "0"));
         intermediateShopCLI.selectShopInterface();
         assertTrue(acquireOutput().contains("Would you like to buy or sell monsters?"));
          */

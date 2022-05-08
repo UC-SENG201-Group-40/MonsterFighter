@@ -5,7 +5,7 @@ import seng.monsters.model.Shop;
 import seng.monsters.model.Purchasable;
 import seng.monsters.model.Trainer;
 
-public class MonsterShopCLI extends ShopCLI {
+public final class MonsterShopCLI extends ShopCLI {
 
     public MonsterShopCLI(GameManager gameManager) {
         super(gameManager);
@@ -75,7 +75,7 @@ public class MonsterShopCLI extends ShopCLI {
             final var mon = shopMonsters.get(i);
             System.out.printf("\n%d - %s (Level %d)\n", i + 1, mon.getName(), mon.getLevel());
             System.out.printf("Price: %d Gold\n", mon.buyPrice());
-            System.out.printf("Max Hp: %d", mon.maxHp());
+            System.out.printf("Max Hp: %d\n", mon.maxHp());
             System.out.printf("Attack Damage: %d\n", mon.scaledDamage());
             System.out.printf("Speed: %d\n", mon.speed());
             System.out.printf("Overnight Heal Rate: %d\n", mon.healRate());
