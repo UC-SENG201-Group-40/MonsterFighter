@@ -88,7 +88,7 @@ public final class PartyCLI extends TestableCLI {
      * @throws IndexOutOfBoundsException if a valid parameter is passed, but there is no monster in that party position.
      */
     public boolean selectMonsterToSwap(Monster mon, int scannerInput)
-            throws IllegalArgumentException, IndexOutOfBoundsException {
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
                 gameManager.switchMonsterOnParty(mon, scannerInput - 1);
@@ -120,7 +120,7 @@ public final class PartyCLI extends TestableCLI {
         for (int i = 0; i < party.size(); i++) {
             final var mon = party.get(i);
             System.out.printf("\n%d - %s (Level %d, %d/%d HP)\n",
-                    i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
+                i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
             System.out.printf("Monster Type: %s\n", mon.monsterType());
             System.out.printf("Sell Price: %d Gold\n", mon.sellPrice());
             System.out.printf("Attack Damage: %d\n", mon.scaledDamage());

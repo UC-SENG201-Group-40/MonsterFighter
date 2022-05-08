@@ -5,14 +5,13 @@ import seng.monsters.model.Monster;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public final class MainMenuCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<String> menuOptions = List.of(
-            "Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
+        "Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
 
     public MainMenuCLI(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -74,14 +73,14 @@ public final class MainMenuCLI extends TestableCLI {
     private void displayMainMenu() {
         System.out.println("\n===========================\n");
         System.out.printf("Gold: %d%n",
-                gameManager.getGold());
+            gameManager.getGold());
         System.out.printf("Current day: %d/%d%n",
-                gameManager.getCurrentDay(), gameManager.getMaxDays());
+            gameManager.getCurrentDay(), gameManager.getMaxDays());
         System.out.printf("Current environment: %s%n%n",
-                gameManager.getEnvironment());
+            gameManager.getEnvironment());
         System.out.println("Select an option:");
-        for (int i=0; i < menuOptions.size(); i++) {
-            System.out.printf("%d - %s%n", i+1, menuOptions.get(i));
+        for (int i = 0; i < menuOptions.size(); i++) {
+            System.out.printf("%d - %s%n", i + 1, menuOptions.get(i));
         }
     }
 
@@ -90,7 +89,7 @@ public final class MainMenuCLI extends TestableCLI {
         final var levelledUp = gameManager.partyMonstersLevelUp();
         final var monsterJoining = gameManager.monsterJoinsParty();
         System.out.printf("%nThe environment has been changed to a(n) %s environment!%n",
-                gameManager.getEnvironment());
+            gameManager.getEnvironment());
         if (leftParty != null) {
             System.out.printf("%s has expired...%n", leftParty.getName());
         }
@@ -98,7 +97,7 @@ public final class MainMenuCLI extends TestableCLI {
             monsterJoinsPartyInterface(input(), monsterJoining);
         }
         for (final var mon : levelledUp) {
-            System.out.printf("%s has levelled up from %d to %d!%n", mon.getName(), mon.getLevel()-1, mon.getLevel());
+            System.out.printf("%s has levelled up from %d to %d!%n", mon.getName(), mon.getLevel() - 1, mon.getLevel());
         }
         System.out.println("Your monsters have healed!");
         System.out.println("The shop has restocked and there are new battles available!");
@@ -112,7 +111,7 @@ public final class MainMenuCLI extends TestableCLI {
             return;
         }
         final var day = gameManager.getCurrentDay();
-        if (day == gameManager.getMaxDays()+1) {
+        if (day == gameManager.getMaxDays() + 1) {
             if (gameManager.getScore() == 0) {
                 System.out.println("YOU CHEESED THE GAME%n");
             } else {
@@ -128,7 +127,7 @@ public final class MainMenuCLI extends TestableCLI {
         System.out.println("\nFinal party:");
         for (Monster mon : gameManager.getTrainer().getParty()) {
             System.out.printf("%s - Level %d %s%n",
-                    mon.getName(), mon.getLevel(), mon.monsterType());
+                mon.getName(), mon.getLevel(), mon.monsterType());
         }
         System.out.println("\nThanks for playing!");
     }
@@ -157,8 +156,8 @@ public final class MainMenuCLI extends TestableCLI {
         System.out.printf("Congratulations! %s has joined your party!", mon.getName());
         System.out.println("""
 
-                Would you like to give it a name?\s
-                (Must be between 3 and 15 letters inclusive, no symbols or numbers. Leave blank for default name):""");
+            Would you like to give it a name?\s
+            (Must be between 3 and 15 letters inclusive, no symbols or numbers. Leave blank for default name):""");
     }
 
     public static void make(GameManager gameManager) {

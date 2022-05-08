@@ -66,7 +66,7 @@ public class ItemShopCLITest extends CLITestBase {
 
     @Test
     void buyPurchasableInterface() {
-        gameManager.setGold(150);
+        gameManager.setGold(1500);
 
         // Immediately exit with 0
         provideInput("0");
@@ -75,15 +75,15 @@ public class ItemShopCLITest extends CLITestBase {
         // Buy 1 FullRestore
         final var fullRestore = new Item.FullRestore();
         shop.setItemStock(fullRestore, 2);
-        provideMultipleInput(List.of("3", "0"));
+        provideMultipleInput(List.of("4", "0"));
         itemShopCLI.buyPurchasableInterface(null);
         assertEquals(1, shop.getItemStock(fullRestore));
         assertEquals(1, inventory.getItemNumber(fullRestore));
-        assertEquals(50, gameManager.getGold());
+        assertEquals(500, gameManager.getGold());
         assertTrue(acquireOutput().contains("FullRestore bought!"));
 
         // Attempt to buy item with insufficient funds
-        provideMultipleInput(List.of("3", "0"));
+        provideMultipleInput(List.of("4", "0"));
         itemShopCLI.buyPurchasableInterface(null);
         assertEquals(1, shop.getItemStock(fullRestore));
         assertEquals(1, inventory.getItemNumber(fullRestore));
@@ -91,8 +91,9 @@ public class ItemShopCLITest extends CLITestBase {
 
         // Invalid input, then regular flow
         final var potion = new Item.Potion();
+        gameManager.setGold(potion.buyPrice() * 4);
         shop.setItemStock(potion, 5);
-        provideMultipleInput(List.of("420", "2", "2", "0"));
+        provideMultipleInput(List.of("420", "1", "1", "0"));
         itemShopCLI.buyPurchasableInterface(null);
         assertEquals(3, shop.getItemStock(potion));
         assertEquals(2, inventory.getItemNumber(potion));
@@ -114,23 +115,21 @@ public class ItemShopCLITest extends CLITestBase {
         provideMultipleInput(List.of("3", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(0, inventory.getItemNumber(rareCandy));
-        assertEquals(150, gameManager.getGold());
+        assertEquals(50, gameManager.getGold());
         assertTrue(acquireOutput().contains("RareCandy sold!"));
 
         // Attempt to sell an item that the player does not have
         provideMultipleInput(List.of("3", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(0, inventory.getItemNumber(rareCandy));
-        assertEquals(150, gameManager.getGold());
+        assertEquals(50, gameManager.getGold());
         assertTrue(acquireOutput().contains("You don't have any of that item!"));
 
         // Invalid input, then sell an item
         provideMultipleInput(List.of("bhjagsdf", "1", "0"));
         itemShopCLI.sellPurchasableInterface(null);
         assertEquals(1, inventory.getItemNumber(potion));
-        assertEquals(162, gameManager.getGold());
+        assertEquals(62, gameManager.getGold());
         assertTrue(acquireOutput().contains("Potion sold!"));
     }
-
-
 }

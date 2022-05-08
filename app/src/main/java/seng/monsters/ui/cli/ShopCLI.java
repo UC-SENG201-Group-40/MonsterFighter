@@ -1,9 +1,9 @@
 package seng.monsters.ui.cli;
 
 import seng.monsters.model.GameManager;
-import seng.monsters.model.Shop;
-import seng.monsters.model.Purchasable;
 import seng.monsters.model.Monster;
+import seng.monsters.model.Purchasable;
+import seng.monsters.model.Shop;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -23,6 +23,7 @@ public abstract class ShopCLI extends TestableCLI {
     /**
      * Prints buy and sell shop options to output and selects one based on player input.
      * Type of purchasables depends on shop type.
+     *
      * @param shopType The string "items" or "monsters" depending on the type of shop.
      */
     public void shopTypeInterface(String shopType) {
@@ -40,6 +41,7 @@ public abstract class ShopCLI extends TestableCLI {
 
     /**
      * Prints the purchasable options to buy and attempts to buy purchasables based on player input.
+     *
      * @param purchasable The last purchasable bought, null otherwise.
      */
     public void buyPurchasableInterface(Purchasable purchasable) {
@@ -57,6 +59,7 @@ public abstract class ShopCLI extends TestableCLI {
 
     /**
      * Prints the purchasable options to sell and attempts to sell purchasables based on player input.
+     *
      * @param purchasable The last purchasable sold, null otherwise.
      */
     public void sellPurchasableInterface(Purchasable purchasable) {
@@ -75,8 +78,9 @@ public abstract class ShopCLI extends TestableCLI {
     /**
      * Takes player input and selects to either buy or sell purchasables.
      * Type of purchasables depends on the shop type.
+     *
      * @param scannerInput The player's input as an int.
-     * @param shopType The string "items" or "monsters" depending on the type of shop.
+     * @param shopType     The string "items" or "monsters" depending on the type of shop.
      * @throws IllegalArgumentException if an invalid input is passed.
      */
     public void selectShopType(int scannerInput, String shopType) throws IllegalArgumentException {
@@ -114,6 +118,7 @@ public abstract class ShopCLI extends TestableCLI {
 
     /**
      * Prints buy and sell shop options to output.
+     *
      * @param shopType The string "items" or "monsters" depending on the type of shop.
      */
     public void displayShopOptions(String shopType) {
@@ -127,24 +132,28 @@ public abstract class ShopCLI extends TestableCLI {
 
     /**
      * Takes player input and attempts to buy the selected purchasable.
+     *
      * @param scannerInput The player's input as an int.
      */
     public abstract void buyPurchasable(int scannerInput);
 
     /**
      * Takes player input and attempts to sell the selected purchasable.
+     *
      * @param scannerInput The player's input as an int.
      */
     public abstract void sellPurchasable(int scannerInput);
 
     /**
      * Prints the purchasable options to buy.
+     *
      * @param boughtPurchasable The last purchasable bought, null otherwise.
      */
     public abstract void displayBuyPurchasableOptions(Purchasable boughtPurchasable);
 
     /**
      * Prints the purchasable options to sell.
+     *
      * @param soldPurchasable The last purchasable sold, null otherwise.
      */
     public abstract void displaySellPurchasableOptions(Purchasable soldPurchasable);

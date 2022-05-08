@@ -29,6 +29,7 @@ public class IntermediateShopCLI extends TestableCLI {
 
     /**
      * Takes the player's input to select which shop to enter.
+     *
      * @param scannerInput The player's input as an int.
      * @throws IllegalArgumentException If an invalid input is entered.
      */

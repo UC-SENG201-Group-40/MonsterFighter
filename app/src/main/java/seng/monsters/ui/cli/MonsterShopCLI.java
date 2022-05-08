@@ -1,8 +1,8 @@
 package seng.monsters.ui.cli;
 
 import seng.monsters.model.GameManager;
-import seng.monsters.model.Shop;
 import seng.monsters.model.Purchasable;
+import seng.monsters.model.Shop;
 import seng.monsters.model.Trainer;
 
 public final class MonsterShopCLI extends ShopCLI {
@@ -13,11 +13,12 @@ public final class MonsterShopCLI extends ShopCLI {
 
     /**
      * Takes player input and attempts to buy the selected monster.
+     *
      * @param scannerInput The player's input as an int.
      */
-    public void buyPurchasable(int scannerInput) throws IllegalArgumentException, Trainer.PartyFullException{
+    public void buyPurchasable(int scannerInput) throws IllegalArgumentException, Trainer.PartyFullException {
         try {
-            if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size()+1)) {
+            if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size() + 1)) {
                 final var mon = shop.getMonsterStock().get(scannerInput - 1);
                 if (party.size() == 4) {
                     throw new Trainer.PartyFullException("Cannot add more than 4 monster");
@@ -42,11 +43,12 @@ public final class MonsterShopCLI extends ShopCLI {
 
     /**
      * Takes player input and attempts to sell the selected monster.
+     *
      * @param scannerInput The player's input as an int.
      */
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
-            if ((scannerInput > 0) && (scannerInput < party.size()+1)) {
+            if ((scannerInput > 0) && (scannerInput < party.size() + 1)) {
                 final var mon = party.get(scannerInput - 1);
                 gameManager.sell(mon);
                 sellPurchasableInterface(mon);
@@ -61,6 +63,7 @@ public final class MonsterShopCLI extends ShopCLI {
 
     /**
      * Prints the monster options to buy.
+     *
      * @param boughtMon The last monster bought, null otherwise.
      */
     public void displayBuyPurchasableOptions(Purchasable boughtMon) {
@@ -86,6 +89,7 @@ public final class MonsterShopCLI extends ShopCLI {
 
     /**
      * Prints the monster options to sell.
+     *
      * @param soldMon The last monster sold, null otherwise.
      */
     public void displaySellPurchasableOptions(Purchasable soldMon) {
