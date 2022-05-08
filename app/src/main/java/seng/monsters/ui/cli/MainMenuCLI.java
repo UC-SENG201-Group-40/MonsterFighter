@@ -90,12 +90,8 @@ public final class MainMenuCLI extends TestableCLI {
         final var monsterJoining = gameManager.monsterJoinsParty();
         System.out.printf("%nThe environment has been changed to a(n) %s environment!%n",
             gameManager.getEnvironment());
-        if (leftParty != null) {
-            System.out.printf("%s has expired...%n", leftParty.getName());
-        }
-        if (monsterJoining != null) {
-            monsterJoinsPartyInterface(input(), monsterJoining);
-        }
+        leftParty.ifPresent(monster -> System.out.printf("%s has expired...%n", monster.getName()));
+        monsterJoining.ifPresent(monster -> monsterJoinsPartyInterface(input(), monster));
         for (final var mon : levelledUp) {
             System.out.printf("%s has levelled up from %d to %d!%n", mon.getName(), mon.getLevel() - 1, mon.getLevel());
         }
