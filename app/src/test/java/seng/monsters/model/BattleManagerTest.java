@@ -14,7 +14,7 @@ class BattleManagerTest {
     private BattleManager.UI dud;
 
     private static abstract class DudUI implements BattleManager.UI {
-        public void onEachFrame(boolean isMon1Turn, int pos) {
+        public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
         }
 
         public void onEachDamage(boolean isMon1Turn, int dmg) {
@@ -106,7 +106,7 @@ class BattleManagerTest {
                 }
 
                 @Override
-                public void onEachFrame(boolean isMon1Turn, int pos) {
+                public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
                     isEachFrameCalled.set(true);
                 }
             },

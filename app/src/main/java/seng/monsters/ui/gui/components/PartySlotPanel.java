@@ -112,8 +112,8 @@ public final class PartySlotPanel {
     public void refresh() {
         iconLabel.setIcon(new ImageIcon(
             Objects.requireNonNull(
-                this.getClass().getResource(
-                    String.format("/images/small/%s.gif", monster.monsterType())
+            		PartySlotPanel.class.getResource(
+                    String.format("/images/small/%s.gif", monster.monsterType().toLowerCase())
                 )
             )
         ));
@@ -143,7 +143,7 @@ public final class PartySlotPanel {
         iconLabel.setIcon(new ImageIcon(
             Objects.requireNonNull(
                 this.getClass().getResource(
-                    String.format("/images/small/%s.gif", monster.monsterType())
+                    String.format("/images/small/%s.gif", monster.monsterType().toLowerCase())
                 )
             )
         ));

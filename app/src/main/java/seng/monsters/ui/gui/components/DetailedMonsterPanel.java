@@ -184,7 +184,7 @@ public final class DetailedMonsterPanel {
         );
 
         iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(this.getClass().getResource(
+            Objects.requireNonNull(DetailedMonsterPanel.class.getResource(
                 String.format("/images/%s.gif", monster.monsterType().toLowerCase())
             ))
         ));

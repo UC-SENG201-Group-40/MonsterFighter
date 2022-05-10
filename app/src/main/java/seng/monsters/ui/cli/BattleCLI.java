@@ -78,7 +78,7 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     @Override
-    public void onEachFrame(boolean isMon1Turn, int pos) {
+    public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
     }
 
     @Override
