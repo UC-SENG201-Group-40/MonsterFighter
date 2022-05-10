@@ -1,7 +1,9 @@
 package seng.monsters.ui.gui;
 
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -27,6 +29,13 @@ public class AvailableBattlesScreen extends Screen {
 	}
 
 	public void render() {
+        frame.setContentPane(new JLabel(
+                new ImageIcon(
+                    Objects.requireNonNull(BattleScreen.class.getResource(
+                        String.format("/images/%s.jpeg", gameManager.getEnvironment().toString())
+                    )))
+            ));
+        
 		JComboBox<String> enemiesComboBox = new JComboBox<>();
 		enemiesComboBox.setModel(
 			new LabelComboboxModel<>(gameManager.getAvailableBattles(), Trainer::getName)
