@@ -194,7 +194,9 @@ public class GameManager {
      * @return true if the player's party is all fainted and gold is less than the price of revive
      */
     public boolean hasNoPossibilityForRevive() {
-        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice();
+        final var hasNoSupply = inventory.getItemNumber(new Item.Revive()) <= 0 &&
+            inventory.getItemNumber(new Item.FullRestore()) <= 0;
+        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice() && hasNoSupply;
     }
 
     /**
