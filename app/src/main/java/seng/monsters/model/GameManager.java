@@ -7,9 +7,7 @@
 //
 package seng.monsters.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The Game Manager that the model of the game
@@ -196,7 +194,9 @@ public class GameManager {
      * @return true if the player's party is all fainted and gold is less than the price of revive
      */
     public boolean hasNoPossibilityForRevive() {
-        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice();
+        final var hasNoSupply = inventory.getItemNumber(new Item.Revive()) <= 0 &&
+            inventory.getItemNumber(new Item.FullRestore()) <= 0;
+        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice() && hasNoSupply;
     }
 
     /**
@@ -328,16 +328,21 @@ public class GameManager {
      * Update the available battles for the day
      */
     protected void updateAvailableBattles() {
-        final var amountEnemies = Math.max(1, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final var rng = new Random();
+        final var names = getRandomTrainerNames();
+        final var amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
         final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 
         for (var i = 0; i < amountEnemies; i++) {
-            final var enemy = new Trainer(getEnvironment().toString() + " enemy " + i);
+            final var index = rng.nextInt(names.size());
+            final var name = names.get(index);
+            final var enemy = new Trainer(name);
             for (var j = 0; j < amountMonster; j++) {
                 enemy.add(shop.randomMonster());
             }
+            names.remove(index);
             availableBattles.add(enemy);
         }
     }
@@ -529,6 +534,24 @@ public class GameManager {
      */
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    /**
+     * Get the list of role based name from the resource text file
+     *
+     * @return A Map of index to role name pair
+     */
+    private HashMap<Integer, String> getRandomTrainerNames() {
+        final var file = Objects.requireNonNull(GameManager.class.getResourceAsStream("/txt/roles.txt"));
+        final var scanner = new Scanner(file);
+        final var res = new HashMap<Integer, String>(56);
+        var i = 0;
+        while (scanner.hasNextLine()) {
+            res.put(i, scanner.nextLine());
+            i++;
+        }
+        scanner.close();
+        return res;
     }
 }
 

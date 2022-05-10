@@ -95,7 +95,7 @@ class GameManagerTest {
         assertTrue(manager.getAvailableBattles().size() > 0);
         assertTrue(manager.getAvailableBattles().stream().noneMatch(Trainer::isWhitedOut));
 
-        final var amountEnemies = Math.max(1, Math.min(5, 5 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
+        final var amountEnemies = Math.max(3, Math.min(5, 5 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
         final var amountMonster = Math.max(1, Math.min(4, 4 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
         assertEquals(amountEnemies, manager.getAvailableBattles().size());
         assertTrue(manager.getAvailableBattles().stream().allMatch(trainer -> trainer.getParty().size() == amountMonster));
@@ -196,11 +196,10 @@ class GameManagerTest {
         manager.getTrainer().add(ejectMon);
         perfectMon.takeDamage(perfectMon.maxHp() / 2);
         manager.getAvailableBattles().forEach(trainer -> trainer.getParty().forEach(mon -> mon.takeDamage(mon.maxHp())));
-        manager.setCurrentDay(1);
-        manager.setMaxDays(3);
+        manager.setCurrentDay(3);
+        manager.setMaxDays(5);
 
         final var currentHp = perfectMon.getCurrentHp();
-        final var currentLevel = perfectMon.getLevel();
         final var currentDay = manager.getCurrentDay();
         final var monsterStock = manager.getShop().getMonsterStock();
         final var availableBattles = manager.getAvailableBattles().size();

@@ -170,7 +170,6 @@ public class InventoryScreen extends Screen {
                 gameManager.useItemFromInventory(item, monster);
 
                 final var newCount = inventory.getItemNumber(item);
-                System.out.println(newCount);
                 countLabel.setText(String.format("%dx", newCount));
                 sellButton.setEnabled(newCount > 0);
                 useButton.setEnabled(newCount > 0);

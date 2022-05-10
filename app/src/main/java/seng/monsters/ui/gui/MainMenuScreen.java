@@ -105,14 +105,20 @@ public class MainMenuScreen extends Screen {
         battlesButton.setForeground(new Color(220, 20, 60));
         battlesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
         battlesButton.setBounds(309, 320, 200, 61);
+        battlesButton.setEnabled(!gameManager.getAvailableBattles().isEmpty());
         frame.getContentPane().add(battlesButton);
 
         partyButton.addActionListener(managePartyAction());
         inventoryButton.addActionListener(manageInventoryAction());
         sleepButton.addActionListener(sleepAction(errorLabel));
+        battlesButton.addActionListener(lookAvailableBattlesAction());
 
         frame.setResizable(false);
         frame.setVisible(true);
+    }
+
+    private ActionListener lookAvailableBattlesAction() {
+        return e -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
     }
 
     /**
@@ -141,11 +147,12 @@ public class MainMenuScreen extends Screen {
      */
     private ActionListener sleepAction(JLabel errorLabel) {
         return e -> {
-//            if (gameManager.hasNotBattleOnce()) {
-//                errorLabel.setVisible(true);
-//                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
-//                return;
-//            }
+            if (gameManager.hasNotBattleOnce()) {
+                errorLabel.setVisible(true);
+                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
+                return;
+            }
+
             final var isEnded = gameManager.nextDay();
 
             if (isEnded) {

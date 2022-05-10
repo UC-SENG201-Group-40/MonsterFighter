@@ -34,7 +34,7 @@ public final class GUI {
         inv.add(new Item.RareCandy());
 
         final var trainer = gameManager.getTrainer();
-        final var mon1 = new Monster.Eel("LongBoy", 1);
+        final var mon1 = new Monster.Eel("Guarantee", 69);
         mon1.takeDamage(mon1.maxHp());
         final var mon2 = new Monster.Tree("TreeBoy", 1);
         mon2.takeDamage(1);

@@ -67,7 +67,8 @@ public class TitleScreen extends Screen {
 
     /**
      * The action when the user submitted their name
-     * @param textField The text field to get input
+     *
+     * @param textField  The text field to get input
      * @param errorLabel The error label to display error in the name input
      * @return An action listener for the submit button
      */
