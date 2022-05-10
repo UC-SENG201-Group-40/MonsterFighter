@@ -53,11 +53,11 @@ public class AvailableBattlesScreen extends Screen {
 		panel.setBounds(439, 80);
 		panel.applyToFrame(frame);
 
-		JButton battleButton = new JButton("Next");
+		JButton battleButton = new JButton("Fight");
 		battleButton.setBounds(187, 390, 117, 29);
 		frame.getContentPane().add(battleButton);
 		
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton("Return");
 		cancelButton.setBounds(475, 390, 117, 29);
 		frame.getContentPane().add(cancelButton);
         

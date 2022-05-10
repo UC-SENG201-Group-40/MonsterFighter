@@ -198,6 +198,8 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
             onStart();
 
             timer = t;
+            
+            startBattle.setEnabled(false);
         });
         quitBattle.addActionListener(onQuit());
 

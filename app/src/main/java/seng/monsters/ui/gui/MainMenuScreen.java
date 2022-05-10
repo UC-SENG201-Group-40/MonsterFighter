@@ -105,6 +105,7 @@ public class MainMenuScreen extends Screen {
         battlesButton.setForeground(new Color(220, 20, 60));
         battlesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
         battlesButton.setBounds(309, 320, 200, 61);
+        battlesButton.setEnabled(!gameManager.getAvailableBattles().isEmpty());
         frame.getContentPane().add(battlesButton);
 
         partyButton.addActionListener(managePartyAction());
