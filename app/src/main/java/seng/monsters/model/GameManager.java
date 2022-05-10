@@ -10,6 +10,7 @@ package seng.monsters.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * The Game Manager that the model of the game
@@ -328,13 +329,18 @@ public class GameManager {
      * Update the available battles for the day
      */
     protected void updateAvailableBattles() {
-        final var amountEnemies = Math.max(1, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+    	final var rng = new Random();
+    	final var roles = List.of("Guardian", "Thug", "Hunter", "Random person", "Bad person"); 
+        final var amountEnemies = Math.max(4, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
         final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 
         for (var i = 0; i < amountEnemies; i++) {
-            final var enemy = new Trainer(getEnvironment().toString() + " enemy " + i);
+        		final var role = roles.get(rng.nextInt(roles.size()));
+        		final var order = i + 1 == 1 ? "st" : i + 1 == 2 ? "nd" : i + 1 == 3 ? "rd" : "th"; 
+        		final var name = String.format("%d%s %s", i + 1, order, role);
+            final var enemy = new Trainer(name);
             for (var j = 0; j < amountMonster; j++) {
                 enemy.add(shop.randomMonster());
             }

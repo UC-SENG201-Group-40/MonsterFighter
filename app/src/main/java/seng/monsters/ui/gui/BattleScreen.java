@@ -245,7 +245,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
 
     private ActionListener onQuit() {
-        return e -> frame.dispose();
+        return e -> gui.navigateBackToMainMenu();
     }
 
     public void onStart() {
@@ -308,11 +308,12 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         repaintParties();
         timer.stop();
     }
+    
     @Override
     public void dispose() {
         if (battleManager.hasPlayerWon()) {
-            gameManager.setGold(gameManager.getGold() + battleManager.goldReward());
-            gameManager.setScore(gameManager.getScore() + battleManager.scoreReward());
+            gameManager.setGold(gameManager.getGold() + battleManager.goldReward() * gameManager.getDifficulty());
+            gameManager.setScore(gameManager.getScore() + battleManager.scoreReward() * gameManager.getDifficulty());
         }
         super.dispose();
     }
