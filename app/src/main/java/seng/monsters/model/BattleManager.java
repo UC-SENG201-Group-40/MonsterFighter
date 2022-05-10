@@ -23,12 +23,35 @@ public final class BattleManager {
      * The UI that provides callbacks at certain event during the match
      */
     public interface UI {
-        void onEachFrame(boolean isMon1Turn, int pos);
+        /**
+         * The action done on each frame of the moving attack
+         *
+         * @param isMon1Turn True if the player is attacking, otherwise false
+         * @param pos        The pseudo position of the attack
+         * @param percentage The progress percentage of the attack
+         */
+        void onEachFrame(boolean isMon1Turn, int pos, int percentage);
 
+        /**
+         * The action done when the pseudo attack lands and dealt damage
+         *
+         * @param isMon1Turn True if the player is attacking, otherwise false
+         * @param dmg        The damage dealt
+         */
         void onEachDamage(boolean isMon1Turn, int dmg);
 
+        /**
+         * The action done when either battling monster needed to be switched out
+         *
+         * @param isMon1Turn True if the player is attacking, otherwise false
+         */
         void onEachNextMonster(boolean isMon1Turn);
 
+        /**
+         * The action done after the battle has concluded
+         *
+         * @param isMon1Turn True if the player is attacking, otherwise false
+         */
         void onEnd(boolean isMon1Turn);
     }
 
@@ -140,7 +163,8 @@ public final class BattleManager {
             return;
         }
 
-        ui.onEachFrame(isMon1Turn, pos);
+        final var progress = ((24.45 - (goal - pos) / speed) * 100) / 24.45;
+        ui.onEachFrame(isMon1Turn, pos, (int) progress);
         pos += speed;
 
         if (hasAttackLands()) {

@@ -111,14 +111,14 @@ public class MainMenuScreen extends Screen {
         partyButton.addActionListener(managePartyAction());
         inventoryButton.addActionListener(manageInventoryAction());
         sleepButton.addActionListener(sleepAction(errorLabel));
-        	battlesButton.addActionListener(lookAvailableBattlesAction());
+        battlesButton.addActionListener(lookAvailableBattlesAction());
 
         frame.setResizable(false);
         frame.setVisible(true);
     }
-    
+
     private ActionListener lookAvailableBattlesAction() {
-    	return e -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
+        return e -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
     }
 
     /**

@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -38,13 +37,6 @@ public class InventoryScreen extends Screen {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(
-                new ImageIcon(
-                    Objects.requireNonNull(BattleScreen.class.getResource(
-                        String.format("/images/%s.jpeg", gameManager.getEnvironment().toString())
-                    )))
-            ));
-    	
         JLabel errorLabel = new JLabel("No monster in party");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
