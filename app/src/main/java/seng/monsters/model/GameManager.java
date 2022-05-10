@@ -328,7 +328,7 @@ public class GameManager {
     protected void updateAvailableBattles() {
         final var rng = new Random();
         final var names = getRandomTrainerNames();
-        final var amountEnemies = Math.max(1, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final var amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
         final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();

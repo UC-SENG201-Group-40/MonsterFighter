@@ -152,7 +152,7 @@ public class MainMenuScreen extends Screen {
                 errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
                 return;
             }
-           
+
             final var isEnded = gameManager.nextDay();
 
             if (isEnded) {
