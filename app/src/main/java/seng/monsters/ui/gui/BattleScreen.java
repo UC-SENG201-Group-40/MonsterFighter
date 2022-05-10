@@ -30,6 +30,8 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     private JLabel punchImg;
     private JLabel mon1Image;
     private JLabel mon2Image;
+    private JLabel fire1Image;
+    private JLabel fire2Image;
     private JButton quitBattle;
     private JLabel feed0;
     private JLabel feed1;
@@ -48,8 +50,37 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(new ImageIcon(Objects.requireNonNull(BattleScreen.class.getResource("/images/beach.jpeg")))));
+        frame.setContentPane(new JLabel(
+                new ImageIcon(
+                    Objects.requireNonNull(BattleScreen.class.getResource(
+                        String.format("/images/%s.jpeg", gameManager.getEnvironment().toString())
+                    )))
+            ));
 
+        
+
+    	fire1Image = new JLabel();
+    	fire1Image.setHorizontalAlignment(SwingConstants.CENTER);
+    	fire1Image.setIcon(new ImageIcon(
+    		Objects.requireNonNull(BattleScreen.class.getResource(
+    		    "/images/fire.gif"
+    		))
+    	));
+    	fire1Image.setBounds(62, 94, 200, 150);
+    	fire1Image.setVisible(false);
+    	frame.getContentPane().add(fire1Image);
+    	
+    	fire2Image = new JLabel();
+    	fire2Image.setHorizontalAlignment(SwingConstants.CENTER);
+    	fire2Image.setIcon(new ImageIcon(
+    		Objects.requireNonNull(BattleScreen.class.getResource(
+    			"/images/fire.gif"
+    		))
+    	));
+    	fire2Image.setBounds(551, 94, 200, 150);
+    	fire2Image.setVisible(false);
+    	frame.getContentPane().add(fire2Image);
+        
         mon1Image = new JLabel();
         mon1Image.setHorizontalAlignment(SwingConstants.CENTER);
         URL mon1Url = Objects.requireNonNull(BattleScreen.class.getResource(
@@ -265,12 +296,18 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     public void onEachFrame(boolean isMon1Turn, int pos) {
         punchImg.setVisible(true);
         punchImg.setBounds(pos, 134, 108, 86);
+        	if (isMon1Turn ? pos > 82 : pos < 531) {
+        		fire1Image.setVisible(false);
+        		fire2Image.setVisible(false);
+        	}
     }
 
     @Override
     public void onEachDamage(boolean isMon1Turn, int dmg) {
         repaint();
         punchImg.setVisible(false);
+        fire1Image.setVisible(!isMon1Turn);
+        fire2Image.setVisible(isMon1Turn);
         punchImg.setIcon(
             new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
                 "/images/" + (!isMon1Turn ? "punch-true" : "punch-false") + ".png"
@@ -280,6 +317,8 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     @Override
     public void onEachNextMonster(boolean isMon1Turn) {
+        fire1Image.setVisible(false);
+        fire2Image.setVisible(false);
         punchImg.setIcon(
             new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
                 "/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png"

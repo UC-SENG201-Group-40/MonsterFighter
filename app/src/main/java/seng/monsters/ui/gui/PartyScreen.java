@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -45,6 +46,13 @@ public class PartyScreen extends Screen {
      */
     @Override
     public void render() {
+        frame.setContentPane(new JLabel(
+                new ImageIcon(
+                    Objects.requireNonNull(BattleScreen.class.getResource(
+                        String.format("/images/%s.jpeg", gameManager.getEnvironment().toString())
+                    )))
+            ));
+        
         JButton backToMainMenu = new JButton("Main menu");
         backToMainMenu.setBounds(351, 398, 117, 29);
         frame.getContentPane().add(backToMainMenu);
