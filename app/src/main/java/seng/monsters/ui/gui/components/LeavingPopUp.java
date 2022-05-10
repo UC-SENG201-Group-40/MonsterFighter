@@ -43,8 +43,8 @@ public class LeavingPopUp extends PopUp {
         // The icon for the monster joining
         JLabel iconLabel = new JLabel();
         iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(this.getClass().getResource(
-                String.format("/images/%s.gif", monster.monsterType())
+            Objects.requireNonNull(LeavingPopUp.class.getResource(
+                String.format("/images/%s.gif", monster.monsterType().toLowerCase())
             ))
         ));
         iconLabel.setBounds((PopUp.WIDTH - 146) / 2, 160, 146, 171);

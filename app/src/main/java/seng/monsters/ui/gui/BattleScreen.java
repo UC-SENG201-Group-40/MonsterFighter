@@ -53,7 +53,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         mon1Image = new JLabel();
         mon1Image.setHorizontalAlignment(SwingConstants.CENTER);
         URL mon1Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon1().getClass().getSimpleName().toLowerCase() + ".gif"
+            "/images/" + battleManager.getMon1().monsterType().toLowerCase() + ".gif"
         ));
         ImageIcon mon1Icon = new ImageIcon(mon1Url);
         mon1Image.setIcon(mon1Icon);
@@ -63,7 +63,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         mon2Image = new JLabel();
         mon2Image.setHorizontalAlignment(SwingConstants.CENTER);
         URL mon2Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon2().getClass().getSimpleName().toLowerCase() + ".gif"
+            "/images/" + battleManager.getMon2().monsterType().toLowerCase() + ".gif"
         ));
         ImageIcon mon2Icon = new ImageIcon(mon2Url);
         mon2Image.setIcon(mon2Icon);

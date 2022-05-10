@@ -8,6 +8,11 @@
 package seng.monsters.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner; 
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -330,20 +335,20 @@ public class GameManager {
      */
     protected void updateAvailableBattles() {
     	final var rng = new Random();
-    	final var roles = List.of("Guardian", "Thug", "Hunter", "Random person", "Bad person"); 
+    	final var names = getRandomTrainerNames();
         final var amountEnemies = Math.max(4, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
         final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 
         for (var i = 0; i < amountEnemies; i++) {
-        		final var role = roles.get(rng.nextInt(roles.size()));
-        		final var order = i + 1 == 1 ? "st" : i + 1 == 2 ? "nd" : i + 1 == 3 ? "rd" : "th"; 
-        		final var name = String.format("%d%s %s", i + 1, order, role);
+        		final var index = rng.nextInt(names.size());
+        		final var name = names.get(index);
             final var enemy = new Trainer(name);
             for (var j = 0; j < amountMonster; j++) {
                 enemy.add(shop.randomMonster());
             }
+            	names.remove(index);
             availableBattles.add(enemy);
         }
     }
@@ -535,6 +540,23 @@ public class GameManager {
      */
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+   
+    /**
+     * Get the list of role based name from the resource text file
+     * @return A Map of index to role name pair
+     */
+    private HashMap<Integer, String> getRandomTrainerNames() {
+    	final var file = GameManager.class.getResourceAsStream("/txt/roles.txt");
+    	final var scanner = new Scanner(file);
+    	final var res = new HashMap<Integer, String>(56);
+    	var i = 0;
+    	while (scanner.hasNextLine()) {
+    		res.put(i, scanner.nextLine());
+    		i++;
+    	}
+    	scanner.close();
+    	return res;
     }
 }
 
