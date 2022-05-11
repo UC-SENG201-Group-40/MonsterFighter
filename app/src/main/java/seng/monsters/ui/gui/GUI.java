@@ -20,26 +20,26 @@ public final class GUI {
 
     public GUI() {
         gameManager = new GameManager();
-
-        // TODO: Remove later
-        final var inv = gameManager.getInventory();
-        inv.add(new Item.Potion());
-        inv.add(new Item.Revive());
-        inv.add(new Item.FullRestore());
-        inv.add(new Item.Potion());
-        inv.add(new Item.Revive());
-        inv.add(new Item.FullRestore());
-        inv.add(new Item.RareCandy());
-        inv.add(new Item.RareCandy());
-        inv.add(new Item.RareCandy());
-
-        final var trainer = gameManager.getTrainer();
-        final var mon1 = new Monster.Eel("Guarantee", 69);
-        mon1.takeDamage(mon1.maxHp());
-        final var mon2 = new Monster.Tree("TreeBoy", 1);
-        mon2.takeDamage(1);
-        trainer.add(mon1);
-        trainer.add(mon2);
+        
+//        // TODO: Remove later
+//        final var inv = gameManager.getInventory();
+//        inv.add(new Item.Potion());
+//        inv.add(new Item.Revive());
+//        inv.add(new Item.FullRestore());
+//        inv.add(new Item.Potion());
+//        inv.add(new Item.Revive());
+//        inv.add(new Item.FullRestore());
+//        inv.add(new Item.RareCandy());
+//        inv.add(new Item.RareCandy());
+//        inv.add(new Item.RareCandy());
+//
+//        final var trainer = gameManager.getTrainer();
+//        final var mon1 = new Monster.Eel("Guarantee", 69);
+//        mon1.takeDamage(mon1.maxHp());
+//        final var mon2 = new Monster.Tree("TreeBoy", 1);
+//        mon2.takeDamage(1);
+//        trainer.add(mon1);
+//        trainer.add(mon2);
 
         activeScreen = new TitleScreen(this, gameManager);
         activeScreen.render();

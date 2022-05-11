@@ -80,6 +80,8 @@ public class AvailableBattlesScreen extends Screen {
     private ActionListener selectEnemyAction(JComboBox<String> enemiesComboBox) {
         return ignoredEvent -> {
             final var index = enemiesComboBox.getSelectedIndex();
+            if (index < 0 || index >= gameManager.getAvailableBattles().size())
+            		return;
             final var newEnemy = gameManager.getAvailableBattles().get(index);
             selectedTrainer.set(newEnemy);
         };

@@ -422,14 +422,9 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         repaintFeeds();
         repaintParties();
         timer.stop();
-    }
-
-    @Override
-    public void dispose() {
         if (battleManager.hasPlayerWon()) {
             gameManager.setGold(gameManager.getGold() + battleManager.goldReward() * gameManager.getDifficulty());
             gameManager.setScore(gameManager.getScore() + battleManager.scoreReward() * gameManager.getDifficulty());
         }
-        super.dispose();
     }
 }

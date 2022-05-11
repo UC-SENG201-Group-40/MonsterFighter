@@ -84,7 +84,7 @@ public class InventoryScreen extends Screen {
             );
 
             sellButton.addActionListener(
-                useSellAction(item, errorLabel, countLabel, useButton, sellButton)
+                sellItemAction(item, errorLabel, countLabel, useButton, sellButton)
             );
         }
 
@@ -105,7 +105,7 @@ public class InventoryScreen extends Screen {
      * @param sellButton The button itself to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
      */
-    private ActionListener useSellAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
+    private ActionListener sellItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
         return ignoredEvent -> {
             try {
                 gameManager.sell(item);
