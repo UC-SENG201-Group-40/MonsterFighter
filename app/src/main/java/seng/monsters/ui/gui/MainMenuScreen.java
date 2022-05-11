@@ -49,7 +49,7 @@ public class MainMenuScreen extends Screen {
         JButton sleepButton = new JButton("Sleep");
         sleepButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         sleepButton.setBounds(631, 320, 150, 40);
-//        sleepButton.setEnabled(!gameManager.hasNotBattleOnce());
+        sleepButton.setEnabled(!gameManager.hasNotBattleOnce());
         frame.getContentPane().add(sleepButton);
 
         JLabel errorLabel = new JLabel();

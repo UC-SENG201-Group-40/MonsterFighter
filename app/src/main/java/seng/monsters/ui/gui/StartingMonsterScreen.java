@@ -33,7 +33,7 @@ public class StartingMonsterScreen extends Screen {
      */
     public StartingMonsterScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
-        startingMonsters = Monster.all(gameManager.getDifficulty() + 1).subList(0, gameManager.getDifficulty() + 2);
+        startingMonsters = Monster.all(5 - gameManager.getDifficulty()).subList(0, gameManager.getDifficulty() + 2);
         selectedMonster = State.of(startingMonsters.get(0));
     }
 
