@@ -23,7 +23,7 @@ public class JoiningPopUp extends PopUp {
     /**
      * The ending callback
      */
-    private Consumer<ActionEvent> onEnd = e -> {
+    private Consumer<ActionEvent> onEnd = ignoredEvent -> {
     };
 
     /**
@@ -103,18 +103,16 @@ public class JoiningPopUp extends PopUp {
      * @return An action listener for the done button
      */
     private ActionListener doneAction(JTextField textField, JLabel errorLabel) {
-        return e -> {
+        return ignoredEvent -> {
             final var input = textField.getText();
-
-            if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
+            try {
+                monster.setName(input);
+                onEnd.accept(ignoredEvent);
+                frame.dispose();
+            } catch (IllegalArgumentException ignored) {
                 errorLabel.setText("Must be 3 to 15 characters and not contain only contains letters!");
                 errorLabel.setVisible(true);
-                return;
             }
-
-            monster.setName(input);
-            onEnd.accept(e);
-            frame.dispose();
         };
     }
 }

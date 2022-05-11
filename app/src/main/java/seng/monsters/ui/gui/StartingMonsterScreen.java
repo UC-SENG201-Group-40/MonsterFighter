@@ -81,7 +81,7 @@ public class StartingMonsterScreen extends Screen {
      * @return An action listener for the combobox
      */
     private ActionListener comboBoxAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var index = comboBox.getSelectedIndex();
             if (index < 0)
                 return;
@@ -96,7 +96,7 @@ public class StartingMonsterScreen extends Screen {
      * @return The action listener for the submit button
      */
     private ActionListener submitAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var monster = selectedMonster.get();
             comboBox.setEnabled(false);
 
@@ -114,7 +114,7 @@ public class StartingMonsterScreen extends Screen {
      * @return The action for the pop-up after renaming
      */
     private Consumer<ActionEvent> popUpRenameAction(Monster monster) {
-        return e -> {
+        return ignoredEvent -> {
             gameManager.getTrainer().add(monster);
 
             gui.navigateTo(new MainMenuScreen(gui, gameManager));

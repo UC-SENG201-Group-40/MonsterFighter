@@ -96,11 +96,11 @@ public class PartyScreen extends Screen {
     }
 
     private BiConsumer<ActionEvent, Monster> slotAction() {
-        return (e, mon) -> chosenMonster.set(mon);
+        return (ignoredEvent, mon) -> chosenMonster.set(mon);
     }
 
     private ActionListener sellAction(JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
-        return e -> {
+        return ignoredEvent -> {
             try {
                 gameManager.sell(chosenMonster.get());
                 errorLabel.setVisible(false);
@@ -119,7 +119,7 @@ public class PartyScreen extends Screen {
     }
 
     private ActionListener moveAction(JButton moveButton, JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
-        return e -> {
+        return ignoredEvent -> {
             SelectPartyPopUp popUp = new SelectPartyPopUp(gameManager);
             popUp.onChosen(switchAction(moveButton, sellButton, errorLabel, partyPanel));
             moveButton.setEnabled(false);
@@ -127,7 +127,7 @@ public class PartyScreen extends Screen {
     }
 
     private BiConsumer<ActionEvent, Monster> switchAction(JButton moveButton, JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
-        return (e, mon) -> {
+        return (ignoredEvent, mon) -> {
             try {
                 gameManager.switchMonsterOnParty(chosenMonster.get(), trainer.getParty().indexOf(mon));
                 errorLabel.setVisible(false);
@@ -146,6 +146,6 @@ public class PartyScreen extends Screen {
      * The action performed when the user chose to return the main menu
      */
     private ActionListener backToMainMenuAction() {
-        return e -> gui.navigateBackToMainMenu();
+        return ignoredEvent -> gui.navigateBackToMainMenu();
     }
 }

@@ -94,9 +94,9 @@ public class SettingsScreen extends Screen {
             maxDaysTextField.setText("");
         });
 
-        hardDifficultButton.addActionListener(e -> difficulty.set(2));
-        impossibleDifficultyLabel.addActionListener(e -> difficulty.set(3));
-        normalDifficultyButton.addActionListener(e -> difficulty.set(1));
+        hardDifficultButton.addActionListener(ignoredEvent -> difficulty.set(2));
+        impossibleDifficultyLabel.addActionListener(ignoredEvent -> difficulty.set(3));
+        normalDifficultyButton.addActionListener(ignoredEvent -> difficulty.set(1));
 
         verifyMaxDaysButton.addActionListener(
             verifyMaxDaysAction(maxDaysTextField, errorLabel)
@@ -115,7 +115,7 @@ public class SettingsScreen extends Screen {
      * @return The action listener for the verify button
      */
     private ActionListener verifyMaxDaysAction(JTextField maxDaysTextField, JLabel errorLabel) {
-        return e -> {
+        return ignoredEvent -> {
             final var input = maxDaysTextField.getText();
             try {
                 final int maxDaysInput = Integer.decode(input);
@@ -136,7 +136,7 @@ public class SettingsScreen extends Screen {
      * @return The action listener for the submit button
      */
     private ActionListener submitAction() {
-        return e -> {
+        return ignoredEvent -> {
             gameManager.setMaxDays(maxDays.get());
             gameManager.setDifficulty(difficulty.get());
             gameManager.refreshCurrentDay();

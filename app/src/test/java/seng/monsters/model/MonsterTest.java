@@ -109,6 +109,8 @@ class MonsterTest {
             monster.setName("amongus");
             assertNotEquals(prevName, monster.getName());
             assertEquals("amongus", monster.getName());
+
+            assertThrows(IllegalArgumentException.class, () -> monster.setName("12312313"));
         }
     }
 

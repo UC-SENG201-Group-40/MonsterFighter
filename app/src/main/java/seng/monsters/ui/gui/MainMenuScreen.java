@@ -118,7 +118,7 @@ public class MainMenuScreen extends Screen {
     }
 
     private ActionListener lookAvailableBattlesAction() {
-        return e -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
     }
 
     /**
@@ -127,7 +127,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the party button
      */
     private ActionListener managePartyAction() {
-        return e -> gui.navigateTo(new PartyScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new PartyScreen(gui, gameManager));
     }
 
     /**
@@ -136,7 +136,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the inventory button
      */
     private ActionListener manageInventoryAction() {
-        return e -> gui.navigateTo(new InventoryScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new InventoryScreen(gui, gameManager));
     }
 
     /**
@@ -146,7 +146,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the sleep button
      */
     private ActionListener sleepAction(JLabel errorLabel) {
-        return e -> {
+        return ignoredEvent -> {
             if (gameManager.hasNotBattleOnce()) {
                 errorLabel.setVisible(true);
                 errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
@@ -162,12 +162,12 @@ public class MainMenuScreen extends Screen {
 
             gui.navigateBackToMainMenu();
 
+            final var maybeLeaving = gameManager.partyMonstersLeave();
+            maybeLeaving.ifPresent(LeavingPopUp::new);
+
             final var levelledUp = gameManager.partyMonstersLevelUp();
             if (!levelledUp.isEmpty())
                 new LevelledUpPopUp(levelledUp);
-
-            final var maybeLeaving = gameManager.partyMonstersLeave();
-            maybeLeaving.ifPresent(LeavingPopUp::new);
 
             final var maybeJoining = gameManager.monsterJoinsParty();
             maybeJoining.ifPresent(JoiningPopUp::new);

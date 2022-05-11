@@ -73,15 +73,15 @@ public class TitleScreen extends Screen {
      * @return An action listener for the submit button
      */
     private ActionListener submitAction(JTextField textField, JLabel errorLabel) {
-        return e -> {
+        return ignoredEvent -> {
             final var input = textField.getText();
-            if ((input.length() < 3) || (input.length() > 15) || (!input.matches("[a-zA-Z]+"))) {
+            try {
+                gameManager.setTrainerName(input);
+                gui.navigateTo(new SettingsScreen(gui, gameManager));
+            } catch (IllegalArgumentException ignored) {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
-                return;
             }
-            gameManager.setTrainerName(input);
-            gui.navigateTo(new SettingsScreen(gui, gameManager));
         };
     }
 }

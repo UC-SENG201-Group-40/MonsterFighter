@@ -7,8 +7,7 @@
 //
 package seng.monsters.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * AN entity with a party of monsters
@@ -146,7 +145,9 @@ public final class Trainer {
      *
      * @param name The new name
      */
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException {
+        if ((name.length() < 3) || (name.length() > 15) || (!name.matches("[a-zA-Z]+")))
+            throw new IllegalArgumentException();
         this.name = name;
     }
 

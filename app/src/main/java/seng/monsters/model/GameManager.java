@@ -475,7 +475,7 @@ public class GameManager {
      *
      * @param name The new name the player choose
      */
-    public void setTrainerName(String name) {
+    public void setTrainerName(String name) throws IllegalArgumentException {
         trainer.setName(name);
     }
 

@@ -24,7 +24,7 @@ public final class SelectPartyPopUp extends PopUp {
     /**
      * The callback when the user has chose a monster
      */
-    private BiConsumer<ActionEvent, Monster> onChosen = (e, m) -> {
+    private BiConsumer<ActionEvent, Monster> onChosen = (ignoredEvent, m) -> {
     };
 
     /**
@@ -87,7 +87,7 @@ public final class SelectPartyPopUp extends PopUp {
      * @return An action listener for the combo box
      */
     private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var index = comboBox.getSelectedIndex();
             if (index < 0)
                 return;
@@ -100,11 +100,11 @@ public final class SelectPartyPopUp extends PopUp {
      * @return An action listener for the submit button
      */
     private ActionListener submitAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var monster = chosenMonster.get();
             comboBox.setEnabled(false);
 
-            onChosen.accept(e, monster);
+            onChosen.accept(ignoredEvent, monster);
             frame.dispose();
         };
     }
