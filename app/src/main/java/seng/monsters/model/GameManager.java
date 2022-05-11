@@ -345,8 +345,6 @@ public class GameManager {
             names.remove(index);
             availableBattles.add(enemy);
         }
-
-        availableBattles.stream().map(Trainer::getName).forEachOrdered(System.out::println);
     }
 
     // MARK: -- Actions --
