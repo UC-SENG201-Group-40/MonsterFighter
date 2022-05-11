@@ -65,7 +65,7 @@ public final class Shop {
 
             itemStock.put(item, stock - 1);
         } else if (purchasable instanceof Monster monster) {
-            if (manager.getTrainer().getParty().size() > 4)
+            if (manager.getTrainer().getParty().size() >= 4)
                 throw new Trainer.PartyFullException("Cannot add more than 4 monster");
             if (!monsterStock.containsKey(monster.getId()))
                 throw new NotInStockException();
