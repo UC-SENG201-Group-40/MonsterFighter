@@ -104,17 +104,17 @@ public final class PartyPanel {
             .toList();
     }
 
-    
+
     /**
      * Refresh the party display with a new trainer
-     * 
+     *
      * @param trainer The new trainer to be displayed
      */
     public void refresh(Trainer trainer) {
-    	this.trainer = trainer;
-    	refresh();
+        this.trainer = trainer;
+        refresh();
     }
-    
+
 
     /**
      * Refresh the party display

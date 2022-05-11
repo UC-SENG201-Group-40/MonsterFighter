@@ -81,7 +81,7 @@ public class AvailableBattlesScreen extends Screen {
         return ignoredEvent -> {
             final var index = enemiesComboBox.getSelectedIndex();
             if (index < 0 || index >= gameManager.getAvailableBattles().size())
-            		return;
+                return;
             final var newEnemy = gameManager.getAvailableBattles().get(index);
             selectedTrainer.set(newEnemy);
         };

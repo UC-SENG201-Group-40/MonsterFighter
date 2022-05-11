@@ -24,6 +24,9 @@ import seng.monsters.ui.gui.components.JoiningPopUp;
 import seng.monsters.ui.gui.state.LabelComboboxModel;
 import seng.monsters.ui.gui.state.State;
 
+/**
+ * A screen to allow user to purchase monsters from the shop
+ */
 public class MonsterShopScreen extends Screen {
 
     /**
@@ -52,22 +55,22 @@ public class MonsterShopScreen extends Screen {
                 )))
         ));
 
-        
+
         JButton backToMainMenu = new JButton();
         backToMainMenu.setText("Main menu");
         backToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
         backToMainMenu.setBounds(330, 398, 156, 30);
-        frame.getContentPane().add(backToMainMenu);  
-        
-        	JPanel panel = new JPanel();
-        	panel.setBackground(Color.WHITE);
-        	panel.setBounds(476, 130, 238, 130);
-        	panel.setLayout(null);
-        	frame.getContentPane().add(panel);
-      
+        frame.getContentPane().add(backToMainMenu);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setBounds(476, 130, 238, 130);
+        panel.setLayout(null);
+        frame.getContentPane().add(panel);
+
         JLabel goldLabel = new JLabel(String.format("Your own %d gold", gameManager.getGold()));
         goldLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-        	goldLabel.setBackground(Color.WHITE);
+        goldLabel.setBackground(Color.WHITE);
         goldLabel.setBounds(8, 0, 222, 30);
         panel.add(goldLabel);
 
@@ -76,7 +79,7 @@ public class MonsterShopScreen extends Screen {
         promptLabel.setBackground(Color.WHITE);
         promptLabel.setBounds(8, 40, 222, 30);
         panel.add(promptLabel);
-        
+
         JComboBox<String> monsterStockComboBox = new JComboBox<>();
         monsterStockComboBox.setModel(
             new LabelComboboxModel<>(gameManager.getShop().getMonsterStock(), this::uniqueMonsterIdentifier)
@@ -94,7 +97,7 @@ public class MonsterShopScreen extends Screen {
         buyButton.setBounds(66, 86 + DetailedMonsterPanel.HEIGHT, DetailedMonsterPanel.WIDTH, 20);
         buyButton.setEnabled(!gameManager.getShop().getMonsterStock().isEmpty());
         frame.getContentPane().add(buyButton);
-        
+
         JLabel errorLabel = new JLabel();
         errorLabel.setBounds(8, 100, 222, 30);
         errorLabel.setVisible(false);
@@ -103,8 +106,8 @@ public class MonsterShopScreen extends Screen {
         panel.add(errorLabel);
 
         chosenMonster.onChange(monsterPanel::refresh);
-        
-        	monsterStockComboBox.addActionListener(comboBoxSelectionAction(monsterStockComboBox));
+
+        monsterStockComboBox.addActionListener(comboBoxSelectionAction(monsterStockComboBox));
         backToMainMenu.addActionListener(backToMainMenuAction());
         buyButton.addActionListener(buyAction(buyButton, errorLabel, goldLabel, monsterStockComboBox));
 
@@ -114,6 +117,7 @@ public class MonsterShopScreen extends Screen {
 
     /**
      * The action performed when a selection is made in the combobox
+     *
      * @param comboBox The combo box to get the selection
      * @return An action listener for the combo box
      */
@@ -125,40 +129,40 @@ public class MonsterShopScreen extends Screen {
             chosenMonster.set(gameManager.getShop().getMonsterStock().get(index));
         };
     }
-    
+
     private ActionListener buyAction(JButton buyButton, JLabel errorLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
         return ignoredEvent -> {
-        		JoiningPopUp popUp = new JoiningPopUp(chosenMonster.get());
-        		popUp.onEnd(popUpAction(buyButton, errorLabel, goldLabel, partyComboBox));
+            JoiningPopUp popUp = new JoiningPopUp(chosenMonster.get());
+            popUp.onEnd(popUpAction(buyButton, errorLabel, goldLabel, partyComboBox));
             buyButton.setEnabled(false);
         };
     }
-    
+
     private Consumer<ActionEvent> popUpAction(JButton buyButton, JLabel errorLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
         return ignoredEvent -> {
             try {
                 gameManager.buy(chosenMonster.get());
                 errorLabel.setVisible(false);
-    		} catch (Shop.InsufficientFundsException err) {
-    			errorLabel.setVisible(true);
-    			errorLabel.setText(String.format(
-    				"Insufficient gold to buy %s!", chosenMonster.get().getName()
-    			));
-    		} catch (Shop.NotInStockException err) {
-    			errorLabel.setVisible(true);
-    			errorLabel.setText(String.format(
-    				"The item, %s not in stock!", chosenMonster.get().getName()
-    			));       
-    		} catch (Trainer.PartyFullException err) {
-    			errorLabel.setVisible(true);
-    			errorLabel.setText("Your party is full!");
+            } catch (Shop.InsufficientFundsException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText(String.format(
+                    "Insufficient gold to buy %s!", chosenMonster.get().getName()
+                ));
+            } catch (Shop.NotInStockException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText(String.format(
+                    "The item, %s not in stock!", chosenMonster.get().getName()
+                ));
+            } catch (Trainer.PartyFullException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText("Your party is full!");
             } finally {
-            		final var stock = gameManager.getShop().getMonsterStock();
-            		if (stock.isEmpty()) {
-            			gui.navigateBackToMainMenu();
-            			return;
-            		}
-            		partyComboBox.setModel(
+                final var stock = gameManager.getShop().getMonsterStock();
+                if (stock.isEmpty()) {
+                    gui.navigateBackToMainMenu();
+                    return;
+                }
+                partyComboBox.setModel(
                     new LabelComboboxModel<>(stock, this::uniqueMonsterIdentifier)
                 );
                 partyComboBox.setSelectedIndex(0);
@@ -175,8 +179,13 @@ public class MonsterShopScreen extends Screen {
     private ActionListener backToMainMenuAction() {
         return ignoredEvent -> gui.navigateBackToMainMenu();
     }
-    
+
+    /**
+     * A special string to identify all monster uniquely regardless of name and type
+     * @param mon The monster in question
+     * @return A string of name (id)
+     */
     private String uniqueMonsterIdentifier(Monster mon) {
-    	return String.format("%s (%s)", mon.getName(), mon.getId().toString().substring(0, 8));
+        return String.format("%s (%s)", mon.getName(), mon.getId().toString().substring(0, 8));
     }
 }

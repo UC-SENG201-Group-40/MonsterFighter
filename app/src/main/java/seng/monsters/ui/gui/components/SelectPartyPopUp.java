@@ -48,7 +48,7 @@ public final class SelectPartyPopUp extends PopUp {
         frame.getContentPane().add(partyComboBox);
 
         JLabel promptLabel = new JLabel("Choose your monster from the party:");
-		promptLabel.setBounds(66, 112, 238, 16);
+        promptLabel.setBounds(66, 112, 238, 16);
         frame.getContentPane().add(promptLabel);
 
         DetailedMonsterPanel panel = new DetailedMonsterPanel(chosenMonster.get(), false);
@@ -75,6 +75,7 @@ public final class SelectPartyPopUp extends PopUp {
 
     /**
      * Set the callback to be run when the user has chosen a monster from their party
+     *
      * @param function The callback that takes the action event and the selected monster
      */
     public void onChosen(BiConsumer<ActionEvent, Monster> function) {
@@ -83,6 +84,7 @@ public final class SelectPartyPopUp extends PopUp {
 
     /**
      * The action performed when a selection is made in the combox
+     *
      * @param comboBox The combo box to get the selection
      * @return An action listener for the combo box
      */
@@ -94,8 +96,10 @@ public final class SelectPartyPopUp extends PopUp {
             chosenMonster.set(party.get(index));
         };
     }
+
     /**
      * The action performed when the selection is submitted
+     *
      * @param comboBox The combo box to disable changes
      * @return An action listener for the submit button
      */

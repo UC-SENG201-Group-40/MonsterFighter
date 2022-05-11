@@ -16,6 +16,9 @@ import seng.monsters.model.Trainer;
 import seng.monsters.ui.gui.components.ItemPanel;
 import seng.monsters.ui.gui.components.PopUp;
 
+/**
+ * A screen to allow user to purchase items from the shop
+ */
 public class ItemShopScreen extends Screen {
 
     /**
@@ -33,12 +36,12 @@ public class ItemShopScreen extends Screen {
 
     @Override
     public void render() {
-    	JLabel titleLabel = new JLabel("Item shop! (No refund)");
+        JLabel titleLabel = new JLabel("Item shop! (No refund)");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
         titleLabel.setBounds((Screen.WIDTH - 600) / 2, 42, 600, 39);
-        frame.getContentPane().add(titleLabel);  	
-    	
+        frame.getContentPane().add(titleLabel);
+
         JLabel errorLabel = new JLabel("No monster in party");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
@@ -50,7 +53,7 @@ public class ItemShopScreen extends Screen {
         goldLabel.setHorizontalAlignment(SwingConstants.LEADING);
         goldLabel.setBounds(206, 366, 200, 30);
         frame.getContentPane().add(goldLabel);
-        
+
         JButton backToMainMenu = new JButton();
         backToMainMenu.setText("Main menu");
         backToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
@@ -105,28 +108,28 @@ public class ItemShopScreen extends Screen {
      */
     private ActionListener buyItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton buyButton, JLabel goldLabel) {
         return ignoredEvent -> {
-        		try {
-        			gameManager.buy(item);
-        			errorLabel.setVisible(false);
-        		} catch (Shop.InsufficientFundsException err) {
-        			errorLabel.setVisible(true);
-        			errorLabel.setText(String.format(
-        				"Insufficient gold! You only have %d and the item cost %d gold", gameManager.getGold(), item.buyPrice()
-        			));
-        		} catch (Shop.NotInStockException err) {
-        			errorLabel.setVisible(true);
-        			errorLabel.setText(String.format(
-            			"The item, %s not in stock!", item.getName()
-            		));       
-        		} catch (Trainer.PartyFullException err) {
-        			errorLabel.setVisible(true);
-        			errorLabel.setText("Your party is full!");
-        		} finally {
-        			final var newCount = gameManager.getShop().getItemStock(item);
-        			countLabel.setText(String.format("%dx (%d gold)", newCount, item.buyPrice()));
-        			buyButton.setEnabled(newCount > 0);
-        			goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
-        		}
+            try {
+                gameManager.buy(item);
+                errorLabel.setVisible(false);
+            } catch (Shop.InsufficientFundsException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText(String.format(
+                    "Insufficient gold! You only have %d and the item cost %d gold", gameManager.getGold(), item.buyPrice()
+                ));
+            } catch (Shop.NotInStockException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText(String.format(
+                    "The item, %s not in stock!", item.getName()
+                ));
+            } catch (Trainer.PartyFullException err) {
+                errorLabel.setVisible(true);
+                errorLabel.setText("Your party is full!");
+            } finally {
+                final var newCount = gameManager.getShop().getItemStock(item);
+                countLabel.setText(String.format("%dx (%d gold)", newCount, item.buyPrice()));
+                buyButton.setEnabled(newCount > 0);
+                goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
+            }
         };
     }
 

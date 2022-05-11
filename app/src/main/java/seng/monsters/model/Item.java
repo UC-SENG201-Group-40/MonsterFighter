@@ -15,7 +15,9 @@ import java.util.Objects;
  */
 public abstract class Item implements Purchasable {
 
-    /** Potion to heal monsters */
+    /**
+     * Potion to heal monsters
+     */
     public static class Potion extends Item {
 
         @Override
@@ -43,7 +45,9 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** Revive to heal fainted monsters */
+    /**
+     * Revive to heal fainted monsters
+     */
     public static class Revive extends Item {
 
         @Override
@@ -69,11 +73,13 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** RareCandy to level up a monster */
+    /**
+     * RareCandy to level up a monster
+     */
     public static class RareCandy extends Item {
 
         @Override
-        public void applyTo( Monster mon) throws NoEffectException {
+        public void applyTo(Monster mon) throws NoEffectException {
             mon.levelUp();
         }
 
@@ -93,7 +99,9 @@ public abstract class Item implements Purchasable {
         }
     }
 
-    /** FullRestore restores health to full regardless if monster is fainted or not */
+    /**
+     * FullRestore restores health to full regardless if monster is fainted or not
+     */
     public static class FullRestore extends Item {
 
         @Override
@@ -118,6 +126,7 @@ public abstract class Item implements Purchasable {
             return buyPrice() / 2;
         }
     }
+
     /**
      * Signals that an item has been applied to a monster but produce no result
      */
@@ -137,6 +146,7 @@ public abstract class Item implements Purchasable {
 
     /**
      * A quick description of what this item does
+     *
      * @return
      */
     public abstract String description();
@@ -158,6 +168,7 @@ public abstract class Item implements Purchasable {
 
     /**
      * Comparing the item with another
+     *
      * @param o The item to be compared to
      * @return A boolean signaling whether the item is identical
      */
@@ -169,6 +180,7 @@ public abstract class Item implements Purchasable {
 
     /**
      * The hashcode for the type of item
+     *
      * @return The integer hashed from the type name
      */
     @Override
@@ -179,6 +191,7 @@ public abstract class Item implements Purchasable {
 
     /**
      * All the items possible
+     *
      * @return A list of all unique items
      */
     public static List<Item> all() {

@@ -118,6 +118,15 @@ public class PartyScreen extends Screen {
         };
     }
 
+    /**
+     * The action performed when attempting to move a monster
+     *
+     * @param moveButton The move button to be re-enabled
+     * @param sellButton The sell button to be re-enabled
+     * @param errorLabel The error label to display failure in switching
+     * @param partyPanel The party panel to update the display order of the party
+     * @return An action listener for the move button
+     */
     private ActionListener moveAction(JButton moveButton, JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
         return ignoredEvent -> {
             SelectPartyPopUp popUp = new SelectPartyPopUp(gameManager);
@@ -126,6 +135,15 @@ public class PartyScreen extends Screen {
         };
     }
 
+    /**
+     * The action performed when switching the selected monster to another monster
+     *
+     * @param moveButton The move button to be re-enabled
+     * @param sellButton The sell button to be re-enabled
+     * @param errorLabel The error label to display failure in switching
+     * @param partyPanel The party panel to update the display order of the party
+     * @return An action listener for the SelectPartyPopUp when switching a monster
+     */
     private BiConsumer<ActionEvent, Monster> switchAction(JButton moveButton, JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
         return (ignoredEvent, mon) -> {
             try {

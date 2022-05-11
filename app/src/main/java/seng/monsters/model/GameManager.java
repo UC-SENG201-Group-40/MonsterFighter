@@ -345,7 +345,7 @@ public class GameManager {
             names.remove(index);
             availableBattles.add(enemy);
         }
-        
+
         availableBattles.stream().map(Trainer::getName).forEachOrdered(System.out::println);
     }
 
@@ -549,9 +549,9 @@ public class GameManager {
         final var res = new ArrayList<String>(56);
         var i = 0;
         while (scanner.hasNextLine()) {
-        		final var name = scanner.nextLine();
-        		if (name.isBlank() || name == null) 
-        			continue;
+            final var name = scanner.nextLine();
+            if (name.isBlank() || name == null)
+                continue;
             res.add(name);
             i++;
         }

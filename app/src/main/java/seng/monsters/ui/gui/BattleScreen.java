@@ -335,6 +335,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     /**
      * The action performed when quiting the battle screen
+     *
      * @return An action listener for the quit button
      */
     private ActionListener onQuit() {
@@ -343,6 +344,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     /**
      * The action performed when the battle is being started
+     *
      * @return An action listener for the start button
      */
     private ActionListener onStart() {

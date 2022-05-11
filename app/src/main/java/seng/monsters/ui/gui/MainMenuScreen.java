@@ -149,11 +149,11 @@ public class MainMenuScreen extends Screen {
      */
     private ActionListener sleepAction(JLabel errorLabel) {
         return ignoredEvent -> {
-//            if (gameManager.hasNotBattleOnce()) {
-//                errorLabel.setVisible(true);
-//                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
-//                return;
-//            }
+            if (gameManager.hasNotBattleOnce()) {
+                errorLabel.setVisible(true);
+                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
+                return;
+            }
 
             final var isEnded = gameManager.nextDay();
 
