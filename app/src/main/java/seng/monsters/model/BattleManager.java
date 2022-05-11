@@ -26,33 +26,29 @@ public final class BattleManager {
         /**
          * The action done on each frame of the moving attack
          *
-         * @param isMon1Turn True if the player is attacking, otherwise false
-         * @param pos        The pseudo position of the attack
          * @param percentage The progress percentage of the attack
          */
-        void onEachFrame(boolean isMon1Turn, int pos, int percentage);
+        void onEachFrame(int percentage);
 
         /**
          * The action done when the pseudo attack lands and dealt damage
          *
-         * @param isMon1Turn True if the player is attacking, otherwise false
-         * @param dmg        The damage dealt
+         * @param isPlayerTurn True if the player is attacking, otherwise false
+         * @param dmg          The damage dealt
          */
-        void onEachDamage(boolean isMon1Turn, int dmg);
+        void onEachDamage(boolean isPlayerTurn, int dmg);
 
         /**
          * The action done when either battling monster needed to be switched out
          *
-         * @param isMon1Turn True if the player is attacking, otherwise false
+         * @param isPlayerTurn True if the player is attacking, otherwise false
          */
-        void onEachNextMonster(boolean isMon1Turn);
+        void onEachNextMonster(boolean isPlayerTurn);
 
         /**
          * The action done after the battle has concluded
-         *
-         * @param isMon1Turn True if the player is attacking, otherwise false
          */
-        void onEnd(boolean isMon1Turn);
+        void onEnd();
     }
 
     /**
@@ -69,12 +65,12 @@ public final class BattleManager {
     /**
      * The player trainer
      */
-    private final Trainer player1;
+    private final Trainer player;
 
     /**
      * The opposing trainer
      */
-    private final Trainer player2;
+    private final Trainer enemy;
 
     /**
      * The environment where the battle is held
@@ -84,12 +80,12 @@ public final class BattleManager {
     /**
      * The current monster for the player
      */
-    private Monster mon1;
+    private Monster battlingPlayerMonster;
 
     /**
      * The current monster for the opponent
      */
-    private Monster mon2;
+    private Monster battlingEnemyMonster;
 
     /**
      * A state to determine whether the manager can still continue
@@ -109,36 +105,36 @@ public final class BattleManager {
     /**
      * The boolean signalling whose turn is at this moment
      */
-    private boolean isMon1Turn;
+    private boolean isPlayerTurn;
 
     /**
      * Pseudo position state to simulate delay in the attack before connecting
      */
-    private int pos;
+    private int pseudoAttackPosition;
 
     /**
      * Pseudo speed (in distance) state the jump of movement in the attack before connecting
      */
-    private int speed;
+    private int pseudoSpeed;
 
     /**
      * Pseudo end goal state simulating the distance needed to reach before the attack lands
      */
-    private int goal;
+    private int pseudoGoal;
 
 
     public BattleManager(UI ui, Trainer player, Trainer enemy, Environment environment) {
-        this.player1 = player;
-        this.player2 = enemy;
+        this.player = player;
+        this.enemy = enemy;
         this.ui = ui;
         this.environment = environment;
         try {
-            this.mon1 = nextPlayerMon();
-            this.mon2 = nextEnemyMon();
-            this.isMon1Turn = mon1.speed() >= mon2.speed();
-            this.pos = isMon1Turn ? 62 : 551;
-            this.speed = isMon1Turn ? 20 : -20;
-            this.goal = isMon1Turn ? 551 : 62;
+            this.battlingPlayerMonster = nextPlayerMon();
+            this.battlingEnemyMonster = nextEnemyMon();
+            this.isPlayerTurn = battlingPlayerMonster.speed() >= battlingEnemyMonster.speed();
+            this.pseudoAttackPosition = isPlayerTurn ? PSEUDO_MIN_POSITION : PSEUDO_MAX_POSITION;
+            this.pseudoSpeed = isPlayerTurn ? PSEUDO_ATTACK_SPEED : -PSEUDO_ATTACK_SPEED;
+            this.pseudoGoal = isPlayerTurn ? PSEUDO_MAX_POSITION : PSEUDO_MIN_POSITION;
             this.isSettled = new AtomicBoolean(false);
         } catch (WhitedOutException ignored) {
             this.isSettled = new AtomicBoolean(true);
@@ -154,8 +150,8 @@ public final class BattleManager {
 
         if (isEitherFallen()) {
             try {
-                mon1 = mon1.isFainted() ? nextPlayerMon() : mon1;
-                mon2 = mon2.isFainted() ? nextEnemyMon() : mon2;
+                battlingPlayerMonster = battlingPlayerMonster.isFainted() ? nextPlayerMon() : battlingPlayerMonster;
+                battlingEnemyMonster = battlingEnemyMonster.isFainted() ? nextEnemyMon() : battlingEnemyMonster;
                 changeMonster();
             } catch (WhitedOutException ignored) {
                 endGame();
@@ -163,16 +159,18 @@ public final class BattleManager {
             return;
         }
 
-        final var progress = ((24.45 - (goal - pos) / speed) * 100) / 24.45;
-        ui.onEachFrame(isMon1Turn, pos, (int) progress);
-        pos += speed;
+        final var progress = pseudoAttackPosition * 100 / PSEUDO_MAX_POSITION;
+        ui.onEachFrame(progress);
+        pseudoAttackPosition += pseudoSpeed;
 
-        if (hasAttackLands()) {
+        // If attack has landed, we perform the damage calculation,
+        // and reset / flip the pseudo attack position, goal, and speed
+        if (hasAttackLanded()) {
             performDamage();
-            isMon1Turn = !isMon1Turn;
-            pos = isMon1Turn ? 62 : 551;
-            speed = -speed;
-            goal = isMon1Turn ? 551 : 62;
+            isPlayerTurn = !isPlayerTurn;
+            pseudoAttackPosition = isPlayerTurn ? PSEUDO_MIN_POSITION : PSEUDO_MAX_POSITION;
+            pseudoSpeed = -pseudoSpeed;
+            pseudoGoal = isPlayerTurn ? PSEUDO_MAX_POSITION : PSEUDO_MIN_POSITION;
         }
     }
 
@@ -181,18 +179,18 @@ public final class BattleManager {
      *
      * @return A boolean signalling the attacking landing or not
      */
-    private boolean hasAttackLands() {
-        return isMon1Turn ? pos >= goal : pos <= goal;
+    private boolean hasAttackLanded() {
+        return isPlayerTurn ? pseudoAttackPosition >= pseudoGoal : pseudoAttackPosition <= pseudoGoal;
     }
 
     /**
      * Performed the damage, add new feed that the damage landed, and call damage event callback
      */
     private void performDamage() {
-        final var atk = isMon1Turn ? mon1 : mon2;
-        final var def = isMon1Turn ? mon2 : mon1;
-        final var atkTrainer = isMon1Turn ? player1 : player2;
-        final var defTrainer = isMon1Turn ? player2 : player1;
+        final var atk = isPlayerTurn ? battlingPlayerMonster : battlingEnemyMonster;
+        final var def = isPlayerTurn ? battlingEnemyMonster : battlingPlayerMonster;
+        final var atkTrainer = isPlayerTurn ? player : enemy;
+        final var defTrainer = isPlayerTurn ? enemy : player;
 
         final var maxDmg = atk.damage(environment);
         final var dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
@@ -210,18 +208,18 @@ public final class BattleManager {
             feeds.add(String.format("%s's %s fainted", defTrainer.getName(), def.getName()));
         }
 
-        ui.onEachDamage(isMon1Turn, dmg);
+        ui.onEachDamage(isPlayerTurn, dmg);
     }
 
     /**
      * Switching monsters after either battling monster fainted, and resetting the pseudo states
      */
     private void changeMonster() {
-        isMon1Turn = mon1.speed() >= mon2.speed();
-        pos = isMon1Turn ? 62 : 551;
-        speed = isMon1Turn ? 20 : -20;
-        goal = isMon1Turn ? 551 : 62;
-        ui.onEachNextMonster(isMon1Turn);
+        isPlayerTurn = battlingPlayerMonster.speed() >= battlingEnemyMonster.speed();
+        pseudoAttackPosition = isPlayerTurn ? PSEUDO_MIN_POSITION : PSEUDO_MAX_POSITION;
+        pseudoSpeed = isPlayerTurn ? PSEUDO_ATTACK_SPEED : -PSEUDO_ATTACK_SPEED;
+        pseudoGoal = isPlayerTurn ? PSEUDO_MAX_POSITION : PSEUDO_MIN_POSITION;
+        ui.onEachNextMonster(isPlayerTurn);
     }
 
     /**
@@ -235,7 +233,7 @@ public final class BattleManager {
             loser().getName()
         ));
         isSettled.set(true);
-        ui.onEnd(isMon1Turn);
+        ui.onEnd();
     }
 
     /**
@@ -244,7 +242,7 @@ public final class BattleManager {
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextPlayerMon() throws WhitedOutException {
-        final var nextMon = player1.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
+        final var nextMon = player.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
@@ -258,7 +256,7 @@ public final class BattleManager {
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextEnemyMon() throws WhitedOutException {
-        final var nextMon = player2.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
+        final var nextMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
@@ -280,8 +278,8 @@ public final class BattleManager {
      *
      * @return A monster currently battling
      */
-    public Monster getMon1() {
-        return mon1;
+    public Monster getBattlingPlayerMonster() {
+        return battlingPlayerMonster;
     }
 
     /**
@@ -289,8 +287,8 @@ public final class BattleManager {
      *
      * @return A monster currently battling
      */
-    public Monster getMon2() {
-        return mon2;
+    public Monster getBattlingEnemyMonster() {
+        return battlingEnemyMonster;
     }
 
     /**
@@ -298,8 +296,8 @@ public final class BattleManager {
      *
      * @return A trainer representation for the player
      */
-    public Trainer getPlayer1() {
-        return player1;
+    public Trainer getPlayer() {
+        return player;
     }
 
     /**
@@ -307,8 +305,8 @@ public final class BattleManager {
      *
      * @return A trainer representation for the enemy
      */
-    public Trainer getPlayer2() {
-        return player2;
+    public Trainer getEnemy() {
+        return enemy;
     }
 
     /**
@@ -317,9 +315,9 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer winner() {
-        final var remainingPlayerMon = player1.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        final var remainingEnemyMon = player2.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        return remainingPlayerMon >= remainingEnemyMon ? player1 : player2;
+        final var remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final var remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        return remainingPlayerMon >= remainingEnemyMon ? player : enemy;
     }
 
     /**
@@ -328,9 +326,9 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer loser() {
-        final var remainingPlayerMon = player1.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        final var remainingEnemyMon = player2.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        return remainingPlayerMon >= remainingEnemyMon ? player2 : player1;
+        final var remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final var remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        return remainingPlayerMon >= remainingEnemyMon ? enemy : player;
     }
 
     /**
@@ -339,7 +337,7 @@ public final class BattleManager {
      * @return A boolean signalling if either fainted
      */
     public boolean isEitherFallen() {
-        return isSettled() || mon1.isFainted() || mon2.isFainted();
+        return isSettled() || battlingPlayerMonster.isFainted() || battlingEnemyMonster.isFainted();
     }
 
     /**
@@ -357,7 +355,7 @@ public final class BattleManager {
      * @return True if all player 2 monster is fainted, otherwise false
      */
     public boolean hasPlayerWon() {
-        return player2.getParty().stream().allMatch(Monster::isFainted);
+        return enemy.getParty().stream().allMatch(Monster::isFainted);
     }
 
     /**
@@ -383,4 +381,19 @@ public final class BattleManager {
             .mapToInt(Monster::getLevel)
             .sum();
     }
+
+    /**
+     * The upmost right pseudo position of the attack / The required steps before attack lands
+     */
+    public static final int PSEUDO_MAX_POSITION = 25;
+
+    /**
+     * The upmost left pseudo position of the attack
+     */
+    public static final int PSEUDO_MIN_POSITION = 0;
+
+    /**
+     * The amount of jump of position on each iteration of the attack
+     */
+    public static final int PSEUDO_ATTACK_SPEED = 1;
 }

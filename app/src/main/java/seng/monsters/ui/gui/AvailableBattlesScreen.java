@@ -78,8 +78,10 @@ public class AvailableBattlesScreen extends Screen {
      * @return An action listener for the combo-box
      */
     private ActionListener selectEnemyAction(JComboBox<String> enemiesComboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var index = enemiesComboBox.getSelectedIndex();
+            if (index < 0 || index >= gameManager.getAvailableBattles().size())
+                return;
             final var newEnemy = gameManager.getAvailableBattles().get(index);
             selectedTrainer.set(newEnemy);
         };
@@ -92,7 +94,7 @@ public class AvailableBattlesScreen extends Screen {
      * @return An action listener for the battle button
      */
     private ActionListener battleAction(JComboBox<String> enemiesComboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var index = enemiesComboBox.getSelectedIndex();
             gui.navigateTo(new BattleScreen(gui, gameManager, index));
         };
@@ -104,6 +106,6 @@ public class AvailableBattlesScreen extends Screen {
      * @return An action listener for the return button
      */
     private ActionListener backToMainMenuAction() {
-        return e -> gui.navigateBackToMainMenu();
+        return ignoredEvent -> gui.navigateBackToMainMenu();
     }
 }

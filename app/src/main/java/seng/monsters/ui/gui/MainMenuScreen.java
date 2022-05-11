@@ -4,6 +4,7 @@ import seng.monsters.model.GameManager;
 import seng.monsters.ui.gui.components.JoiningPopUp;
 import seng.monsters.ui.gui.components.LeavingPopUp;
 import seng.monsters.ui.gui.components.LevelledUpPopUp;
+import seng.monsters.ui.gui.components.SelectShopPopUp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,6 @@ public class MainMenuScreen extends Screen {
         frame.getContentPane().add(inventoryButton);
 
         JButton shopButton = new JButton("Shop");
-        shopButton.setEnabled(false);
         shopButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         shopButton.setBounds(38, 320, 150, 40);
         frame.getContentPane().add(shopButton);
@@ -49,6 +49,7 @@ public class MainMenuScreen extends Screen {
         JButton sleepButton = new JButton("Sleep");
         sleepButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         sleepButton.setBounds(631, 320, 150, 40);
+//        sleepButton.setEnabled(!gameManager.hasNotBattleOnce());
         frame.getContentPane().add(sleepButton);
 
         JLabel errorLabel = new JLabel();
@@ -105,20 +106,21 @@ public class MainMenuScreen extends Screen {
         battlesButton.setForeground(new Color(220, 20, 60));
         battlesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
         battlesButton.setBounds(309, 320, 200, 61);
-        battlesButton.setEnabled(!gameManager.getAvailableBattles().isEmpty());
+        battlesButton.setEnabled(!gameManager.getAvailableBattles().isEmpty() && !gameManager.getTrainer().isWhitedOut());
         frame.getContentPane().add(battlesButton);
 
         partyButton.addActionListener(managePartyAction());
         inventoryButton.addActionListener(manageInventoryAction());
         sleepButton.addActionListener(sleepAction(errorLabel));
         battlesButton.addActionListener(lookAvailableBattlesAction());
+        shopButton.addActionListener(ignored -> new SelectShopPopUp(gui, gameManager));
 
         frame.setResizable(false);
         frame.setVisible(true);
     }
 
     private ActionListener lookAvailableBattlesAction() {
-        return e -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new AvailableBattlesScreen(gui, gameManager));
     }
 
     /**
@@ -127,7 +129,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the party button
      */
     private ActionListener managePartyAction() {
-        return e -> gui.navigateTo(new PartyScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new PartyScreen(gui, gameManager));
     }
 
     /**
@@ -136,7 +138,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the inventory button
      */
     private ActionListener manageInventoryAction() {
-        return e -> gui.navigateTo(new InventoryScreen(gui, gameManager));
+        return ignoredEvent -> gui.navigateTo(new InventoryScreen(gui, gameManager));
     }
 
     /**
@@ -146,7 +148,7 @@ public class MainMenuScreen extends Screen {
      * @return An action listener for the sleep button
      */
     private ActionListener sleepAction(JLabel errorLabel) {
-        return e -> {
+        return ignoredEvent -> {
             if (gameManager.hasNotBattleOnce()) {
                 errorLabel.setVisible(true);
                 errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
@@ -156,18 +158,18 @@ public class MainMenuScreen extends Screen {
             final var isEnded = gameManager.nextDay();
 
             if (isEnded) {
-                gui.quit();
+                gui.navigateTo(new EndScreen(gui, gameManager, gameManager.getCurrentDay() > gameManager.getMaxDays()));
                 return;
             }
 
             gui.navigateBackToMainMenu();
 
+            final var maybeLeaving = gameManager.partyMonstersLeave();
+            maybeLeaving.ifPresent(LeavingPopUp::new);
+
             final var levelledUp = gameManager.partyMonstersLevelUp();
             if (!levelledUp.isEmpty())
                 new LevelledUpPopUp(levelledUp);
-
-            final var maybeLeaving = gameManager.partyMonstersLeave();
-            maybeLeaving.ifPresent(LeavingPopUp::new);
 
             final var maybeJoining = gameManager.monsterJoinsParty();
             maybeJoining.ifPresent(JoiningPopUp::new);

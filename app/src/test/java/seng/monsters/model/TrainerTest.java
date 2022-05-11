@@ -162,6 +162,8 @@ class TrainerTest {
     void setName() {
         trainer.setName("Amongus");
         assertEquals("Amongus", trainer.getName());
+
+        assertThrows(IllegalArgumentException.class, () -> trainer.setName("1231231"));
     }
 
     /**

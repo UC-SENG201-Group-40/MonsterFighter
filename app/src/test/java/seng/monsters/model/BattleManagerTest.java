@@ -14,16 +14,16 @@ class BattleManagerTest {
     private BattleManager.UI dud;
 
     private static abstract class DudUI implements BattleManager.UI {
-        public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
+        public void onEachFrame(int percentage) {
         }
 
-        public void onEachDamage(boolean isMon1Turn, int dmg) {
+        public void onEachDamage(boolean isPlayerTurn, int dmg) {
         }
 
-        public void onEachNextMonster(boolean isMon1Turn) {
+        public void onEachNextMonster(boolean isPlayerTurn) {
         }
 
-        public void onEnd(boolean isMon1Turn) {
+        public void onEnd() {
         }
     }
 
@@ -66,12 +66,12 @@ class BattleManagerTest {
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
-                public void onEachNextMonster(boolean isMon1Turn) {
+                public void onEachNextMonster(boolean isPlayerTurn) {
                     isChangeMonsterCalled.set(true);
                 }
 
                 @Override
-                public void onEnd(boolean isMon1Turn) {
+                public void onEnd() {
                     isEndGameCalled.set(true);
                 }
             },
@@ -90,8 +90,8 @@ class BattleManagerTest {
         battleManager.nextIteration();
         assertTrue(isEndGameCalled.get());
         assertTrue(battleManager.isSettled());
-        assertEquals(0, battleManager.getPlayer1().getParty().stream().filter(mon -> !mon.isFainted()).count());
-        assertEquals(1, battleManager.getPlayer2().getParty().stream().filter(mon -> !mon.isFainted()).count());
+        assertEquals(0, battleManager.getPlayer().getParty().stream().filter(mon -> !mon.isFainted()).count());
+        assertEquals(1, battleManager.getEnemy().getParty().stream().filter(mon -> !mon.isFainted()).count());
 
         // --- Setup 2 ---
         mon0.healSelf(mon0.maxHp());
@@ -101,12 +101,12 @@ class BattleManagerTest {
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
-                public void onEachDamage(boolean isMon1Turn, int dmg) {
+                public void onEachDamage(boolean isPlayerTurn, int dmg) {
                     isEachDamageCalled.set(true);
                 }
 
                 @Override
-                public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
+                public void onEachFrame(int percentage) {
                     isEachFrameCalled.set(true);
                 }
             },
@@ -142,7 +142,7 @@ class BattleManagerTest {
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
-                public void onEachDamage(boolean isMon1Turn, int dmg) {
+                public void onEachDamage(boolean isPlayerTurn, int dmg) {
                     hasTakenDamage.set(true);
                 }
             },

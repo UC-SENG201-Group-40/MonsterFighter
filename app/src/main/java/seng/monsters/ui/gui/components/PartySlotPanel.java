@@ -112,7 +112,7 @@ public final class PartySlotPanel {
     public void refresh() {
         iconLabel.setIcon(new ImageIcon(
             Objects.requireNonNull(
-            		PartySlotPanel.class.getResource(
+                PartySlotPanel.class.getResource(
                     String.format("/images/small/%s.gif", monster.monsterType().toLowerCase())
                 )
             )

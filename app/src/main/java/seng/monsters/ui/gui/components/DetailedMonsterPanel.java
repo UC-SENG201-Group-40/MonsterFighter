@@ -134,6 +134,7 @@ public final class DetailedMonsterPanel {
 
     /**
      * Refresh the panel with a new monster
+     *
      * @param monster The replacement monster to be displayed
      */
     public void refresh(Monster monster) {
@@ -143,7 +144,7 @@ public final class DetailedMonsterPanel {
 
     /**
      * Refresh the panel with the current monster.
-     *
+     * <p>
      * Used to update the display to match the change in the Monster
      */
     public void refresh() {
@@ -276,6 +277,7 @@ public final class DetailedMonsterPanel {
 
     /**
      * Compute the HP coloring based on the percentage of current hp to max hp
+     *
      * @return Green if 50% or above, Orange if 49% to 25%, otherwise Red
      */
     private Color hpColor() {

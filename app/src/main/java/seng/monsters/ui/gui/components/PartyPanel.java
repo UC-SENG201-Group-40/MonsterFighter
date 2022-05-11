@@ -49,7 +49,7 @@ public final class PartyPanel {
      */
     public PartyPanel(Trainer trainer) {
         this.trainer = trainer;
-        this.action = (e, m) -> {
+        this.action = (ignoredEvent, m) -> {
         };
         render();
     }
@@ -104,17 +104,17 @@ public final class PartyPanel {
             .toList();
     }
 
-    
+
     /**
      * Refresh the party display with a new trainer
-     * 
+     *
      * @param trainer The new trainer to be displayed
      */
     public void refresh(Trainer trainer) {
-    	this.trainer = trainer;
-    	refresh();
+        this.trainer = trainer;
+        refresh();
     }
-    
+
 
     /**
      * Refresh the party display
@@ -137,7 +137,7 @@ public final class PartyPanel {
      * @return An action listener for the button in the slot
      */
     private ActionListener eachPanelAction(int i) {
-        return e -> action.accept(e, trainer.getParty().get(i));
+        return ignoredEvent -> action.accept(ignoredEvent, trainer.getParty().get(i));
     }
 
     /**

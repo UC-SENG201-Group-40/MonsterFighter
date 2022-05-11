@@ -31,24 +31,24 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     private Timer timer;
 
     /**
-     * The label for monster 1 name and level
+     * The label for player's monster name and level
      */
-    private JLabel mon1NameLabel;
+    private JLabel playerMonsterNameLabel;
 
     /**
-     * The label for monster 1 hp
+     * The label for player's monster hp
      */
-    private JLabel mon1HpLabel;
+    private JLabel playerMonsterHpLabel;
 
     /**
-     * The label for monster 2 name and level
+     * The label for enemy's monster name and level
      */
-    private JLabel mon2NameLabel;
+    private JLabel enemyMonsterNameLabel;
 
     /**
-     * The label for monster 2 hp
+     * The label for enemy's monster hp
      */
-    private JLabel mon2HpLabel;
+    private JLabel enemyMonsterHpLabel;
 
     /**
      * The image for the punching moving icon
@@ -56,24 +56,24 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     private JLabel punchImg;
 
     /**
-     * The monster 1 image
+     * The player's monster image
      */
-    private JLabel mon1Image;
+    private JLabel playerMonsterImage;
 
     /**
-     * The monster 2 image
+     * The enemy's monster image
      */
-    private JLabel mon2Image;
+    private JLabel enemyPlayerImage;
 
     /**
-     * The fire image for monster 1
+     * The fire image for player's monster
      */
-    private JLabel fire1Image;
+    private JLabel playerFireImage;
 
     /**
-     * The fire image for monster 2
+     * The fire image for enemy's monster
      */
-    private JLabel fire2Image;
+    private JLabel enemyFireImage;
 
     /**
      * The start battle button
@@ -91,14 +91,14 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     private JLabel[] feedLabels;
 
     /**
-     * The trainer 1's party radio button
+     * The player's party radio button
      */
-    private JRadioButton[] party1Display;
+    private JRadioButton[] playerPartyButtons;
 
     /**
-     * The trainer 2's party radio button
+     * The enemy's party radio button
      */
-    private JRadioButton[] party2Display;
+    private JRadioButton[] enemyPartyButtons;
 
     /**
      * Create the application.
@@ -118,83 +118,83 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         ));
 
 
-        fire1Image = new JLabel();
-        fire1Image.setHorizontalAlignment(SwingConstants.CENTER);
-        fire1Image.setIcon(new ImageIcon(
+        playerFireImage = new JLabel();
+        playerFireImage.setHorizontalAlignment(SwingConstants.CENTER);
+        playerFireImage.setIcon(new ImageIcon(
             Objects.requireNonNull(BattleScreen.class.getResource(
                 "/images/fire.gif"
             ))
         ));
-        fire1Image.setBounds(62, 94, 200, 150);
-        fire1Image.setVisible(false);
-        frame.getContentPane().add(fire1Image);
+        playerFireImage.setBounds(62, 94, 200, 150);
+        playerFireImage.setVisible(false);
+        frame.getContentPane().add(playerFireImage);
 
-        fire2Image = new JLabel();
-        fire2Image.setHorizontalAlignment(SwingConstants.CENTER);
-        fire2Image.setIcon(new ImageIcon(
+        enemyFireImage = new JLabel();
+        enemyFireImage.setHorizontalAlignment(SwingConstants.CENTER);
+        enemyFireImage.setIcon(new ImageIcon(
             Objects.requireNonNull(BattleScreen.class.getResource(
                 "/images/fire.gif"
             ))
         ));
-        fire2Image.setBounds(551, 94, 200, 150);
-        fire2Image.setVisible(false);
-        frame.getContentPane().add(fire2Image);
+        enemyFireImage.setBounds(551, 94, 200, 150);
+        enemyFireImage.setVisible(false);
+        frame.getContentPane().add(enemyFireImage);
 
-        mon1Image = new JLabel();
-        mon1Image.setHorizontalAlignment(SwingConstants.CENTER);
-        URL mon1Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon1().monsterType().toLowerCase() + ".gif"
+        playerMonsterImage = new JLabel();
+        playerMonsterImage.setHorizontalAlignment(SwingConstants.CENTER);
+        URL playerMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
+            "/images/" + battleManager.getBattlingPlayerMonster().monsterType().toLowerCase() + ".gif"
         ));
-        ImageIcon mon1Icon = new ImageIcon(mon1Url);
-        mon1Image.setIcon(mon1Icon);
-        mon1Image.setBounds(62, 94, 200, 150);
-        frame.getContentPane().add(mon1Image);
+        ImageIcon playerMonIcon = new ImageIcon(playerMonUrl);
+        playerMonsterImage.setIcon(playerMonIcon);
+        playerMonsterImage.setBounds(62, 94, 200, 150);
+        frame.getContentPane().add(playerMonsterImage);
 
-        mon2Image = new JLabel();
-        mon2Image.setHorizontalAlignment(SwingConstants.CENTER);
-        URL mon2Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon2().monsterType().toLowerCase() + ".gif"
+        enemyPlayerImage = new JLabel();
+        enemyPlayerImage.setHorizontalAlignment(SwingConstants.CENTER);
+        URL enemyMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
+            "/images/" + battleManager.getBattlingEnemyMonster().monsterType().toLowerCase() + ".gif"
         ));
-        ImageIcon mon2Icon = new ImageIcon(mon2Url);
-        mon2Image.setIcon(mon2Icon);
-        mon2Image.setBounds(551, 94, 200, 150);
-        frame.getContentPane().add(mon2Image);
+        ImageIcon enemyMonIcon = new ImageIcon(enemyMonUrl);
+        enemyPlayerImage.setIcon(enemyMonIcon);
+        enemyPlayerImage.setBounds(551, 94, 200, 150);
+        frame.getContentPane().add(enemyPlayerImage);
 
-        mon1NameLabel = new JLabel(String.format(
-            "%s (lvl: %d)", battleManager.getMon1().getName(), battleManager.getMon1().getLevel()
+        playerMonsterNameLabel = new JLabel(String.format(
+            "%s (lvl: %d)", battleManager.getBattlingPlayerMonster().getName(), battleManager.getBattlingPlayerMonster().getLevel()
         ));
-        mon1NameLabel.setBackground(new Color(192, 192, 192));
-        mon1NameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mon1NameLabel.setBounds(62, 256, 200, 33);
-        mon1NameLabel.setOpaque(true);
-        frame.getContentPane().add(mon1NameLabel);
+        playerMonsterNameLabel.setBackground(new Color(192, 192, 192));
+        playerMonsterNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        playerMonsterNameLabel.setBounds(62, 256, 200, 33);
+        playerMonsterNameLabel.setOpaque(true);
+        frame.getContentPane().add(playerMonsterNameLabel);
 
-        mon1HpLabel = new JLabel(String.format(
-            "HP: %d/%d", battleManager.getMon1().getCurrentHp(), battleManager.getMon1().maxHp()
+        playerMonsterHpLabel = new JLabel(String.format(
+            "HP: %d/%d", battleManager.getBattlingPlayerMonster().getCurrentHp(), battleManager.getBattlingPlayerMonster().maxHp()
         ));
-        mon1HpLabel.setBackground(new Color(192, 192, 192));
-        mon1HpLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mon1HpLabel.setBounds(62, 289, 200, 33);
-        mon1HpLabel.setOpaque(true);
-        frame.getContentPane().add(mon1HpLabel);
+        playerMonsterHpLabel.setBackground(new Color(192, 192, 192));
+        playerMonsterHpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        playerMonsterHpLabel.setBounds(62, 289, 200, 33);
+        playerMonsterHpLabel.setOpaque(true);
+        frame.getContentPane().add(playerMonsterHpLabel);
 
-        mon2NameLabel = new JLabel(String.format(
-            "%s (lvl: %d)", battleManager.getMon2().getName(), battleManager.getMon2().getLevel()
+        enemyMonsterNameLabel = new JLabel(String.format(
+            "%s (lvl: %d)", battleManager.getBattlingEnemyMonster().getName(), battleManager.getBattlingEnemyMonster().getLevel()
         ));
-        mon2NameLabel.setOpaque(true);
-        mon2NameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mon2NameLabel.setBackground(Color.LIGHT_GRAY);
-        mon2NameLabel.setBounds(551, 256, 200, 33);
-        frame.getContentPane().add(mon2NameLabel);
+        enemyMonsterNameLabel.setOpaque(true);
+        enemyMonsterNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        enemyMonsterNameLabel.setBackground(Color.LIGHT_GRAY);
+        enemyMonsterNameLabel.setBounds(551, 256, 200, 33);
+        frame.getContentPane().add(enemyMonsterNameLabel);
 
-        mon2HpLabel = new JLabel(String.format(
-            "HP: %d/%d", battleManager.getMon2().getCurrentHp(), battleManager.getMon2().maxHp()
+        enemyMonsterHpLabel = new JLabel(String.format(
+            "HP: %d/%d", battleManager.getBattlingEnemyMonster().getCurrentHp(), battleManager.getBattlingEnemyMonster().maxHp()
         ));
-        mon2HpLabel.setBackground(new Color(192, 192, 192));
-        mon2HpLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mon2HpLabel.setBounds(551, 289, 200, 33);
-        mon2HpLabel.setOpaque(true);
-        frame.getContentPane().add(mon2HpLabel);
+        enemyMonsterHpLabel.setBackground(new Color(192, 192, 192));
+        enemyMonsterHpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        enemyMonsterHpLabel.setBounds(551, 289, 200, 33);
+        enemyMonsterHpLabel.setOpaque(true);
+        frame.getContentPane().add(enemyMonsterHpLabel);
 
         startButton = new JButton("Start");
         startButton.setBounds(678, 400, 117, 29);
@@ -257,7 +257,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         JRadioButton party1Check3 = new JRadioButton();
         party1.add(party1Check3);
 
-        this.party1Display = new JRadioButton[]{party1Check0, party1Check1, party1Check2, party1Check3};
+        this.playerPartyButtons = new JRadioButton[]{party1Check0, party1Check1, party1Check2, party1Check3};
 
         JPanel party2 = new JPanel();
         party2.setBounds(603, 26, 148, 33);
@@ -275,7 +275,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         JRadioButton party2Check0 = new JRadioButton();
         party2.add(party2Check0);
 
-        this.party2Display = new JRadioButton[]{party2Check0, party2Check1, party2Check2, party2Check3};
+        this.enemyPartyButtons = new JRadioButton[]{party2Check0, party2Check1, party2Check2, party2Check3};
 
         repaintParties();
 
@@ -290,17 +290,17 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
      * Repaint / update all the labels
      */
     private void repaint() {
-        mon1NameLabel.setText(String.format(
-            "%s (lvl: %d)", battleManager.getMon1().getName(), battleManager.getMon1().getLevel()
+        playerMonsterNameLabel.setText(String.format(
+            "%s (lvl: %d)", battleManager.getBattlingPlayerMonster().getName(), battleManager.getBattlingPlayerMonster().getLevel()
         ));
-        mon1HpLabel.setText(String.format(
-            "HP: %d/%d", battleManager.getMon1().getCurrentHp(), battleManager.getMon1().maxHp()
+        playerMonsterHpLabel.setText(String.format(
+            "HP: %d/%d", battleManager.getBattlingPlayerMonster().getCurrentHp(), battleManager.getBattlingPlayerMonster().maxHp()
         ));
-        mon2NameLabel.setText(String.format(
-            "%s (lvl: %d)", battleManager.getMon2().getName(), battleManager.getMon2().getLevel()
+        enemyMonsterNameLabel.setText(String.format(
+            "%s (lvl: %d)", battleManager.getBattlingEnemyMonster().getName(), battleManager.getBattlingEnemyMonster().getLevel()
         ));
-        mon2HpLabel.setText(String.format(
-            "HP: %d/%d", battleManager.getMon2().getCurrentHp(), battleManager.getMon2().maxHp()
+        enemyMonsterHpLabel.setText(String.format(
+            "HP: %d/%d", battleManager.getBattlingEnemyMonster().getCurrentHp(), battleManager.getBattlingEnemyMonster().maxHp()
         ));
 
         repaintFeeds();
@@ -310,11 +310,11 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
      * Repaint / update the party radio buttons
      */
     private void repaintParties() {
-        final var playerParty = battleManager.getPlayer1().getParty();
-        final var enemyParty = battleManager.getPlayer2().getParty();
+        final var playerParty = battleManager.getPlayer().getParty();
+        final var enemyParty = battleManager.getEnemy().getParty();
         for (var i = 0; i < 4; i++) {
-            this.party1Display[i].setSelected(i < playerParty.size() && !playerParty.get(i).isFainted());
-            this.party2Display[i].setSelected(i < enemyParty.size() && !enemyParty.get(i).isFainted());
+            this.playerPartyButtons[i].setSelected(i < playerParty.size() && !playerParty.get(i).isFainted());
+            this.enemyPartyButtons[i].setSelected(i < enemyParty.size() && !enemyParty.get(i).isFainted());
         }
     }
 
@@ -335,28 +335,29 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     /**
      * The action performed when quiting the battle screen
+     *
      * @return An action listener for the quit button
      */
     private ActionListener onQuit() {
-        return e -> gui.navigateBackToMainMenu();
+        return ignoredEvent -> gui.navigateBackToMainMenu();
     }
 
     /**
      * The action performed when the battle is being started
+     *
      * @return An action listener for the start button
      */
     private ActionListener onStart() {
-        return e -> {
+        return ignored -> {
             if (battleManager.isSettled())
                 return;
 
-            final var t = new Timer(25, e1 ->
-                battleManager.nextIteration()
-            );
-            t.start();
-            timer = t;
+            // Setup timer to create loop
+            timer = new Timer(25, event -> battleManager.nextIteration());
+            timer.start();
 
-            final var isMon1Turn = battleManager.getMon1().speed() >= battleManager.getMon2().speed();
+            // Update the sprites to be position properly in the direction of the defending monster
+            final var isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
             punchImg.setIcon(
                 new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
                     "/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png"
@@ -368,47 +369,47 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     }
 
     @Override
-    public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
+    public void onEachFrame(int percentage) {
         punchImg.setVisible(true);
-        punchImg.setBounds(pos, 134, 108, 86);
-        if (percentage > 40) {
-            fire1Image.setVisible(false);
-            fire2Image.setVisible(false);
+        punchImg.setBounds(62 + BattleManager.PSEUDO_MAX_POSITION * percentage / 5, 134, 108, 86);
+        if (percentage > 40 && percentage < 60) {
+            playerFireImage.setVisible(false);
+            enemyFireImage.setVisible(false);
         }
     }
 
     @Override
-    public void onEachDamage(boolean isMon1Turn, int dmg) {
+    public void onEachDamage(boolean isPlayerTurn, int dmg) {
         repaint();
         punchImg.setVisible(false);
-        fire1Image.setVisible(!isMon1Turn);
-        fire2Image.setVisible(isMon1Turn);
+        playerFireImage.setVisible(!isPlayerTurn);
+        enemyFireImage.setVisible(isPlayerTurn);
         punchImg.setIcon(
             new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
-                "/images/" + (!isMon1Turn ? "punch-true" : "punch-false") + ".png"
+                "/images/" + (!isPlayerTurn ? "punch-true" : "punch-false") + ".png"
             )))
         );
     }
 
     @Override
-    public void onEachNextMonster(boolean isMon1Turn) {
-        fire1Image.setVisible(false);
-        fire2Image.setVisible(false);
+    public void onEachNextMonster(boolean isPlayerTurn) {
+        playerFireImage.setVisible(false);
+        enemyFireImage.setVisible(false);
         punchImg.setIcon(
             new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
-                "/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png"
+                "/images/" + (isPlayerTurn ? "punch-true" : "punch-false") + ".png"
             )))
         );
-        URL mon1Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon1().getClass().getSimpleName().toLowerCase() + ".gif"
+        URL playerMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
+            "/images/" + battleManager.getBattlingPlayerMonster().getClass().getSimpleName().toLowerCase() + ".gif"
         ));
-        ImageIcon mon1Icon = new ImageIcon(mon1Url);
-        mon1Image.setIcon(mon1Icon);
-        URL mon2Url = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getMon2().getClass().getSimpleName().toLowerCase() + ".gif"
+        ImageIcon playerMonIcon = new ImageIcon(playerMonUrl);
+        playerMonsterImage.setIcon(playerMonIcon);
+        URL enemyMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
+            "/images/" + battleManager.getBattlingEnemyMonster().getClass().getSimpleName().toLowerCase() + ".gif"
         ));
-        ImageIcon mon2Icon = new ImageIcon(mon2Url);
-        mon2Image.setIcon(mon2Icon);
+        ImageIcon enemyMonIcon = new ImageIcon(enemyMonUrl);
+        enemyPlayerImage.setIcon(enemyMonIcon);
 
         repaintParties();
 
@@ -416,21 +417,16 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     }
 
     @Override
-    public void onEnd(boolean isMon1Turn) {
+    public void onEnd() {
         punchImg.setVisible(false);
         quitButton.setVisible(true);
         quitButton.setEnabled(true);
         repaintFeeds();
         repaintParties();
         timer.stop();
-    }
-
-    @Override
-    public void dispose() {
         if (battleManager.hasPlayerWon()) {
             gameManager.setGold(gameManager.getGold() + battleManager.goldReward() * gameManager.getDifficulty());
             gameManager.setScore(gameManager.getScore() + battleManager.scoreReward() * gameManager.getDifficulty());
         }
-        super.dispose();
     }
 }

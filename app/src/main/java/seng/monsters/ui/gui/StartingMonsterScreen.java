@@ -21,18 +21,20 @@ public class StartingMonsterScreen extends Screen {
     /**
      * The options of monsters available
      */
-    private final List<Monster> startingMonsters = Monster.all(1).subList(0, 3);
+    private final List<Monster> startingMonsters;
 
     /**
      * The selected monster state
      */
-    private final State<Monster> selectedMonster = State.of(startingMonsters.get(0));
+    private final State<Monster> selectedMonster;
 
     /**
      * Create the application.
      */
     public StartingMonsterScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
+        startingMonsters = Monster.all(gameManager.getDifficulty() + 1).subList(0, gameManager.getDifficulty() + 2);
+        selectedMonster = State.of(startingMonsters.get(0));
     }
 
     /**
@@ -81,7 +83,7 @@ public class StartingMonsterScreen extends Screen {
      * @return An action listener for the combobox
      */
     private ActionListener comboBoxAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var index = comboBox.getSelectedIndex();
             if (index < 0)
                 return;
@@ -96,7 +98,7 @@ public class StartingMonsterScreen extends Screen {
      * @return The action listener for the submit button
      */
     private ActionListener submitAction(JComboBox<String> comboBox) {
-        return e -> {
+        return ignoredEvent -> {
             final var monster = selectedMonster.get();
             comboBox.setEnabled(false);
 
@@ -114,7 +116,7 @@ public class StartingMonsterScreen extends Screen {
      * @return The action for the pop-up after renaming
      */
     private Consumer<ActionEvent> popUpRenameAction(Monster monster) {
-        return e -> {
+        return ignoredEvent -> {
             gameManager.getTrainer().add(monster);
 
             gui.navigateTo(new MainMenuScreen(gui, gameManager));

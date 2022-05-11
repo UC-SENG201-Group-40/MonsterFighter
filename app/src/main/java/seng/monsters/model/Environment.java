@@ -18,6 +18,7 @@ public enum Environment {
 
     /**
      * Get all the possible environment
+     *
      * @return A list of all unique environment
      */
     public static List<Environment> all() {
@@ -33,6 +34,7 @@ public enum Environment {
 
     /**
      * Generates a random environment
+     *
      * @return An environment randomly chosen from the list of environments
      */
     public static Environment generateRandomEnvironment() {

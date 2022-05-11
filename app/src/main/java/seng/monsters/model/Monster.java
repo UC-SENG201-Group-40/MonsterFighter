@@ -479,7 +479,9 @@ public abstract class Monster implements Purchasable {
      *
      * @param name The new name
      */
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException {
+        if ((name.length() < 3) || (name.length() > 15) || (!name.matches("[a-zA-Z]+")))
+            throw new IllegalArgumentException();
         this.name = name;
     }
 

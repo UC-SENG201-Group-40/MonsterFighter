@@ -475,7 +475,7 @@ public class GameManager {
      *
      * @param name The new name the player choose
      */
-    public void setTrainerName(String name) {
+    public void setTrainerName(String name) throws IllegalArgumentException {
         trainer.setName(name);
     }
 
@@ -541,13 +541,16 @@ public class GameManager {
      *
      * @return A Map of index to role name pair
      */
-    private HashMap<Integer, String> getRandomTrainerNames() {
+    private List<String> getRandomTrainerNames() {
         final var file = Objects.requireNonNull(GameManager.class.getResourceAsStream("/txt/roles.txt"));
         final var scanner = new Scanner(file);
-        final var res = new HashMap<Integer, String>(56);
+        final var res = new ArrayList<String>(56);
         var i = 0;
         while (scanner.hasNextLine()) {
-            res.put(i, scanner.nextLine());
+            final var name = scanner.nextLine();
+            if (name.isBlank() || name == null)
+                continue;
+            res.add(name);
             i++;
         }
         scanner.close();

@@ -43,27 +43,27 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     private String hpFeed() {
-        final var mon1 = battler.getMon1();
-        final var mon2 = battler.getMon2();
+        final var playerMon = battler.getBattlingPlayerMonster();
+        final var enemyMon = battler.getBattlingEnemyMonster();
         return String.format(
             "%s (HP: %d) vs %s (HP: %d)",
-            mon1.getName(), mon1.getCurrentHp(),
-            mon2.getName(), mon2.getCurrentHp()
+            playerMon.getName(), playerMon.getCurrentHp(),
+            enemyMon.getName(), enemyMon.getCurrentHp()
         );
     }
 
     private String partyFeed() {
-        final var mon1 = battler.getMon1();
-        final var mon2 = battler.getMon2();
+        final var playerMon = battler.getBattlingPlayerMonster();
+        final var enemyMon = battler.getBattlingEnemyMonster();
 
-        final var party1 = battler.getPlayer1()
+        final var party1 = battler.getPlayer()
             .getParty()
             .stream()
             .map(mon -> mon.isFainted() ? "(_)" : "(x)")
             .reduce((acc, x) -> acc + "-" + x)
             .orElse("");
 
-        final var party2 = battler.getPlayer2()
+        final var party2 = battler.getEnemy()
             .getParty()
             .stream()
             .map(mon -> mon.isFainted() ? "(_)" : "(x)")
@@ -72,17 +72,17 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
 
         return String.format(
             "Player 1: %s (HP: %d) %s" + "\n" + "Player 2: %s (HP: %d) %s",
-            mon1.getName(), mon1.getCurrentHp(), party1,
-            mon2.getName(), mon2.getCurrentHp(), party2
+            playerMon.getName(), playerMon.getCurrentHp(), party1,
+            enemyMon.getName(), enemyMon.getCurrentHp(), party2
         );
     }
 
     @Override
-    public void onEachFrame(boolean isMon1Turn, int pos, int percentage) {
+    public void onEachFrame(int percentage) {
     }
 
     @Override
-    public void onEachDamage(boolean isMon1Turn, int dmg) {
+    public void onEachDamage(boolean isPlayerTurn, int dmg) {
         battler
             .getFeeds()
             .stream()
@@ -94,14 +94,14 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     @Override
-    public void onEachNextMonster(boolean isMon1Turn) {
+    public void onEachNextMonster(boolean isPlayerTurn) {
         System.out.println("===========================");
         System.out.println(partyFeed());
         System.out.println("===========================");
     }
 
     @Override
-    public void onEnd(boolean isMon1Turn) {
+    public void onEnd() {
         final var feeds = battler
             .getFeeds()
             .stream()

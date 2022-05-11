@@ -84,7 +84,7 @@ public class InventoryScreen extends Screen {
             );
 
             sellButton.addActionListener(
-                useSellAction(item, errorLabel, countLabel, useButton, sellButton)
+                sellItemAction(item, errorLabel, countLabel, useButton, sellButton)
             );
         }
 
@@ -105,8 +105,8 @@ public class InventoryScreen extends Screen {
      * @param sellButton The button itself to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
      */
-    private ActionListener useSellAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
-        return e -> {
+    private ActionListener sellItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
+        return ignoredEvent -> {
             try {
                 gameManager.sell(item);
             } catch (Inventory.ItemNotExistException err) {
@@ -135,7 +135,7 @@ public class InventoryScreen extends Screen {
      * @return An action listener that can be passed into the button
      */
     private ActionListener useItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
-        return e -> {
+        return ignoredEvent -> {
             final int count = inventory.getItemNumber(item);
 
             // Do not proceed if the trainer has no monster and the item count is 0
@@ -165,7 +165,7 @@ public class InventoryScreen extends Screen {
      * @return A consumer function to be passed to the pop-up as callback
      */
     private BiConsumer<ActionEvent, Monster> popUpChosenAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
-        return (e, monster) -> {
+        return (ignoredEvent, monster) -> {
             try {
                 gameManager.useItemFromInventory(item, monster);
 
@@ -191,6 +191,6 @@ public class InventoryScreen extends Screen {
      * The action performed when the user chose to return the main menu
      */
     private ActionListener backToMainMenuAction() {
-        return e -> gui.navigateBackToMainMenu();
+        return ignoredEvent -> gui.navigateBackToMainMenu();
     }
 }

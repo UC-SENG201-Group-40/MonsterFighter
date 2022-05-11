@@ -55,7 +55,7 @@ public class LeavingPopUp extends PopUp {
         continueButton.setBounds(351, 400, 117, 29);
         frame.getContentPane().add(continueButton);
 
-        continueButton.addActionListener(e -> frame.dispose());
+        continueButton.addActionListener(ignoredEvent -> frame.dispose());
 
         frame.setVisible(true);
     }
