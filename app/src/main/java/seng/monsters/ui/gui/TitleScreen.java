@@ -80,7 +80,7 @@ public class TitleScreen extends Screen {
                 gui.navigateTo(new SettingsScreen(gui, gameManager));
             } catch (IllegalArgumentException ignored) {
                 errorLabel.setVisible(true);
-                errorLabel.setText("Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)");
+                errorLabel.setText("<html>Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)</html>");
             }
         };
     }

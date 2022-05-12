@@ -8,6 +8,7 @@ package seng.monsters.ui.gui;
 
 import seng.monsters.model.BattleManager;
 import seng.monsters.model.GameManager;
+import seng.monsters.model.Monster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -163,6 +164,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         playerMonsterNameLabel = new JLabel(String.format(
             "%s (lvl: %d)", battleManager.getBattlingPlayerMonster().getName(), battleManager.getBattlingPlayerMonster().getLevel()
         ));
+        playerMonsterNameLabel.setForeground(boostedColor(battleManager.getBattlingPlayerMonster()));
         playerMonsterNameLabel.setBackground(new Color(192, 192, 192));
         playerMonsterNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         playerMonsterNameLabel.setBounds(62, 256, 200, 33);
@@ -181,6 +183,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         enemyMonsterNameLabel = new JLabel(String.format(
             "%s (lvl: %d)", battleManager.getBattlingEnemyMonster().getName(), battleManager.getBattlingEnemyMonster().getLevel()
         ));
+        enemyMonsterNameLabel.setForeground(boostedColor(battleManager.getBattlingEnemyMonster()));
         enemyMonsterNameLabel.setOpaque(true);
         enemyMonsterNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         enemyMonsterNameLabel.setBackground(Color.LIGHT_GRAY);
@@ -293,12 +296,14 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         playerMonsterNameLabel.setText(String.format(
             "%s (lvl: %d)", battleManager.getBattlingPlayerMonster().getName(), battleManager.getBattlingPlayerMonster().getLevel()
         ));
+        playerMonsterNameLabel.setForeground(boostedColor(battleManager.getBattlingPlayerMonster()));
         playerMonsterHpLabel.setText(String.format(
             "HP: %d/%d", battleManager.getBattlingPlayerMonster().getCurrentHp(), battleManager.getBattlingPlayerMonster().maxHp()
         ));
         enemyMonsterNameLabel.setText(String.format(
             "%s (lvl: %d)", battleManager.getBattlingEnemyMonster().getName(), battleManager.getBattlingEnemyMonster().getLevel()
         ));
+        enemyMonsterNameLabel.setForeground(boostedColor(battleManager.getBattlingEnemyMonster()));
         enemyMonsterHpLabel.setText(String.format(
             "HP: %d/%d", battleManager.getBattlingEnemyMonster().getCurrentHp(), battleManager.getBattlingEnemyMonster().maxHp()
         ));
@@ -428,5 +433,11 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
             gameManager.setGold(gameManager.getGold() + battleManager.goldReward() * gameManager.getDifficulty());
             gameManager.setScore(gameManager.getScore() + battleManager.scoreReward() * gameManager.getDifficulty());
         }
+    }
+
+    private Color boostedColor(Monster monster) {
+        if (monster.idealEnvironment() == gameManager.getEnvironment())
+            return new Color(160, 28, 193);
+        return Color.BLACK;
     }
 }

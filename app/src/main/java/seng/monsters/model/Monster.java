@@ -54,12 +54,12 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public Environment idealEnvironment() {
-            return Environment.BEACH;
+            return Environment.HILL;
         }
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() <= 0.4;
+            return Math.random() <= 0.6;
         }
 
         @Override
@@ -169,7 +169,12 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLevelUp() {
-            return Math.random() <= 0.3;
+            return !isFainted() || Math.random() <= 0.8;
+        }
+
+        @Override
+        public int sellPrice() {
+            return buyPrice();
         }
 
         @Override
@@ -225,7 +230,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public Environment idealEnvironment() {
-            return Environment.DESERT;
+            return Environment.URBAN;
         }
 
         @Override
@@ -614,6 +619,18 @@ public abstract class Monster implements Purchasable {
         if (other instanceof Monster mon)
             return this.getId().equals(mon.getId());
         return false;
+    }
+
+    /**
+     * Gives a combination of name and id to create a unique identifier that still recognizable by name
+     *
+     * @return A string of name and id combined
+     */
+    public String uniqueName() {
+        return String.format("%s (%s)",
+            getName(),
+            getId().toString().substring(0, 8)
+        );
     }
 
     /**

@@ -163,9 +163,9 @@ public final class PartySlotPanel {
 
         hpLabel = new JLabel();
         hpLabel.setText(String.format("%d/%d", monster.getCurrentHp(), monster.maxHp()));
-        hpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        hpLabel.setHorizontalAlignment(SwingConstants.LEADING);
         hpLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
-        hpLabel.setBounds(55, 34, 51, 11);
+        hpLabel.setBounds(55, 34, 220, 11);
         panel.add(hpLabel);
 
         currHpPanel = new JPanel();

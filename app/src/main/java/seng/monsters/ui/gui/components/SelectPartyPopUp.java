@@ -2,14 +2,12 @@ package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
-import seng.monsters.ui.gui.state.LabelComboboxModel;
+import seng.monsters.model.Trainer;
 import seng.monsters.ui.gui.state.State;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -19,12 +17,12 @@ public final class SelectPartyPopUp extends PopUp {
     /**
      * The party of the user
      */
-    private final List<Monster> party;
+    private final Trainer trainer;
 
     /**
      * The callback when the user has chose a monster
      */
-    private BiConsumer<ActionEvent, Monster> onChosen = (ignoredEvent, m) -> {
+    private BiConsumer<ActionEvent, Monster> onChosen = (ignoredEvent, ignoredMonster) -> {
     };
 
     /**
@@ -33,22 +31,18 @@ public final class SelectPartyPopUp extends PopUp {
     private final State<Monster> chosenMonster;
 
     public SelectPartyPopUp(GameManager gameManager) {
-        this.party = gameManager.getTrainer().getParty();
-        this.chosenMonster = State.of(party.get(0));
+        this.trainer = gameManager.getTrainer();
+        this.chosenMonster = State.of(trainer.getParty().get(0));
         render();
     }
 
     private void render() {
-        JComboBox<String> partyComboBox = new JComboBox<>();
-        partyComboBox.setModel(
-            new LabelComboboxModel<>(party, Monster::getName)
-        );
-        partyComboBox.setSelectedIndex(0);
-        partyComboBox.setBounds(66, 140, 238, 27);
-        frame.getContentPane().add(partyComboBox);
+        PartyPanel partyPanel = new PartyPanel(trainer);
+        partyPanel.setBounds(66, 110);
+        partyPanel.applyToFrame(frame);
 
         JLabel promptLabel = new JLabel("Choose your monster from the party:");
-        promptLabel.setBounds(66, 112, 238, 16);
+        promptLabel.setBounds(66, 90, 238, 16);
         frame.getContentPane().add(promptLabel);
 
         DetailedMonsterPanel panel = new DetailedMonsterPanel(chosenMonster.get(), false);
@@ -56,19 +50,14 @@ public final class SelectPartyPopUp extends PopUp {
         panel.applyToFrame(frame);
 
         JButton submitButton = new JButton("Next");
-        submitButton.setBounds(350, 374, 117, 29);
+        submitButton.setBounds(350, 120 + PartyPanel.HEIGHT, 117, 29);
         frame.getContentPane().add(submitButton);
 
         // Setting the on change callback for the selected monster
         chosenMonster.onChange(panel::refresh);
 
-        partyComboBox.addActionListener(
-            comboBoxSelectionAction(partyComboBox)
-        );
-
-        submitButton.addActionListener(
-            submitAction(partyComboBox)
-        );
+        partyPanel.onAction(partySelectionAction());
+        submitButton.addActionListener(submitAction());
 
         frame.setVisible(true);
     }
@@ -83,30 +72,24 @@ public final class SelectPartyPopUp extends PopUp {
     }
 
     /**
-     * The action performed when a selection is made in the combox
+     * The action performed when a selection is made in the party panel
      *
-     * @param comboBox The combo box to get the selection
-     * @return An action listener for the combo box
+     * @return An action listener for the party panel
      */
-    private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
-        return ignoredEvent -> {
-            final var index = comboBox.getSelectedIndex();
-            if (index < 0)
-                return;
-            chosenMonster.set(party.get(index));
+    private BiConsumer<ActionEvent, Monster> partySelectionAction() {
+        return (ignoredEvent, monster) -> {
+            chosenMonster.set(monster);
         };
     }
 
     /**
      * The action performed when the selection is submitted
      *
-     * @param comboBox The combo box to disable changes
      * @return An action listener for the submit button
      */
-    private ActionListener submitAction(JComboBox<String> comboBox) {
+    private ActionListener submitAction() {
         return ignoredEvent -> {
             final var monster = chosenMonster.get();
-            comboBox.setEnabled(false);
 
             onChosen.accept(ignoredEvent, monster);
             frame.dispose();

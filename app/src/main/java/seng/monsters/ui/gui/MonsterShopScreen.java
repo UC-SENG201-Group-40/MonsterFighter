@@ -82,7 +82,7 @@ public class MonsterShopScreen extends Screen {
 
         JComboBox<String> monsterStockComboBox = new JComboBox<>();
         monsterStockComboBox.setModel(
-            new LabelComboboxModel<>(gameManager.getShop().getMonsterStock(), this::uniqueMonsterIdentifier)
+            new LabelComboboxModel<>(gameManager.getShop().getMonsterStock(), Monster::uniqueName)
         );
         monsterStockComboBox.setSelectedIndex(0);
         monsterStockComboBox.setBounds(0, 70, 236, 30);
@@ -124,7 +124,7 @@ public class MonsterShopScreen extends Screen {
     private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
         return ignoredEvent -> {
             final var index = comboBox.getSelectedIndex();
-            if (index < 0)
+            if (index < 0 || index >= gameManager.getShop().getMonsterStock().size())
                 return;
             chosenMonster.set(gameManager.getShop().getMonsterStock().get(index));
         };
@@ -160,15 +160,15 @@ public class MonsterShopScreen extends Screen {
                 final var stock = gameManager.getShop().getMonsterStock();
                 if (stock.isEmpty()) {
                     gui.navigateBackToMainMenu();
-                    return;
+                } else {
+                    partyComboBox.setModel(
+                        new LabelComboboxModel<>(stock, Monster::uniqueName)
+                    );
+                    partyComboBox.setSelectedIndex(0);
+                    chosenMonster.set(stock.get(0));
+                    buyButton.setEnabled(true);
+                    goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
                 }
-                partyComboBox.setModel(
-                    new LabelComboboxModel<>(stock, this::uniqueMonsterIdentifier)
-                );
-                partyComboBox.setSelectedIndex(0);
-                chosenMonster.set(stock.get(0));
-                buyButton.setEnabled(true);
-                goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
             }
         };
     }
@@ -178,14 +178,5 @@ public class MonsterShopScreen extends Screen {
      */
     private ActionListener backToMainMenuAction() {
         return ignoredEvent -> gui.navigateBackToMainMenu();
-    }
-
-    /**
-     * A special string to identify all monster uniquely regardless of name and type
-     * @param mon The monster in question
-     * @return A string of name (id)
-     */
-    private String uniqueMonsterIdentifier(Monster mon) {
-        return String.format("%s (%s)", mon.getName(), mon.getId().toString().substring(0, 8));
     }
 }

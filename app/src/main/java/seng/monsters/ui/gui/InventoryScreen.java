@@ -168,11 +168,6 @@ public class InventoryScreen extends Screen {
         return (ignoredEvent, monster) -> {
             try {
                 gameManager.useItemFromInventory(item, monster);
-
-                final var newCount = inventory.getItemNumber(item);
-                countLabel.setText(String.format("%dx", newCount));
-                sellButton.setEnabled(newCount > 0);
-                useButton.setEnabled(newCount > 0);
                 errorLabel.setVisible(false);
             } catch (Inventory.ItemNotExistException err) {
                 errorLabel.setText("There is no such item in your inventory");
@@ -183,6 +178,11 @@ public class InventoryScreen extends Screen {
             } catch (Item.NoEffectException err) {
                 errorLabel.setText("The item produces no effect, " + err.getMessage());
                 errorLabel.setVisible(true);
+            } finally {
+                final var newCount = inventory.getItemNumber(item);
+                countLabel.setText(String.format("%dx", newCount));
+                sellButton.setEnabled(newCount > 0);
+                useButton.setEnabled(newCount > 0);
             }
         };
     }
