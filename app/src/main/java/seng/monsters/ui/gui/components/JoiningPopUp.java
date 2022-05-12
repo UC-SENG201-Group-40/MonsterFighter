@@ -77,7 +77,7 @@ public class JoiningPopUp extends PopUp {
         JLabel errorLabel = new JLabel("Name your monster:");
         errorLabel.setForeground(new Color(255, 0, 0));
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        errorLabel.setBounds(125, 246, 229, 16);
+        errorLabel.setBounds(125, 246, 229, 32);
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
 
@@ -110,7 +110,7 @@ public class JoiningPopUp extends PopUp {
                 onEnd.accept(ignoredEvent);
                 frame.dispose();
             } catch (IllegalArgumentException ignored) {
-                errorLabel.setText("Must be 3 to 15 characters and not contain only contains letters!");
+                errorLabel.setText("<html>Must be 3 to 15 characters and not contain only contains letters!</html>");
                 errorLabel.setVisible(true);
             }
         };

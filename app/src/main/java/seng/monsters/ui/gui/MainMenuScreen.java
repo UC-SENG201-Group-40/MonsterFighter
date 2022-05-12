@@ -34,6 +34,7 @@ public class MainMenuScreen extends Screen {
         JButton partyButton = new JButton("Party");
         partyButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         partyButton.setBounds(38, 45, 150, 40);
+        partyButton.setEnabled(!gameManager.getTrainer().getParty().isEmpty());
         frame.getContentPane().add(partyButton);
 
         JButton inventoryButton = new JButton("Inventory");
