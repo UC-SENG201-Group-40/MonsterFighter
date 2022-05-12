@@ -212,7 +212,11 @@ class MonsterTest {
     @Test
     void sellPrice() {
         for (final var monster : all) {
-            assertEquals(monster.buyPrice() / 2, monster.sellPrice());
+            if (monster instanceof Monster.Tree) {
+                assertEquals(monster.buyPrice(), monster.sellPrice());
+            } else {
+                assertEquals(monster.buyPrice() / 2, monster.sellPrice());
+            }
         }
     }
 
