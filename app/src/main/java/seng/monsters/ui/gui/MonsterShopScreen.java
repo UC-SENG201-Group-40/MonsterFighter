@@ -130,19 +130,26 @@ public class MonsterShopScreen extends Screen {
         };
     }
 
+    /**
+     * The action performed when attempting to buy a monster from the shop
+     *
+     * @param buyButton     The buy button to be disabled while processing payment
+     * @param errorLabel    The error label to display failure in purchase
+     * @param goldLabel     The gold label to update the gold count
+     * @param partyComboBox The combo box to update the monster displayed in the shop
+     * @return An action listener for the buy button
+     */
     private ActionListener buyAction(JButton buyButton, JLabel errorLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
         return ignoredEvent -> {
-            JoiningPopUp popUp = new JoiningPopUp(chosenMonster.get());
-            popUp.onEnd(popUpAction(buyButton, errorLabel, goldLabel, partyComboBox));
-            buyButton.setEnabled(false);
-        };
-    }
-
-    private Consumer<ActionEvent> popUpAction(JButton buyButton, JLabel errorLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
-        return ignoredEvent -> {
             try {
-                gameManager.buy(chosenMonster.get());
+                final var boughtMonster = chosenMonster.get();
+
+                gameManager.buy(boughtMonster);
                 errorLabel.setVisible(false);
+                buyButton.setEnabled(false);
+
+                JoiningPopUp popUp = new JoiningPopUp(chosenMonster.get());
+                popUp.onEnd(popUpAction(buyButton));
             } catch (Shop.InsufficientFundsException err) {
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
@@ -166,11 +173,20 @@ public class MonsterShopScreen extends Screen {
                     );
                     partyComboBox.setSelectedIndex(0);
                     chosenMonster.set(stock.get(0));
-                    buyButton.setEnabled(true);
                     goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
                 }
             }
         };
+    }
+
+    /**
+     * The action performed after player named the bought monster
+     *
+     * @param buyButton The button to be re-enabled
+     * @return A consumer function for the pop up
+     */
+    private Consumer<ActionEvent> popUpAction(JButton buyButton) {
+        return ignoredEvent -> buyButton.setEnabled(true);
     }
 
     /**
