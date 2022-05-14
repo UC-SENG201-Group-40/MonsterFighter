@@ -30,6 +30,10 @@ public final class SelectPartyPopUp extends PopUp {
      */
     private final State<Monster> chosenMonster;
 
+    /**
+     * Creates a pop-up screen to allow user to select a monster from their party
+     * @param gameManager The game manager / controller
+     */
     public SelectPartyPopUp(GameManager gameManager) {
         this.trainer = gameManager.getTrainer();
         this.chosenMonster = State.of(trainer.getParty().get(0));

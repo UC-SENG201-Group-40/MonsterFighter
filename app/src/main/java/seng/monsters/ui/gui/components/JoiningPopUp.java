@@ -27,7 +27,9 @@ public class JoiningPopUp extends PopUp {
     };
 
     /**
-     * Create the application.
+     * Create a pop-up screen to allow the player to name their new monster
+     *
+     * @param monster The monster that have just joined
      */
     public JoiningPopUp(Monster monster) {
         this.monster = monster;

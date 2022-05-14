@@ -22,13 +22,16 @@ public class SettingsScreen extends Screen {
      */
     private final State<Integer> maxDays = State.of(5);
 
+    /**
+     * Create an active GUI screen for prompting the user to choose the settings before the game starts
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
+     */
     public SettingsScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
     public void render() {
         JLabel difficultyPromptLabel = new JLabel("Choose difficulty:");

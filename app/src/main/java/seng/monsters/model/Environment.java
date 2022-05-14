@@ -14,7 +14,35 @@ import java.util.Random;
  * Environment about the field of battle
  */
 public enum Environment {
-    DESERT, FIELD, BEACH, HILL, FOREST, URBAN;
+    /**
+     * The desert environment
+     */
+    DESERT,
+
+    /**
+     * The field / neutral environment
+     */
+    FIELD,
+
+    /**
+     * The beach environment
+     */
+    BEACH,
+
+    /**
+     * The mountain and hills environment
+     */
+    HILL,
+
+    /**
+     * The forest environment
+     */
+    FOREST,
+
+    /**
+     * The city environment
+     */
+    URBAN;
 
     /**
      * Get all the possible environment

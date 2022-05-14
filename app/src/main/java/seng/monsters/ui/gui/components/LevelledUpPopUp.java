@@ -13,6 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * A pop-up screen to show all monsters in the party that have levelled up
+ */
 public class LevelledUpPopUp extends PopUp {
     /**
      * Monster that has joined
@@ -20,7 +23,9 @@ public class LevelledUpPopUp extends PopUp {
     private final List<Monster> monsters;
 
     /**
-     * Create the application.
+     * Create a pop-up screen to allow the player to see monsters in the party who levelled up
+     *
+     * @param monsters The list of monsters that have just levelled up
      */
     public LevelledUpPopUp(List<Monster> monsters) {
         this.monsters = monsters;

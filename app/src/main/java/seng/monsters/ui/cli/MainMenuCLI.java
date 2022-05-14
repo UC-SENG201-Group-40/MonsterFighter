@@ -7,12 +7,20 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * A CLI to the display the main menu and allow navigation to all other CLI's
+ */
 public final class MainMenuCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<String> menuOptions = List.of(
         "Manage Party", "Battle", "View Item Inventory", "Enter Shop", "Sleep");
 
+    /**
+     * Creates a CLI that display the main menu and allow navigation to all other CLI's
+     *
+     * @param gameManager The game manager / controller
+     */
     public MainMenuCLI(GameManager gameManager) {
         this.gameManager = gameManager;
     }
@@ -128,11 +136,26 @@ public final class MainMenuCLI extends TestableCLI {
         System.out.println("\nThanks for playing!");
     }
 
+    /**
+     * Creates a CLI display for monster that have joined a party
+     *
+     * @param input The Scanner to get the input from the user
+     * @param mon   The monster that have joined the party
+     * @return The monster itself
+     */
     public static Monster monsterJoinsPartyInterface(Scanner input, Monster mon) {
         monsterJoinsPartyMessage(mon);
         return monsterJoinsParty(input, mon);
     }
 
+    /**
+     * The method to handle naming of a monster
+     *
+     * @param input The new name input
+     * @param mon   The monster to be renamed
+     * @return The monster itself
+     * @throws IllegalArgumentException if the input contains non-alphabetical characters or not within 3-15 characters
+     */
     public static Monster monsterJoinsParty(Scanner input, Monster mon) throws IllegalArgumentException {
         try {
             final var name = input.next();
@@ -148,6 +171,11 @@ public final class MainMenuCLI extends TestableCLI {
         return mon;
     }
 
+    /**
+     * Prints out a message for the monster joining the party
+     *
+     * @param mon The monster that has joined
+     */
     public static void monsterJoinsPartyMessage(Monster mon) {
         System.out.printf("Congratulations! %s has joined your party!", mon.getName());
         System.out.println("""
@@ -156,10 +184,14 @@ public final class MainMenuCLI extends TestableCLI {
             (Must be between 3 and 15 letters inclusive, no symbols or numbers. Leave blank for default name):""");
     }
 
+    /**
+     * Makes a MainMenuCLI and run its interface
+     *
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         MainMenuCLI mainMenuCLI = new MainMenuCLI(gameManager);
         mainMenuCLI.mainMenuInterface();
     }
-
 
 }

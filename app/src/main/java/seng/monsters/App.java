@@ -7,10 +7,18 @@ import java.awt.EventQueue;
 
 import seng.monsters.ui.gui.GUI;
 
+/**
+ * The main entry for the entire application
+ */
 public class App {
+    /**
+     * The main function to start the application
+     *
+     * @param args The command line argument given
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-        		final var gui = new GUI();
-        	});
+            final var gui = new GUI();
+        });
     }
 }

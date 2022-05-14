@@ -22,6 +22,9 @@ public abstract class PopUp {
      */
     protected final JFrame frame;
 
+    /**
+     * Creates a pop-up screen that is displayed on top of an active screen (not replace it)
+     */
     public PopUp() {
         // Set the frame and its boundary
         frame = new JFrame();

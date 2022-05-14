@@ -1,11 +1,9 @@
 package seng.monsters.ui.gui;
 
 import java.awt.Color;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
@@ -36,16 +34,16 @@ public class MonsterShopScreen extends Screen {
 
 
     /**
-     * Create the application.
+     * Create an active GUI screen for displaying the monster shop and allow purchasing
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public MonsterShopScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
         chosenMonster = State.of(gameManager.getShop().getMonsterStock().get(0));
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
     public void render() {
         frame.setContentPane(new JLabel(

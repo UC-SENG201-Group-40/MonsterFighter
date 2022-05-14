@@ -8,12 +8,19 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
+/**
+ * A CLI to display the items in the inventory and allow use those item
+ */
 public final class InventoryCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final Inventory inventory;
     private final List<Monster> party;
 
+    /**
+     * Creates a CLI to display items in the inventory and allow player to use them
+     * @param gameManager The game manager / controller
+     */
     public InventoryCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         inventory = gameManager.getInventory();
@@ -41,6 +48,8 @@ public final class InventoryCLI extends TestableCLI {
     /**
      * Prints the player's party and takes the player's input to choose which monster to use the item on.
      *
+     * @param item The item that being used
+     * @param itemUsed Signals whether the item has been previously successful used
      * @throws IllegalArgumentException if an invalid parameter is passed.
      */
     public void useItemInterface(Item item, boolean itemUsed) throws IllegalArgumentException {
@@ -142,6 +151,10 @@ public final class InventoryCLI extends TestableCLI {
         System.out.println("\n0 - Return to Inventory menu");
     }
 
+    /**
+     * Makes a InventoryCLI and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         try {
             final var inventoryCLI = new InventoryCLI(gameManager);

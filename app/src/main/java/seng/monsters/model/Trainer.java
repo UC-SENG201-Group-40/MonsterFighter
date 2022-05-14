@@ -17,6 +17,10 @@ public final class Trainer {
      * Signals that add is called when the party reach its maximum size
      */
     public static final class PartyFullException extends IllegalStateException {
+        /**
+         * Creates an party full exception with a description
+         * @param desc The description of why the exception was thrown
+         */
         public PartyFullException(String desc) {
             super(desc);
         }

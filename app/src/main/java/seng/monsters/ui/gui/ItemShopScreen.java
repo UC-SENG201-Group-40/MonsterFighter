@@ -14,7 +14,6 @@ import seng.monsters.model.Item;
 import seng.monsters.model.Shop;
 import seng.monsters.model.Trainer;
 import seng.monsters.ui.gui.components.ItemPanel;
-import seng.monsters.ui.gui.components.PopUp;
 
 /**
  * A screen to allow user to purchase items from the shop
@@ -27,7 +26,10 @@ public class ItemShopScreen extends Screen {
     private final List<Item> items = Item.all();
 
     /**
-     * Create the application.
+     * Create an active GUI screen for purchasing item from the shop
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public ItemShopScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
@@ -103,7 +105,7 @@ public class ItemShopScreen extends Screen {
      * @param errorLabel The error label to prompt error messages
      * @param countLabel The count label for this item, to update the count once succeed
      * @param buyButton  The button itself to enable or disable it if item is not available anymore
-     * @param sellButton The sell button to enable or disable it if item is not available anymore
+     * @param goldLabel  The label for the amount of gold
      * @return An action listener that can be passed into the button
      */
     private ActionListener buyItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton buyButton, JLabel goldLabel) {

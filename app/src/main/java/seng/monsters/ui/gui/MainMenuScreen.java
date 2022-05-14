@@ -16,7 +16,10 @@ import java.util.Objects;
  */
 public class MainMenuScreen extends Screen {
     /**
-     * Create the application.
+     * Create an active GUI screen for displaying the main menu
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public MainMenuScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);

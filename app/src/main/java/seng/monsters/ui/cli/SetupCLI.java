@@ -6,6 +6,9 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
+/**
+ * A CLI to prompt user with the setting for their game
+ */
 public final class SetupCLI extends TestableCLI {
 
     private final List<Monster> starterMonsters = List.of(
@@ -229,6 +232,9 @@ public final class SetupCLI extends TestableCLI {
         }
     }
 
+    /**
+     * Makes a SetupCLI and run its interface
+     */
     public static void make() {
         try {
             final var setupCLI = new SetupCLI();
