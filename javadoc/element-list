@@ -1,0 +1,6 @@
+seng.monsters
+seng.monsters.model
+seng.monsters.ui.cli
+seng.monsters.ui.gui
+seng.monsters.ui.gui.components
+seng.monsters.ui.gui.state
