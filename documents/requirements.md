@@ -143,7 +143,7 @@ The game ends when one of the following occurs:
 
 ### CLI
 
-- [ ] Working CLI applications
+- [x] Working CLI applications
 
 ### GUI
 

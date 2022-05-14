@@ -14,7 +14,6 @@ public final class ViewBattlesCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<Trainer> availableBattles;
-    private final Trainer player;
 
     /**
      * Creates a CLI to display all the available battles
@@ -23,7 +22,6 @@ public final class ViewBattlesCLI extends TestableCLI {
     public ViewBattlesCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         availableBattles = gameManager.getAvailableBattles();
-        player = gameManager.getTrainer();
     }
 
     private void viewBattlesInterface() {
