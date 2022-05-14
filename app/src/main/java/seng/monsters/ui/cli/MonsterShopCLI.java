@@ -5,8 +5,16 @@ import seng.monsters.model.Purchasable;
 import seng.monsters.model.Shop;
 import seng.monsters.model.Trainer;
 
+/**
+ * A CLi for displaying monster from the shop and allowing the player to buy monsters
+ */
 public final class MonsterShopCLI extends ShopCLI {
 
+    /**
+     * A CLi for displaying monster from the shop and allowing the player to buy monsters
+     *
+     * @param gameManager The game manager / controller
+     */
     public MonsterShopCLI(GameManager gameManager) {
         super(gameManager);
     }
@@ -106,6 +114,10 @@ public final class MonsterShopCLI extends ShopCLI {
         System.out.println("\n0 - Cancel");
     }
 
+    /**
+     * Makes a MonsterShopCLI and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         MonsterShopCLI monsterShopCLI = new MonsterShopCLI(gameManager);
         monsterShopCLI.shopTypeInterface("monsters");

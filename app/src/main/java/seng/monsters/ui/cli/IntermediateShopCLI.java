@@ -4,9 +4,16 @@ import seng.monsters.model.GameManager;
 
 import java.util.InputMismatchException;
 
+/**
+ * Am intermediate CLI to get to a specific Shop
+ */
 public class IntermediateShopCLI extends TestableCLI {
     private final GameManager gameManager;
 
+    /**
+     * Creates an CLI to get to a specific Shop
+     * @param gameManager The game manager / controller
+     */
     public IntermediateShopCLI(GameManager gameManager) {
         this.gameManager = gameManager;
     }
@@ -67,6 +74,10 @@ public class IntermediateShopCLI extends TestableCLI {
         System.out.println("\n0 - Return to Main Menu");
     }
 
+    /**
+     * Makes this CLI and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         IntermediateShopCLI shopCLI = new IntermediateShopCLI(gameManager);
         shopCLI.selectShopInterface();

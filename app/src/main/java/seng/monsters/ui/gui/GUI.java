@@ -1,8 +1,6 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
-import seng.monsters.model.Item;
-import seng.monsters.model.Monster;
 
 /**
  * The GUI class manager to handle window navigation and closing
@@ -18,6 +16,9 @@ public final class GUI {
      */
     private Screen activeScreen;
 
+    /**
+     * Creates a full GUI application
+     */
     public GUI() {
         gameManager = new GameManager();
         activeScreen = new TitleScreen(this, gameManager);

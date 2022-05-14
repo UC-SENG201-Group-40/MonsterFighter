@@ -46,6 +46,10 @@ public final class PartySlotPanel {
      */
     private JPanel currHpPanel;
 
+    /**
+     * Creates a JPanel that display a monster in the party
+     * @param monster The monster to be displayed
+     */
     public PartySlotPanel(Monster monster) {
         this.monster = monster;
         render();
@@ -88,7 +92,7 @@ public final class PartySlotPanel {
     /**
      * Add this panel to another panel
      *
-     * @param panel The panel to be displayed into (<b>Must use absolute positioning</b>)
+     * @param parentPanel The panel to be displayed into (<b>Must use absolute positioning</b>)
      */
     public void applyToPanel(JPanel parentPanel) {
         parentPanel.add(panel);
@@ -127,6 +131,10 @@ public final class PartySlotPanel {
         currHpPanel.setBounds(55, 34, 220 * monster.getCurrentHp() / monster.maxHp(), 10);
     }
 
+    /**
+     * Set the action listener for when the monster is selected
+     * @param action The action listener to be called
+     */
     public void addActionListener(ActionListener action) {
         nameButton.addActionListener(action);
     }

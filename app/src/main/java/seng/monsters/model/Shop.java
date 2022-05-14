@@ -39,6 +39,10 @@ public final class Shop {
      */
     private final GameManager manager;
 
+    /**
+     * Creates an empty shop for the day
+     * @param manager The game manager to get all the game properties
+     */
     public Shop(GameManager manager) {
         this.manager = manager;
     }
@@ -166,7 +170,8 @@ public final class Shop {
      * Gets the stock for a specific item.
      * For testing only.
      *
-     * @param item the item to be set.=
+     * @param item the item to be set.
+     * @return The count for the item
      */
     public int getItemStock(Item item) {
         return itemStock.get(item);

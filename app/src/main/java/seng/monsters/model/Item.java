@@ -131,6 +131,10 @@ public abstract class Item implements Purchasable {
      * Signals that an item has been applied to a monster but produce no result
      */
     public static final class NoEffectException extends IllegalStateException {
+        /**
+         * Creates an Exception that indicates that the item produces no result on the monster
+         * @param desc The reasoning why the item produces no result
+         */
         public NoEffectException(String desc) {
             super(desc);
         }
@@ -147,7 +151,7 @@ public abstract class Item implements Purchasable {
     /**
      * A quick description of what this item does
      *
-     * @return
+     * @return The quick description and effect for the item
      */
     public abstract String description();
 

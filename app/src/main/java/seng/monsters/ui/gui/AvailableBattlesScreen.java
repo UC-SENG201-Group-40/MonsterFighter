@@ -21,7 +21,10 @@ public class AvailableBattlesScreen extends Screen {
     private final State<Trainer> selectedTrainer;
 
     /**
-     * Create the application.
+     * Create an active GUI screen for showing all available battles
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public AvailableBattlesScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);

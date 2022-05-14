@@ -23,7 +23,9 @@ public class LeavingPopUp extends PopUp {
     private final Monster monster;
 
     /**
-     * Create the application.
+     * Create a pop-up screen to allow the player to see their leaving monster
+     *
+     * @param monster The monster that have just left
      */
     public LeavingPopUp(Monster monster) {
         this.monster = monster;

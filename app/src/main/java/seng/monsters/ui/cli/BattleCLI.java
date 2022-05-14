@@ -22,11 +22,20 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     private final Set<String> loggedFeeds = new HashSet<>();
     private final GameManager gameManager;
 
-    public BattleCLI(Trainer lhs, Trainer rhs, GameManager gameManager) {
-        battler = new BattleManager(this, lhs, rhs, Environment.FIELD);
+    /**
+     * Create a CLi for battling between two trainer
+     *
+     * @param gameManager The game manager for the logic
+     * @param index       The index of the enemy
+     */
+    public BattleCLI(GameManager gameManager, int index) {
+        this.battler = gameManager.prepareBattle(this, index);
         this.gameManager = gameManager;
     }
 
+    /**
+     * Execute the battle until it is settled
+     */
     public void run() {
         System.out.println("===========================");
         System.out.println(partyFeed());
@@ -132,14 +141,5 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     private void battleRewards() {
         gameManager.setGold(gameManager.getGold() + battler.goldReward());
         gameManager.setScore(gameManager.getScore() + battler.scoreReward());
-    }
-
-    public static void make(Trainer trainer1, Trainer trainer2, GameManager gameManager) {
-        try {
-            final var cli = new BattleCLI(trainer1, trainer2, gameManager);
-            cli.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

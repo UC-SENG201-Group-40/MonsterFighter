@@ -102,7 +102,11 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     private JRadioButton[] enemyPartyButtons;
 
     /**
-     * Create the application.
+     * Create an active GUI screen for the battle
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
+     * @param index       The index of the enemy
      */
     public BattleScreen(GUI gui, GameManager gameManager, int index) {
         super(gui, gameManager);

@@ -33,7 +33,10 @@ public class PartyScreen extends Screen {
 
 
     /**
-     * Create the application.
+     * Create an active GUI screen for displaying the party of the player and allow moving and selling monsters
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public PartyScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
@@ -41,9 +44,6 @@ public class PartyScreen extends Screen {
         chosenMonster = State.of(trainer.getParty().get(0));
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
     public void render() {
         frame.setContentPane(new JLabel(
@@ -95,10 +95,21 @@ public class PartyScreen extends Screen {
         frame.setVisible(true);
     }
 
+    /**
+     * The action performed when a monster is selected
+     * @return A bi consumer for the PartySlotPanel
+     */
     private BiConsumer<ActionEvent, Monster> slotAction() {
         return (ignoredEvent, mon) -> chosenMonster.set(mon);
     }
 
+    /**
+     * The action performed when a monster is being sold
+     * @param sellButton The sell button to be disabled so to prevent concurrent selling the same monster
+     * @param errorLabel The error label to display the exception
+     * @param partyPanel The party panel to be updated
+     * @return An action listener for the sell button
+     */
     private ActionListener sellAction(JButton sellButton, JLabel errorLabel, PartyPanel partyPanel) {
         return ignoredEvent -> {
             try {

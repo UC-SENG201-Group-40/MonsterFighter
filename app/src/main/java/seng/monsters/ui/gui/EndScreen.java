@@ -21,7 +21,11 @@ public class EndScreen extends Screen {
     private final boolean isSuccessful;
 
     /**
-     * Create the application.
+     * Create an active GUI screen for displaying the end game report
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
+     * @param isSuccessful Signal if the game ended due to a victory or a defeat
      */
     public EndScreen(GUI gui, GameManager gameManager, boolean isSuccessful) {
         super(gui, gameManager);

@@ -26,7 +26,9 @@ public abstract class Screen {
 
 
     /**
-     * Create the application.
+     * Create an active GUI screen
+     * @param gui The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public Screen(GUI gui, GameManager gameManager) {
         this.gui = gui;

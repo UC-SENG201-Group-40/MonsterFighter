@@ -8,12 +8,29 @@ import seng.monsters.model.Shop;
 import java.util.InputMismatchException;
 import java.util.List;
 
+/**
+ * A base CLI for a shop
+ */
 public abstract class ShopCLI extends TestableCLI {
 
+    /**
+     * The game manager / controller used by this CLI
+     */
     public final GameManager gameManager;
+    /**
+     * The shop itself
+     */
     public final Shop shop;
+
+    /**
+     * The list of monsters in the players party
+     */
     public final List<Monster> party;
 
+    /**
+     * Creates a base CLI for handling all shop operation
+     * @param gameManager The game manager / controller
+     */
     public ShopCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         this.shop = gameManager.getShop();

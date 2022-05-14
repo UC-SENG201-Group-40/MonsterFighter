@@ -6,10 +6,17 @@ import seng.monsters.model.Monster;
 import java.util.InputMismatchException;
 import java.util.List;
 
+/**
+ * A CLI to display the player's party and allow switching monster
+ */
 public final class PartyCLI extends TestableCLI {
     private final GameManager gameManager;
     private final List<Monster> party;
 
+    /**
+     * Creates a CLI to display the monster party
+     * @param gameManager The game manager / controller
+     */
     public PartyCLI(GameManager gameManager) {
         super();
         this.gameManager = gameManager;
@@ -146,6 +153,10 @@ public final class PartyCLI extends TestableCLI {
         System.out.println("\n0 - Cancel");
     }
 
+    /**
+     * Makes a PartyCLI and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         try {
             final var partyCLI = new PartyCLI(gameManager);

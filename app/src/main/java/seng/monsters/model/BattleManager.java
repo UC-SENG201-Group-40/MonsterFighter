@@ -123,6 +123,13 @@ public final class BattleManager {
     private int pseudoGoal;
 
 
+    /**
+     * Creates a battle manager that provide functions to simulate the battle process
+     * @param ui The UI that can perform actions on certain events
+     * @param player The player trainer
+     * @param enemy The enemy trainer to fight
+     * @param environment The environment for the battle
+     */
     public BattleManager(UI ui, Trainer player, Trainer enemy, Environment environment) {
         this.player = player;
         this.enemy = enemy;

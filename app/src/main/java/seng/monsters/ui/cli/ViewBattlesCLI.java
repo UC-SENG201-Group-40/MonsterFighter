@@ -7,12 +7,19 @@ import seng.monsters.model.Trainer;
 import java.util.InputMismatchException;
 import java.util.List;
 
+/**
+ * A CLI to display all availble battles for the player
+ */
 public final class ViewBattlesCLI extends TestableCLI {
 
     private final GameManager gameManager;
     private final List<Trainer> availableBattles;
     private final Trainer player;
 
+    /**
+     * Creates a CLI to display all the available battles
+     * @param gameManager The game manager / controller
+     */
     public ViewBattlesCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         availableBattles = gameManager.getAvailableBattles();
@@ -35,7 +42,7 @@ public final class ViewBattlesCLI extends TestableCLI {
     private void selectBattle(int scannerInput) {
         try {
             if ((scannerInput > 0) && (scannerInput < availableBattles.size() + 1)) {
-                final var battle = new BattleCLI(player, availableBattles.get(scannerInput - 1), gameManager);
+                final var battle = new BattleCLI(gameManager, scannerInput - 1);
                 battle.run();
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
@@ -62,6 +69,10 @@ public final class ViewBattlesCLI extends TestableCLI {
         System.out.println("0 - Return to Main Menu");
     }
 
+    /**
+     * Makes a ViewBattlesCLI and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         ViewBattlesCLI viewBattlesCLI = new ViewBattlesCLI(gameManager);
         viewBattlesCLI.viewBattlesInterface();

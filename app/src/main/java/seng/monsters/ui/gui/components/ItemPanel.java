@@ -22,6 +22,10 @@ public final class ItemPanel {
      */
     private JPanel itemPanel;
 
+    /**
+     * Creates a JPanel to display the item and its description
+     * @param item The item to be displayed
+     */
     public ItemPanel(Item item) {
         this.item = item;
         render();

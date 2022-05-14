@@ -2,11 +2,17 @@ package seng.monsters.ui.cli;
 
 import seng.monsters.model.*;
 
-
+/**
+ * A CLI to buy items from the shop
+ */
 public final class ItemShopCLI extends ShopCLI {
 
     private final Inventory inventory;
 
+    /**
+     * Creates a CLI to allow buying and selling items from the shop
+     * @param gameManager The game manager / controller
+     */
     public ItemShopCLI(GameManager gameManager) {
         super(gameManager);
         inventory = gameManager.getInventory();
@@ -106,6 +112,10 @@ public final class ItemShopCLI extends ShopCLI {
         System.out.println("\n0 - Cancel");
     }
 
+    /**
+     * Makes a ItemShopCli and run its interface
+     * @param gameManager The game manager / controller
+     */
     public static void make(GameManager gameManager) {
         ItemShopCLI itemShopCLI = new ItemShopCLI(gameManager);
         itemShopCLI.shopTypeInterface("items");

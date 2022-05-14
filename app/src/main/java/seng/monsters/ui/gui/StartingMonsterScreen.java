@@ -29,7 +29,10 @@ public class StartingMonsterScreen extends Screen {
     private final State<Monster> selectedMonster;
 
     /**
-     * Create the application.
+     * Create an active GUI screen for selecting the starting monster
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public StartingMonsterScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
@@ -37,9 +40,6 @@ public class StartingMonsterScreen extends Screen {
         selectedMonster = State.of(startingMonsters.get(0));
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
     public void render() {
         JComboBox<String> startingMonsterComboBox = new JComboBox<>();

@@ -27,7 +27,10 @@ public class InventoryScreen extends Screen {
     private final Inventory inventory;
 
     /**
-     * Create the application.
+     * Create an active GUI screen for display player's inventory and allow user to use and sell their item(s)
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public InventoryScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);

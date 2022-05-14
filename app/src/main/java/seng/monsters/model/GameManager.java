@@ -64,12 +64,23 @@ public class GameManager {
     private final ArrayList<Trainer> availableBattles = new ArrayList<>();
 
 
+    /**
+     * Creates a bare-bone GameManager that still requires additional setup
+     */
     public GameManager() {
         trainer = new Trainer("Anonymous");
         inventory = new Inventory();
         shop = new Shop(this);
     }
 
+    /**
+     * Creates a fully ready and functional GameManager that requires no additional setup
+     * @param gold The starting amount of gold
+     * @param currentDay The current day
+     * @param maxDays The maximum amount of days
+     * @param difficulty The difficulty scale
+     * @param name The trainer name
+     */
     public GameManager(int gold, int currentDay, int maxDays, int difficulty, String name) {
         this.gold = gold;
         this.currentDay = currentDay % maxDays;

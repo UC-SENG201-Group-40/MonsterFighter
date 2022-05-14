@@ -12,15 +12,15 @@ import java.awt.event.ActionListener;
 public class TitleScreen extends Screen {
 
     /**
-     * Create the application.
+     * Create an active GUI screen for the title and starting the game
+     *
+     * @param gui         The GUI manager
+     * @param gameManager The Game logic manager / controller
      */
     public TitleScreen(GUI gui, GameManager gameManager) {
         super(gui, gameManager);
     }
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     @Override
     public void render() {
         JLabel titleLabel = new JLabel("Monster Fighter");

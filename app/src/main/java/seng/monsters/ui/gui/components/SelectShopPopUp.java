@@ -27,7 +27,9 @@ public final class SelectShopPopUp extends PopUp {
     private final GameManager gameManager;
 
     /**
-     * Create the application.
+     * Creates a pop-up screen to allow user to navigate to the item or monster shop
+     * @param gui The GUI for navigation
+     * @param gameManager The game manager / controller
      */
     public SelectShopPopUp(GUI gui, GameManager gameManager) {
         this.gui = gui;

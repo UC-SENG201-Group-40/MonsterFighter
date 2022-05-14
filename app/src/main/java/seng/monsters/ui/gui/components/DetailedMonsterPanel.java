@@ -100,12 +100,21 @@ public final class DetailedMonsterPanel {
     private final boolean showBuying;
 
 
+    /**
+     * Creates a JPanel that display all the properties of a monster
+     * @param monster The monster to be displayed
+     */
     public DetailedMonsterPanel(Monster monster) {
         this.monster = monster;
         this.showBuying = true;
         render();
     }
 
+    /**
+     * Creates a JPanel that display all the properties of a monster
+     * @param monster The monster to be displayed
+     * @param showBuying True if the sell price properties need to replaced with buy price
+     */
     public DetailedMonsterPanel(Monster monster, boolean showBuying) {
         this.monster = monster;
         this.showBuying = showBuying;
