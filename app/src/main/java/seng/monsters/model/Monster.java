@@ -38,6 +38,9 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
+        public String description() { return "A Quacker Duck. Jack of all trades."; }
+
+        @Override
         public int baseDamage() {
             return 45;
         }
@@ -91,6 +94,9 @@ public abstract class Monster implements Purchasable {
         public Raver(String name, int level) {
             super(name, 200, level);
         }
+
+        @Override
+        public String description() { return "A Raver crab. Weak, but tanky."; }
 
         @Override
         public int baseDamage() {
@@ -148,6 +154,9 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
+        public String description() { return "A tree. That's it. Healthy (Always fully healed before a battle)."; }
+
+        @Override
         public int baseDamage() {
             return 40;
         }
@@ -195,6 +204,9 @@ public abstract class Monster implements Purchasable {
         public Eel(int level) {
             super("Eel", 60, level);
         }
+
+        @Override
+        public String description() { return "A vampiric eel. Steals health during battle, but very slow."; }
 
         /**
          * Create a new monster
@@ -268,6 +280,9 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
+        public String description() { return "A very speedy boy. Glass cannon."; }
+
+        @Override
         public int baseDamage() {
             return 80;
         }
@@ -320,6 +335,9 @@ public abstract class Monster implements Purchasable {
         public Shark(String name, int level) {
             super(name, 50, level);
         }
+
+        @Override
+        public String description() { return "Definitely a shark. Hits very, very hard, very, very slowly."; }
 
         @Override
         public int baseDamage() {
@@ -590,6 +608,13 @@ public abstract class Monster implements Purchasable {
     public String getName() {
         return name;
     }
+
+    /**
+     * A description of the monster and a brief summary of its properties
+     *
+     * @return The description of the monster.
+     */
+    public abstract String description();
 
     /**
      * Get the current hp
