@@ -322,7 +322,7 @@ public class GameManager {
      * @return the monster that is joining the party, or null otherwise.
      */
     public Optional<Monster> monsterJoinsParty() {
-        final var chance = 0.01 * getDifficulty() * (getCurrentDay() / getMaxDays());
+        final var chance = 0.04 * (0.5 * getDifficulty() + 0.5) * (4 - getTrainer().getParty().size());
         final var isLucky = Math.random() <= chance;
         if (!isLucky)
             return Optional.empty();
