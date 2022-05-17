@@ -378,7 +378,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     }
 
     @Override
-    public void onEachFrame(int percentage) {
+    public void onEachAttackProgress(int percentage) {
         punchImg.setVisible(true);
         punchImg.setBounds(62 + BattleManager.PSEUDO_MAX_POSITION * percentage / 5, 134, 108, 86);
         if (percentage > 40 && percentage < 60) {
@@ -388,7 +388,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
     }
 
     @Override
-    public void onEachDamage(boolean isPlayerTurn, int dmg) {
+    public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
         repaint();
         punchImg.setVisible(false);
         playerFireImage.setVisible(!isPlayerTurn);

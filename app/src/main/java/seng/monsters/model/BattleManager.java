@@ -28,7 +28,7 @@ public final class BattleManager {
          *
          * @param percentage The progress percentage of the attack
          */
-        void onEachFrame(int percentage);
+        void onEachAttackProgress(int percentage);
 
         /**
          * The action done when the pseudo attack lands and dealt damage
@@ -36,7 +36,7 @@ public final class BattleManager {
          * @param isPlayerTurn True if the player is attacking, otherwise false
          * @param dmg          The damage dealt
          */
-        void onEachDamage(boolean isPlayerTurn, int dmg);
+        void onEachLandedAttack(boolean isPlayerTurn, int dmg);
 
         /**
          * The action done when either battling monster needed to be switched out
@@ -167,7 +167,7 @@ public final class BattleManager {
         }
 
         final var progress = pseudoAttackPosition * 100 / PSEUDO_MAX_POSITION;
-        ui.onEachFrame(progress);
+        ui.onEachAttackProgress(progress);
         pseudoAttackPosition += pseudoSpeed;
 
         // If attack has landed, we perform the damage calculation,
@@ -215,7 +215,7 @@ public final class BattleManager {
             feeds.add(String.format("%s's %s fainted", defTrainer.getName(), def.getName()));
         }
 
-        ui.onEachDamage(isPlayerTurn, dmg);
+        ui.onEachLandedAttack(isPlayerTurn, dmg);
     }
 
     /**

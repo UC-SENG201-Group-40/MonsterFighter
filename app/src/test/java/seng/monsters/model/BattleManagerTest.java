@@ -14,10 +14,10 @@ class BattleManagerTest {
     private BattleManager.UI dud;
 
     private static abstract class DudUI implements BattleManager.UI {
-        public void onEachFrame(int percentage) {
+        public void onEachAttackProgress(int percentage) {
         }
 
-        public void onEachDamage(boolean isPlayerTurn, int dmg) {
+        public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
         }
 
         public void onEachNextMonster(boolean isPlayerTurn) {
@@ -101,12 +101,12 @@ class BattleManagerTest {
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
-                public void onEachDamage(boolean isPlayerTurn, int dmg) {
+                public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
                     isEachDamageCalled.set(true);
                 }
 
                 @Override
-                public void onEachFrame(int percentage) {
+                public void onEachAttackProgress(int percentage) {
                     isEachFrameCalled.set(true);
                 }
             },
@@ -142,7 +142,7 @@ class BattleManagerTest {
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
-                public void onEachDamage(boolean isPlayerTurn, int dmg) {
+                public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
                     hasTakenDamage.set(true);
                 }
             },

@@ -57,10 +57,10 @@ class ShopTest {
         shop.restock();
 
 
-        var maybeItem = shop.getItemStock().stream().findAny();
+        var maybeItem = shop.getItemsStock().stream().findAny();
         while (maybeItem.isEmpty()) {
             shop.restock();
-            maybeItem = shop.getItemStock().stream().findAny();
+            maybeItem = shop.getItemsStock().stream().findAny();
         }
         final var item = maybeItem.get().getKey();
         gameManager.setGold(item.buyPrice());
@@ -189,7 +189,7 @@ class ShopTest {
         gameManager.setMaxDays(2);
         shop.restock();
 
-        assertFalse(shop.getItemStock().isEmpty());
+        assertFalse(shop.getItemsStock().isEmpty());
         assertFalse(shop.getMonsterStock().isEmpty());
 
         assertEquals(3, shop.getMonsterStock().size());
@@ -199,7 +199,7 @@ class ShopTest {
         gameManager.setMaxDays(2);
         shop.restock();
 
-        assertFalse(shop.getItemStock().isEmpty());
+        assertFalse(shop.getItemsStock().isEmpty());
         assertFalse(shop.getMonsterStock().isEmpty());
 
         assertEquals(6, shop.getMonsterStock().size());

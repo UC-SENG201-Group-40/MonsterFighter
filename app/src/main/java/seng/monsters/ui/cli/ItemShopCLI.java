@@ -80,7 +80,7 @@ public final class ItemShopCLI extends ShopCLI {
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select an item to buy:");
-        final var items = shop.getItemStock();
+        final var items = shop.getItemsStock();
         for (var i = 0; i < items.size(); i++) {
             final var item = items.get(i);
             System.out.printf("%d - %s (Stock: %d, Price: %d)%n",
