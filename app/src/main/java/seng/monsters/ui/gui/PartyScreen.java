@@ -142,7 +142,6 @@ public class PartyScreen extends Screen {
         return ignoredEvent -> {
             SelectPartyPopUp popUp = new SelectPartyPopUp(gameManager);
             popUp.onChosen(switchAction(moveButton, sellButton, errorLabel, partyPanel));
-            moveButton.setEnabled(false);
         };
     }
 

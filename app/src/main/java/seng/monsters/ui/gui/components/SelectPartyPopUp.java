@@ -53,15 +53,20 @@ public final class SelectPartyPopUp extends PopUp {
         panel.setBounds(439, 90);
         panel.applyToFrame(frame);
 
-        JButton submitButton = new JButton("Next");
-        submitButton.setBounds(350, 120 + PartyPanel.HEIGHT, 117, 29);
+        JButton submitButton = new JButton("Select");
+        submitButton.setBounds(456, 120 + PartyPanel.HEIGHT, 117, 29);
         frame.getContentPane().add(submitButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(206, 120 + PartyPanel.HEIGHT, 117, 29);
+        frame.getContentPane().add(cancelButton);
 
         // Setting the on change callback for the selected monster
         chosenMonster.onChange(panel::refresh);
 
         partyPanel.onAction(partySelectionAction());
         submitButton.addActionListener(submitAction());
+        cancelButton.addActionListener(cancelAction());
 
         frame.setVisible(true);
     }
@@ -81,9 +86,7 @@ public final class SelectPartyPopUp extends PopUp {
      * @return An action listener for the party panel
      */
     private BiConsumer<ActionEvent, Monster> partySelectionAction() {
-        return (ignoredEvent, monster) -> {
-            chosenMonster.set(monster);
-        };
+        return (ignoredEvent, monster) -> chosenMonster.set(monster);
     }
 
     /**
@@ -98,5 +101,14 @@ public final class SelectPartyPopUp extends PopUp {
             onChosen.accept(ignoredEvent, monster);
             frame.dispose();
         };
+    }
+
+    /**
+     * Cancels the attempted action.
+     *
+     * @return An action listener for the cancel button.
+     */
+    private ActionListener cancelAction() {
+        return ignoredEvent -> frame.dispose();
     }
 }

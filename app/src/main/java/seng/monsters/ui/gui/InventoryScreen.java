@@ -170,8 +170,6 @@ public class InventoryScreen extends Screen {
             popUp.onChosen(
                 popUpChosenAction(item, errorLabel, countLabel, itemActionLabel, useButton, sellButton)
             );
-            useButton.setEnabled(false);
-            sellButton.setEnabled(false);
         };
     }
 
