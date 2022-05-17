@@ -59,7 +59,8 @@
    characters.
 2. [x] Select how many days they would like the game to last (between 5 and 15 days).
 3. [x] Choose a starting monster for your team:
-    1. [x] Each [monster](#monsters) should have different characteristics. Including max health, damage, heal amount, current
+    1. [x] Each [monster](#monsters) should have different characteristics. Including max health, damage, heal amount,
+       current
        health.
     2. [x] The player shall have 3 to 5 [monsters](#monsters) to choose from.
     3. [x] The player shall be able to name the monster (or have a default name)
@@ -83,16 +84,19 @@
     - [x] Allow for the player to use the item on a [monster](#monsters).
 4. [x] View the possible battles
     - [x] The player should be able to see a small number (3-5) of optional [battles](#battle) they can take on.
-        - [x] The [battles](#battle) should be generated somewhat randomly, but largely influenced by the current day, and
+        - [x] The [battles](#battle) should be generated somewhat randomly, but largely influenced by the current day,
+          and
           optionally the difficulty setting
         - [x] The gold and points gained for winning a [battle](#battle) may scale with
           the difficulty (e.g. less gold on hard, but more points given)
     - [x] The player should be able to choose a [battle](#battle) to fight.
         - [x] A player can battle each [battle](#battle) once.
         - [x] If all of a player’s monsters have fainted they can no longer battle.
-        - [x] If all of a player’s monsters faint during a [battle](#battle) they lose the [battle](#battle) and do not receive any gold or
-          points 
-        - [x] If a player wins a [battle](#battle) (by fainting all opposing monsters) they are rewarded with gold and points
+        - [x] If all of a player’s monsters faint during a [battle](#battle) they lose the [battle](#battle) and do not
+          receive any gold or
+          points
+        - [x] If a player wins a [battle](#battle) (by fainting all opposing monsters) they are rewarded with gold and
+          points
 5. [x] [Battling](#battle)
     - [x] Within a [battle](#battle) monsters should fight in some meaningful way
     - [x] Once a battle has concluded the outcome should be clear, and the updated status of the team should be shown to
@@ -178,7 +182,7 @@ Please create a ZIP archive with the following:
 - [x] Your source code (including unit tests). We want your exported project as well so that we can easily import it
   into Eclipse.
 - [x] Javadoc (already compiled and ready to view).
-- [ ] UML use case and class diagrams as a PDF or PNG (do not submit Umbrello or Dia files; these will not be marked).
+- [x] UML use case and class diagrams as a PDF or PNG (do not submit Umbrello or Dia files; these will not be marked).
 - [ ] Your report as a PDF file (do not submit MS Word or LibreOffice docu- ments; these will not be marked).
 - [ ] A README.txt file describing how to build your source code, import your project into Eclipse and run your program.
 - [x] A packaged version of your program as a JAR. We must be able to run your program in one of the lab machines along
