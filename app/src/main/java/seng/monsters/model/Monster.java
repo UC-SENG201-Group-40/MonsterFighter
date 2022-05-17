@@ -154,7 +154,7 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
-        public String description() { return "A tree. That's it. Healthy (Always fully healed before a battle)."; }
+        public String description() { return "A tree... that's it. Healthy."; }
 
         @Override
         public int baseDamage() {
