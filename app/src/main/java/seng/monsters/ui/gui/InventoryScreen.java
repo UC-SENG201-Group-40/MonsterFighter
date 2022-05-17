@@ -43,9 +43,17 @@ public class InventoryScreen extends Screen {
         JLabel errorLabel = new JLabel("No monster in party");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
-        errorLabel.setBounds(6, 336, 807, 16);
+        errorLabel.setBounds(6, 338, 807, 16);
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
+
+        JLabel itemActionLabel = new JLabel();
+        itemActionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        itemActionLabel.setForeground(new Color(0, 0, 0));
+        itemActionLabel.setBounds(6, 338, 807, 16);
+        itemActionLabel.setVisible(false);
+        frame.getContentPane().add(itemActionLabel);
+
 
 
         JButton backToMainMenu = new JButton();
@@ -88,11 +96,11 @@ public class InventoryScreen extends Screen {
             frame.getContentPane().add(sellButton);
 
             useButton.addActionListener(
-                useItemAction(item, errorLabel, countLabel, useButton, sellButton)
+                useItemAction(item, errorLabel, countLabel, itemActionLabel, useButton, sellButton)
             );
 
             sellButton.addActionListener(
-                sellItemAction(item, errorLabel, countLabel, useButton, sellButton)
+                sellItemAction(item, errorLabel, countLabel, itemActionLabel, useButton, sellButton)
             );
         }
 
@@ -113,14 +121,19 @@ public class InventoryScreen extends Screen {
      * @param sellButton The button itself to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
      */
-    private ActionListener sellItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
+    private ActionListener sellItemAction(Item item, JLabel errorLabel, JLabel countLabel, JLabel itemActionLabel, JButton useButton, JButton sellButton) {
         return ignoredEvent -> {
             try {
                 gameManager.sell(item);
+                errorLabel.setVisible(false);
+                itemActionLabel.setText(String.format("%s sold!", item.getName()));
+                itemActionLabel.setVisible(true);
             } catch (Inventory.ItemNotExistException err) {
+                itemActionLabel.setVisible(false);
                 errorLabel.setText("There is no such item in your inventory");
                 errorLabel.setVisible(true);
             } catch (Trainer.MonsterDoesNotExistException err) {
+                itemActionLabel.setVisible(false);
                 errorLabel.setText("There is no such monster in your inventory");
                 errorLabel.setVisible(true);
             } finally {
@@ -142,7 +155,7 @@ public class InventoryScreen extends Screen {
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
      */
-    private ActionListener useItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
+    private ActionListener useItemAction(Item item, JLabel errorLabel, JLabel countLabel, JLabel itemActionLabel, JButton useButton, JButton sellButton) {
         return ignoredEvent -> {
             final int count = inventory.getItemNumber(item);
 
@@ -155,7 +168,7 @@ public class InventoryScreen extends Screen {
 
             SelectPartyPopUp popUp = new SelectPartyPopUp(gameManager);
             popUp.onChosen(
-                popUpChosenAction(item, errorLabel, countLabel, useButton, sellButton)
+                popUpChosenAction(item, errorLabel, countLabel, itemActionLabel, useButton, sellButton)
             );
             useButton.setEnabled(false);
             sellButton.setEnabled(false);
@@ -172,19 +185,24 @@ public class InventoryScreen extends Screen {
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return A consumer function to be passed to the pop-up as callback
      */
-    private BiConsumer<ActionEvent, Monster> popUpChosenAction(Item item, JLabel errorLabel, JLabel countLabel, JButton useButton, JButton sellButton) {
+    private BiConsumer<ActionEvent, Monster> popUpChosenAction(Item item, JLabel errorLabel, JLabel countLabel, JLabel itemActionLabel, JButton useButton, JButton sellButton) {
         return (ignoredEvent, monster) -> {
             try {
                 gameManager.useItemFromInventory(item, monster);
                 errorLabel.setVisible(false);
+                itemActionLabel.setText(String.format("%s used on %s!", item.getName(), monster.getName()));
+                itemActionLabel.setVisible(true);
             } catch (Inventory.ItemNotExistException err) {
+                itemActionLabel.setVisible(false);
                 errorLabel.setText("There is no such item in your inventory");
                 errorLabel.setVisible(true);
             } catch (Trainer.MonsterDoesNotExistException err) {
+                itemActionLabel.setVisible(false);
                 errorLabel.setText("There is no such monster in your party");
                 errorLabel.setVisible(true);
             } catch (Item.NoEffectException err) {
-                errorLabel.setText("The item produces no effect, " + err.getMessage());
+                itemActionLabel.setVisible(false);
+                errorLabel.setText("The item has no effect, " + err.getMessage().toLowerCase() + "!");
                 errorLabel.setVisible(true);
             } finally {
                 final var newCount = inventory.getItemNumber(item);
