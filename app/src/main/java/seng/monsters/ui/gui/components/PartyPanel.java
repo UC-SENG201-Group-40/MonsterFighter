@@ -11,6 +11,7 @@ import seng.monsters.model.Monster;
 import seng.monsters.model.Trainer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -95,8 +96,13 @@ public final class PartyPanel {
 
         slots = IntStream.range(0, party.size())
             .mapToObj(i -> {
+                JLabel orderLabel = new JLabel(Integer.toString(i+1));
+                orderLabel.setBounds(0, i * (PartySlotPanel.HEIGHT + diffY), 8, 20);
+                orderLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
+                panel.add(orderLabel);
+
                 PartySlotPanel slot = new PartySlotPanel(party.get(i));
-                slot.setBounds(0, i * (PartySlotPanel.HEIGHT + diffY));
+                slot.setBounds(0, diffY + i * (PartySlotPanel.HEIGHT + diffY));
                 slot.applyToPanel(panel);
                 slot.addActionListener(eachPanelAction(i));
                 return slot;
@@ -148,5 +154,5 @@ public final class PartyPanel {
     /**
      * The height of the panel
      */
-    public static final int HEIGHT = PartySlotPanel.HEIGHT * 4 + 3 * (20);
+    public static final int HEIGHT = 20 + PartySlotPanel.HEIGHT * 4 + 3 * (20);
 }

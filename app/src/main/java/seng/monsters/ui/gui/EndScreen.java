@@ -97,16 +97,16 @@ public class EndScreen extends Screen {
 
         JLabel lblNewLabel = new JLabel("Thank you for playing");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setBounds(244, 401, 333, 16);
+        lblNewLabel.setBounds(244, 400, 333, 16);
         frame.getContentPane().add(lblNewLabel);
 
         JLabel partyReportLabel = new JLabel("Here is your party:");
         partyReportLabel.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-        partyReportLabel.setBounds(410, 90, 200, 16);
+        partyReportLabel.setBounds(410, 70, 200, 16);
         frame.getContentPane().add(partyReportLabel);
 
         PartyPanel partyPanel = new PartyPanel(gameManager.getTrainer());
-        partyPanel.setBounds(410, 106);
+        partyPanel.setBounds(410, 86);
         partyPanel.applyToFrame(frame);
 
         frame.setVisible(true);

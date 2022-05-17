@@ -161,7 +161,8 @@ public class InventoryScreen extends Screen {
 
             // Do not proceed if the trainer has no monster and the item count is 0
             if (gameManager.getTrainer().getParty().size() <= 0 || count <= 0) {
-                errorLabel.setText(count <= 0 ? "There is no such item in your inventory" : "There is no monster to apply item to");
+                errorLabel.setText(count <= 0 ? String.format("You don't have any %ss!", item.getName().toLowerCase())
+                                                : "Your party is empty!");
                 errorLabel.setVisible(true);
                 return;
             }
@@ -192,11 +193,11 @@ public class InventoryScreen extends Screen {
                 itemActionLabel.setVisible(true);
             } catch (Inventory.ItemNotExistException err) {
                 itemActionLabel.setVisible(false);
-                errorLabel.setText("There is no such item in your inventory");
+                errorLabel.setText(String.format("You don't have any %ss!", item.getName().toLowerCase()));
                 errorLabel.setVisible(true);
             } catch (Trainer.MonsterDoesNotExistException err) {
                 itemActionLabel.setVisible(false);
-                errorLabel.setText("There is no such monster in your party");
+                errorLabel.setText(String.format("%s is no longer in your party!", monster.getName()));
                 errorLabel.setVisible(true);
             } catch (Item.NoEffectException err) {
                 itemActionLabel.setVisible(false);

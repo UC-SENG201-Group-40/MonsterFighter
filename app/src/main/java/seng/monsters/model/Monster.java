@@ -205,9 +205,6 @@ public abstract class Monster implements Purchasable {
             super("Eel", 60, level);
         }
 
-        @Override
-        public String description() { return "A vampiric eel. Steals health during battle, but very slow."; }
-
         /**
          * Create a new monster
          *
@@ -217,6 +214,9 @@ public abstract class Monster implements Purchasable {
         public Eel(String name, int level) {
             super(name, 60, level);
         }
+
+        @Override
+        public String description() { return "A parasitic eel. Steals health during battle, but very slow."; }
 
         @Override
         public int baseDamage() {
