@@ -68,17 +68,22 @@ public class InventoryScreen extends Screen {
 
             JLabel countLabel = new JLabel(String.format("%dx", itemCount));
             countLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            countLabel.setBounds(distanceX, distanceFromTop + 20 + ItemPanel.HEIGHT, 58, 30);
+            countLabel.setBounds(distanceX, distanceFromTop + ItemPanel.HEIGHT, 79, 30);
             frame.getContentPane().add(countLabel);
+
+            JLabel sellLabel = new JLabel(String.format("(%d gold)", item.sellPrice()));
+            sellLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            sellLabel.setBounds(distanceX + 79, distanceFromTop + ItemPanel.HEIGHT, 79, 30);
+            frame.getContentPane().add(sellLabel);
 
 
             JButton useButton = new JButton("Use");
-            useButton.setBounds(distanceX + 58, distanceFromTop + 20 + ItemPanel.HEIGHT, 50, 30);
+            useButton.setBounds(distanceX, distanceFromTop + 30 + ItemPanel.HEIGHT, 79, 30);
             useButton.setEnabled(itemCount > 0);
             frame.getContentPane().add(useButton);
 
             JButton sellButton = new JButton("Sell");
-            sellButton.setBounds(distanceX + 108, distanceFromTop + 20 + ItemPanel.HEIGHT, 50, 30);
+            sellButton.setBounds(distanceX + 79, distanceFromTop + 30 + ItemPanel.HEIGHT, 79, 30);
             sellButton.setEnabled(itemCount > 0);
             frame.getContentPane().add(sellButton);
 

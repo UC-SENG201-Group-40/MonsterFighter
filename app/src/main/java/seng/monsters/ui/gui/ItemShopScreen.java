@@ -47,7 +47,7 @@ public class ItemShopScreen extends Screen {
         JLabel errorLabel = new JLabel("No monster in party");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
-        errorLabel.setBounds(6, 336, 807, 16);
+        errorLabel.setBounds(6, 338, 807, 16);
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
 
@@ -76,12 +76,12 @@ public class ItemShopScreen extends Screen {
 
             JLabel countLabel = new JLabel(String.format("%dx (%d gold)", itemCount, item.buyPrice()));
             countLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            countLabel.setBounds(distanceX, distanceFromTop + 20 + ItemPanel.HEIGHT, 108, 30);
+            countLabel.setBounds(distanceX, distanceFromTop + ItemPanel.HEIGHT, 158, 30);
             frame.getContentPane().add(countLabel);
 
 
             JButton buyButton = new JButton("Buy");
-            buyButton.setBounds(distanceX + 108, distanceFromTop + 20 + ItemPanel.HEIGHT, 50, 30);
+            buyButton.setBounds(distanceX, distanceFromTop + 30 + ItemPanel.HEIGHT, 158, 30);
             buyButton.setEnabled(itemCount > 0);
             frame.getContentPane().add(buyButton);
 
@@ -116,7 +116,7 @@ public class ItemShopScreen extends Screen {
             } catch (Shop.InsufficientFundsException err) {
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
-                    "Insufficient gold! You only have %d and the item cost %d gold", gameManager.getGold(), item.buyPrice()
+                    "You're too poor! You have %d gold and the item costs %d!", gameManager.getGold(), item.buyPrice()
                 ));
             } catch (Shop.NotInStockException err) {
                 errorLabel.setVisible(true);
