@@ -559,7 +559,7 @@ public class GameManager {
         var i = 0;
         while (scanner.hasNextLine()) {
             final var name = scanner.nextLine();
-            if (name.isBlank() || name == null)
+            if (name.isBlank())
                 continue;
             res.add(name);
             i++;

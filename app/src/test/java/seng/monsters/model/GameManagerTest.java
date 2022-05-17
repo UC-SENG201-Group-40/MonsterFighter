@@ -216,7 +216,7 @@ class GameManagerTest {
 
         // New item stock
         assertFalse(manager.getShop()
-            .getItemStock()
+            .getItemsStock()
             .stream()
             .allMatch(entry -> entry.getValue() == 0)
         );
@@ -465,7 +465,7 @@ class GameManagerTest {
      */
     @Test
     void buy() {
-        final var anyItem = manager.getShop().getItemStock().stream().map(Map.Entry::getKey).findAny().orElseThrow();
+        final var anyItem = manager.getShop().getItemsStock().stream().map(Map.Entry::getKey).findAny().orElseThrow();
         final var anyMonster = manager.getShop().getMonsterStock().stream().findAny().orElseThrow();
 
         manager.setGold(0);

@@ -87,11 +87,11 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     @Override
-    public void onEachFrame(int percentage) {
+    public void onEachAttackProgress(int percentage) {
     }
 
     @Override
-    public void onEachDamage(boolean isPlayerTurn, int dmg) {
+    public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
         battler
             .getFeeds()
             .stream()

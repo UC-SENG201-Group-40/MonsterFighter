@@ -151,7 +151,7 @@ public final class Shop {
      *
      * @return The list all item in stock
      */
-    public List<Map.Entry<Item, Integer>> getItemStock() {
+    public List<Map.Entry<Item, Integer>> getItemsStock() {
         return itemStock.entrySet().stream().filter(entry -> entry.getValue() > 0).toList();
     }
 
