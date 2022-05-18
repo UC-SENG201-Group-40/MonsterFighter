@@ -34,6 +34,13 @@ public final class DetailedMonsterPanel {
     private JLabel monsterNameLabel;
 
     /**
+     * The monster description label.
+     * <p>
+     * Text format: "<code>{Monster::description}</code>"
+     */
+    private JLabel monsterDescriptionLabel;
+
+    /**
      * The monster level label
      * <p>
      * Text format: "<code>Lv. {Monster::getLevel}</code>"
@@ -161,6 +168,10 @@ public final class DetailedMonsterPanel {
             String.format("%s (%s)", monster.getName(), monster.monsterType())
         );
 
+        monsterDescriptionLabel.setText(
+            monster.description()
+        );
+
         levelLabel.setText(
             String.format("Lv. %d", monster.getLevel())
         );
@@ -215,9 +226,17 @@ public final class DetailedMonsterPanel {
         monsterNameLabel.setBounds(6, 6, 240, 36);
         monsterDisplayPanel.add(monsterNameLabel);
 
+        monsterDescriptionLabel = new JLabel(
+                monster.description()
+        );
+        monsterDescriptionLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 11));
+        monsterDescriptionLabel.setForeground(Color.BLACK);
+        monsterDescriptionLabel.setBounds(6, 30, 294, 24);
+        monsterDisplayPanel.add(monsterDescriptionLabel);
+
         JLabel hpLabel = new JLabel("HP:");
         hpLabel.setForeground(Color.BLACK);
-        hpLabel.setBounds(16, 54, 25, 16);
+        hpLabel.setBounds(16, 60, 25, 16);
         monsterDisplayPanel.add(hpLabel);
 
         levelLabel = new JLabel(
@@ -233,7 +252,7 @@ public final class DetailedMonsterPanel {
             String.format("%d/%d", monster.getCurrentHp(), monster.maxHp())
         );
         monsterCurrHpLabel.setForeground(hpColor());
-        monsterCurrHpLabel.setBounds(44, 54, 99, 16);
+        monsterCurrHpLabel.setBounds(44, 60, 99, 16);
         monsterDisplayPanel.add(monsterCurrHpLabel);
 
         priceLabel = new JLabel(
@@ -243,35 +262,35 @@ public final class DetailedMonsterPanel {
             )
         );
         priceLabel.setForeground(Color.BLACK);
-        priceLabel.setBounds(16, 82, 127, 16);
+        priceLabel.setBounds(16, 88, 127, 16);
         monsterDisplayPanel.add(priceLabel);
 
         attackLabel = new JLabel(
             String.format("Attack: %d", monster.scaledDamage())
         );
         attackLabel.setForeground(Color.BLACK);
-        attackLabel.setBounds(16, 110, 127, 16);
+        attackLabel.setBounds(16, 116, 127, 16);
         monsterDisplayPanel.add(attackLabel);
 
         speedLabel = new JLabel(
             String.format("Speed: %d", monster.speed())
         );
         speedLabel.setForeground(Color.BLACK);
-        speedLabel.setBounds(16, 138, 127, 16);
+        speedLabel.setBounds(16, 144, 127, 16);
         monsterDisplayPanel.add(speedLabel);
 
         healRateLabel = new JLabel(
             String.format("Heal rate: %d", monster.healRate())
         );
         healRateLabel.setForeground(Color.BLACK);
-        healRateLabel.setBounds(16, 166, 127, 16);
+        healRateLabel.setBounds(16, 172, 127, 16);
         monsterDisplayPanel.add(healRateLabel);
 
         envLabel = new JLabel(
             String.format("Environment: %s", monster.idealEnvironment().toString())
         );
         envLabel.setForeground(Color.BLACK);
-        envLabel.setBounds(16, 194, 127, 16);
+        envLabel.setBounds(16, 200, 127, 16);
         monsterDisplayPanel.add(envLabel);
 
         iconLabel = new JLabel("");
@@ -280,7 +299,7 @@ public final class DetailedMonsterPanel {
                 String.format("/images/%s.gif", monster.monsterType().toLowerCase())
             ))
         ));
-        iconLabel.setBounds(148, 54, 146, 156);
+        iconLabel.setBounds(148, 60, 146, 156);
         monsterDisplayPanel.add(iconLabel);
     }
 

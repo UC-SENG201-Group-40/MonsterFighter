@@ -26,6 +26,9 @@ class PurchasableTest {
 
             @Override
             public String getName() { return "name"; }
+
+            @Override
+            public String description() { return "description"; }
         };
     }
 

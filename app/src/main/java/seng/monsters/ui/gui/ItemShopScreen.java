@@ -47,9 +47,16 @@ public class ItemShopScreen extends Screen {
         JLabel errorLabel = new JLabel("No monster in party");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
-        errorLabel.setBounds(6, 336, 807, 16);
+        errorLabel.setBounds(6, 338, 807, 16);
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
+
+        JLabel itemBoughtLabel = new JLabel();
+        itemBoughtLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        itemBoughtLabel.setForeground(new Color(0, 0, 0));
+        itemBoughtLabel.setBounds(6, 338, 807, 16);
+        itemBoughtLabel.setVisible(false);
+        frame.getContentPane().add(itemBoughtLabel);
 
         JLabel goldLabel = new JLabel(String.format("Your own %d gold", gameManager.getGold()));
         goldLabel.setHorizontalAlignment(SwingConstants.LEADING);
@@ -76,17 +83,17 @@ public class ItemShopScreen extends Screen {
 
             JLabel countLabel = new JLabel(String.format("%dx (%d gold)", itemCount, item.buyPrice()));
             countLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            countLabel.setBounds(distanceX, distanceFromTop + 20 + ItemPanel.HEIGHT, 108, 30);
+            countLabel.setBounds(distanceX, distanceFromTop + ItemPanel.HEIGHT, 158, 30);
             frame.getContentPane().add(countLabel);
 
 
             JButton buyButton = new JButton("Buy");
-            buyButton.setBounds(distanceX + 108, distanceFromTop + 20 + ItemPanel.HEIGHT, 50, 30);
+            buyButton.setBounds(distanceX, distanceFromTop + 30 + ItemPanel.HEIGHT, 158, 30);
             buyButton.setEnabled(itemCount > 0);
             frame.getContentPane().add(buyButton);
 
             buyButton.addActionListener(
-                buyItemAction(item, errorLabel, countLabel, buyButton, goldLabel)
+                buyItemAction(item, errorLabel, countLabel, itemBoughtLabel, buyButton, goldLabel)
             );
         }
 
@@ -108,22 +115,27 @@ public class ItemShopScreen extends Screen {
      * @param goldLabel  The label for the amount of gold
      * @return An action listener that can be passed into the button
      */
-    private ActionListener buyItemAction(Item item, JLabel errorLabel, JLabel countLabel, JButton buyButton, JLabel goldLabel) {
+    private ActionListener buyItemAction(Item item, JLabel errorLabel, JLabel countLabel, JLabel itemBoughtLabel, JButton buyButton, JLabel goldLabel) {
         return ignoredEvent -> {
             try {
                 gameManager.buy(item);
                 errorLabel.setVisible(false);
+                itemBoughtLabel.setText(String.format("%s bought!", item.getName()));
+                itemBoughtLabel.setVisible(true);
             } catch (Shop.InsufficientFundsException err) {
+                itemBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
-                    "Insufficient gold! You only have %d and the item cost %d gold", gameManager.getGold(), item.buyPrice()
+                    "You're too poor! You have %d gold and the item costs %d!", gameManager.getGold(), item.buyPrice()
                 ));
             } catch (Shop.NotInStockException err) {
+                itemBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
                     "The item, %s not in stock!", item.getName()
                 ));
             } catch (Trainer.PartyFullException err) {
+                itemBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText("Your party is full!");
             } finally {

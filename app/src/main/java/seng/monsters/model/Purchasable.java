@@ -31,4 +31,11 @@ public interface Purchasable {
      * @return The name of the purchasable as string
      */
     String getName();
+
+    /**
+     * A description of the purchasable
+     *
+     * @return The description of the purchasable as a string
+     */
+    String description();
 }
