@@ -294,6 +294,13 @@ class MonsterTest {
             uniqueNames.add(name);
         }
 
+        final var descriptions = new HashSet<String>();
+        for (final var monster: all) {
+            final var desc = monster.description();
+            assertFalse(descriptions.contains(desc));
+            descriptions.add(desc);
+        }
+
         assertNotEquals(
             new Monster.Quacker(sameName, 1).uniqueName(),
             new Monster.Quacker(sameName, 1).uniqueName()

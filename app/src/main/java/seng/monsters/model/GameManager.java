@@ -316,8 +316,8 @@ public class GameManager {
      * A chance that a random monsters join the party if there is a slot
      * <p>
      * Joining chance:
-     * <code> base = 0.01 </code> <p>
-     * <code> f(d, c, m) = base x d x c / m</code>
+     * <code> base = 0.05 </code> <p>
+     * <code> f(d, p) = base * (d + 1)(0.5) * (4 - p)</code>
      *
      * @return the monster that is joining the party, or null otherwise.
      */

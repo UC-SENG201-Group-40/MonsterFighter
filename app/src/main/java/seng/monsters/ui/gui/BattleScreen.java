@@ -118,7 +118,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         frame.setContentPane(new JLabel(
             new ImageIcon(
                 Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString())
+                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
                 )))
         ));
 
