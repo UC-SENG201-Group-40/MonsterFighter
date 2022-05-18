@@ -216,7 +216,7 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
-        public String description() { return "A parasitic eel. Steals health during battle, but very slow."; }
+        public String description() { return "A parasitic eel. Slow but steals health during battle."; }
 
         @Override
         public int baseDamage() {
@@ -337,7 +337,7 @@ public abstract class Monster implements Purchasable {
         }
 
         @Override
-        public String description() { return "Definitely a shark. Hits very, very hard, very, very slowly."; }
+        public String description() { return "Definitely a shark. Jacked, but that's it."; }
 
         @Override
         public int baseDamage() {

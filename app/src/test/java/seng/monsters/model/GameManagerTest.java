@@ -91,7 +91,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>getAvailableBattles</code> should:
+     * GameManager's <code>getAvailableBattles</code> should:
      * <ul>
      * <li>Return all the available enemies that has not been defeated</li>
      * </ul>
@@ -118,7 +118,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>hasNotEnoughMoneyForMonster</code> should:
+     * GameManager's <code>hasNotEnoughMoneyForMonster</code> should:
      * <ul>
      * <li>Return true if the player has no monster and no money </li>
      * <li>Return false if the player has at least 1 active monster even with no money and the monster is fainted </li>
@@ -144,7 +144,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>hasNoPossibilityForRevive</code> should:
+     * GameManager's <code>hasNoPossibilityForRevive</code> should:
      * <ul>
      * <li>Return true if the player has no monster and no money </li>
      * <li>Return false if the player has at least 1 active monster even with no money </li>
@@ -166,7 +166,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>hasNotBattleOnce</code> should:
+     * GameManager's <code>hasNotBattleOnce</code> should:
      * <ul>
      * <li>Return true if all enemy is available enemy trainers has full health monster </li>
      * <li>Return false if at least 1 enemy has monster who has been attacked </li>
@@ -187,7 +187,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>nextDay</code> should:
+     * GameManager's <code>nextDay</code> should:
      * <ul>
      * <li> Increment the current day count </li>
      * <li> Trigger all night events if the day has not ended </li>
@@ -243,7 +243,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>refreshCurrentDay</code> should:
+     * GameManager's <code>refreshCurrentDay</code> should:
      * <ul>
      * <li> Restock shop</li>
      * <li> Refresh available battles</li>
@@ -255,6 +255,7 @@ class GameManagerTest {
 
         final var monsterStock = manager.getShop().getMonsterStock();
         final var availableBattles = manager.getAvailableBattles().size();
+        final var currentEnvironment = manager.getEnvironment();
 
         manager.refreshCurrentDay();
 
@@ -267,10 +268,11 @@ class GameManagerTest {
 
         // Refreshed battles
         assertNotEquals(availableBattles, manager.getAvailableBattles().size());
+        assertEquals(currentEnvironment, manager.getEnvironment());
     }
 
     /**
-     * BattleManager's <code>partyMonstersLeave</code> should:
+     * GameManager's <code>partyMonstersLeave</code> should:
      * <ul>
      * <li> Kick out all monster only if the monster <code>shouldLeave</code> returns true</li>
      * </ul>
@@ -293,7 +295,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>partyMonstersHeal</code> should:
+     * GameManager's <code>partyMonstersHeal</code> should:
      * <ul>
      * <li> Heal all monster in the party </li>
      * </ul>
@@ -312,7 +314,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>partyMonstersLevelUp</code> should:
+     * GameManager's <code>partyMonstersLevelUp</code> should:
      * <ul>
      * <li> Level up all monster only if their <code>shouldLevelUp</code> returns true </li>
      * </ul>
@@ -331,7 +333,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>monsterJoinsParty</code> should:
+     * GameManager's <code>monsterJoinsParty</code> should:
      * <ul>
      * <li> If lucky, a new monster should be added the player's party </li>
      * </ul>
@@ -344,10 +346,15 @@ class GameManagerTest {
 
         assertTrue(manager.monsterJoinsParty().isPresent());
         assertEquals(1, manager.getTrainer().getParty().size());
+
+        manager.setMaxDays(10000);
+        manager.setCurrentDay(0);
+        manager.setDifficulty(0);
+        assertTrue(manager.monsterJoinsParty().isEmpty());
     }
 
     /**
-     * BattleManager's <code>updateAvailableBattles</code> should:
+     * GameManager's <code>updateAvailableBattles</code> should:
      * <ul>
      * <li> Remove all previous enemies</li>
      * <li> Add new enemies with fresh new parties</li>
@@ -366,7 +373,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>useItemFromInventory</code> should:
+     * GameManager's <code>useItemFromInventory</code> should:
      * <ul>
      * <li> Use the item to the monster and reduce the count by 1 </li>
      * <li> Throw an Exception, if the item doesn't exist in the inventory </li>
@@ -387,7 +394,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>useItemFromInventory</code> should:
+     * GameManager's <code>useItemFromInventory</code> should:
      * <ul>
      * <li> Use the item to the monster and reduce the count by 1 </li>
      * <li> Throw an Exception, if the item doesn't exist in the inventory </li>
@@ -414,7 +421,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>switchMonsterOnParty</code> should:
+     * GameManager's <code>switchMonsterOnParty</code> should:
      * <ul>
      * <li> Switch the location of two monster </li>
      * <li> Throw an Exception, if the index points an invalid monster </li>
@@ -437,7 +444,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>switchMonsterOnParty</code> should:
+     * GameManager's <code>switchMonsterOnParty</code> should:
      * <ul>
      * <li> Switch the location of two monster </li>
      * <li> Throw an Exception, if the index points an invalid monster </li>
@@ -460,7 +467,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>buy</code> should:
+     * GameManager's <code>buy</code> should:
      * <ul>
      * <li> Buy the item or monster purchased </li>
      * <li> Add the item or monster purchased to the inventory or the party</li>
@@ -495,7 +502,7 @@ class GameManagerTest {
     }
 
     /**
-     * BattleManager's <code>sell</code> should:
+     * GameManager's <code>sell</code> should:
      * <ul>
      * <li> Sell the item or monster purchased </li>
      * <li> Remove the item or monster purchased to the inventory or the party</li>
@@ -527,5 +534,61 @@ class GameManagerTest {
         assertFalse(manager.getTrainer().getParty().contains(anyMonster));
 
         assertEquals(anyItem.sellPrice() + anyMonster.sellPrice(), manager.getGold());
+    }
+
+    /**
+     * GameManager's <code>prepareBattle</code> should:
+     * <ul><li>Return a properly functioning BattleManager</li></ul>
+     */
+    @Test
+    void battle() {
+        manager.setScore(0);
+        assertEquals(0, manager.getScore());
+
+        manager.refreshCurrentDay();
+        manager.getTrainer().add(new Monster.Shark(1));
+        final var battleManager = manager.prepareBattle(new BattleManager.UI() {
+            @Override
+            public void onEachAttackProgress(int percentage) {
+            }
+
+            @Override
+            public void onEachLandedAttack(boolean isPlayerTurn, int dmg) {
+            }
+
+            @Override
+            public void onEachNextMonster(boolean isPlayerTurn) {
+            }
+
+            @Override
+            public void onEnd() {
+            }
+        }, 0);
+
+        while (!battleManager.isSettled()) {
+            final var mon = battleManager.getBattlingEnemyMonster();
+            mon.takeDamage(mon.maxHp());
+            battleManager.nextIteration();
+        }
+
+        assertTrue(battleManager.hasPlayerWon());
+        manager.setScore(manager.getScore() + battleManager.scoreReward() * manager.getDifficulty());
+        assertNotEquals(0, manager.getScore());
+    }
+
+    /**
+     * GameManager's <code>setTrainerName</code> should:
+     * <ul>
+     * <li>retain restriction the behavior from Trainer</li>
+     * </ul>
+     */
+    @Test
+    void setTrainerName() {
+        assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("invalid1"));
+        assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("iw"));
+        assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("toolongforanameaaaaaaaaaa"));
+
+        manager.setTrainerName("Jimbo");
+        assertEquals("Jimbo", manager.getTrainer().getName());
     }
 }

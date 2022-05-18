@@ -166,14 +166,19 @@ class BattleManagerTest {
      */
     @Test
     void isEitherFallen() {
-        final var mon0 = new Monster.Doger(6);
-        player.add(mon0);
+        player.add(new Monster.Doger(6));
         enemy.add(new Monster.Tree(6));
 
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertFalse(battleManager.isEitherFallen());
 
+        final var mon0 = battleManager.getBattlingPlayerMonster();
         mon0.takeDamage(mon0.maxHp());
+        assertTrue(battleManager.isEitherFallen());
+
+        final var mon1 = battleManager.getBattlingEnemyMonster();
+        mon0.healSelf(mon0.maxHp());
+        mon1.takeDamage(mon1.maxHp());
         assertTrue(battleManager.isEitherFallen());
     }
 
@@ -225,6 +230,7 @@ class BattleManagerTest {
         battleManager.nextIteration();
 
         assertTrue(battleManager.isSettled());
+        assertTrue(battleManager.hasPlayerWon());
         assertEquals(dead1.sellPrice() + dead2.sellPrice(), battleManager.goldReward());
         assertEquals(dead1.getLevel() + dead2.getLevel(), battleManager.scoreReward());
     }
