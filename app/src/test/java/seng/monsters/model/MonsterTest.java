@@ -4,7 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -228,8 +231,8 @@ class MonsterTest {
      */
     @Test
     void testEquals() {
-        final var monster = new Monster.Eel(1);
-        assertNotEquals(new Monster.Eel(1), monster);
+        final var monster = new Monster.Shark("FishAndChips", 1);
+        assertNotEquals(new Monster.Shark(1), monster);
 
         final var pointer = (Monster) monster;
         assertEquals(monster, pointer);
@@ -237,5 +240,63 @@ class MonsterTest {
         pointer.levelUp();
 
         assertEquals(monster, pointer);
+    }
+
+    /**
+     * Monster's random chances method such as:
+     * <ul>
+     * <li><code>shouldLeave</code> should be unlikely</li>
+     * <li><code>shouldLevelUp</code> should happen once</li>
+     * </ul>
+     */
+    @Test
+    void testRandomness() {
+        final var shouldLeaveTest = all.stream()
+            .mapToInt(monster -> {
+                var res = 0;
+                for (var i = 0; i < 100; i++) {
+                    if (monster.shouldLeave())
+                        res++;
+                }
+                return res;
+            })
+            .allMatch(freq -> 100 >= 2 * freq);
+        assertTrue(shouldLeaveTest);
+
+        for (final var monster: all) {
+            var hasDone = false;
+            for (var i = 0; i < 200; i++) {
+                if (monster.shouldLevelUp()) {
+                    hasDone = true;
+                    break;
+                }
+            }
+            assertTrue(hasDone);
+        }
+    }
+
+    /**
+     * Monster's <code>uniqueName</code> should:
+     * <ul>
+     * <li>Return a combination of name and id</li>
+     * <li>Be unique in respect to other monster even the same type</li>
+     * </ul>
+     */
+    @Test
+    void uniqueName() {
+        final var sameName = "GoodName";
+        all.forEach(monster -> monster.setName(sameName));
+
+        final var uniqueNames = new HashSet<String>();
+        for (final var monster: all) {
+            final var name = monster.uniqueName();
+            assertFalse(uniqueNames.contains(name));
+            uniqueNames.add(name);
+        }
+
+        assertNotEquals(
+            new Monster.Quacker(sameName, 1).uniqueName(),
+            new Monster.Quacker(sameName, 1).uniqueName()
+        );
     }
 }
