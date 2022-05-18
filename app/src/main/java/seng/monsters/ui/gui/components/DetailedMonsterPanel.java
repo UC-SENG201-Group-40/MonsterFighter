@@ -227,7 +227,7 @@ public final class DetailedMonsterPanel {
         monsterDisplayPanel.add(monsterNameLabel);
 
         monsterDescriptionLabel = new JLabel(
-                monster.description()
+                "<html>" + monster.description() + "</html>"
         );
         monsterDescriptionLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 11));
         monsterDescriptionLabel.setForeground(Color.BLACK);
