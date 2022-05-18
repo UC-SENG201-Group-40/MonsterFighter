@@ -18,6 +18,9 @@ class GameManagerTest {
         manager = new GameManager(0, 1, 5, 1, "Tester");
         perfectMon = new Monster("Perfect", 100, 10) {
             @Override
+            public String description() { return "Regular testing monster";}
+
+            @Override
             public int baseDamage() {
                 return 0;
             }
@@ -48,6 +51,9 @@ class GameManagerTest {
             }
         };
         ejectMon = new Monster("Eject", 100, 10) {
+            @Override
+            public String description() { return "Removal testing monster";}
+
             @Override
             public int baseDamage() {
                 return 0;

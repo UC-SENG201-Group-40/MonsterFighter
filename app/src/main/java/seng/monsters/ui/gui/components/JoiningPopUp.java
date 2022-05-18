@@ -71,7 +71,7 @@ public class JoiningPopUp extends PopUp {
         frame.getContentPane().add(iconLabel);
 
         // The button to apply the name change and trigger the onEnd callback
-        JButton doneButton = new JButton("Apply");
+        JButton doneButton = new JButton("Accept");
         doneButton.setBounds(351, 400, 117, 29);
         frame.getContentPane().add(doneButton);
 

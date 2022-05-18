@@ -41,11 +41,11 @@ class EnvironmentTest {
      */
     @Test
     void testToString() {
-        assertEquals("urban", Environment.URBAN.toString());
-        assertEquals("beach", Environment.BEACH.toString());
-        assertEquals("desert", Environment.DESERT.toString());
-        assertEquals("field", Environment.FIELD.toString());
-        assertEquals("forest", Environment.FOREST.toString());
-        assertEquals("hill", Environment.HILL.toString());
+        assertEquals("Urban", Environment.URBAN.toString());
+        assertEquals("Beach", Environment.BEACH.toString());
+        assertEquals("Desert", Environment.DESERT.toString());
+        assertEquals("Field", Environment.FIELD.toString());
+        assertEquals("Forest", Environment.FOREST.toString());
+        assertEquals("Hill", Environment.HILL.toString());
     }
 }

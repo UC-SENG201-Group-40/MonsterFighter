@@ -94,6 +94,9 @@ class ShopTest {
 
                 @Override
                 public String getName() { return "purchasable";}
+
+                @Override
+                public String description() { return "Something that can be purchased."; }
             })
         );
     }

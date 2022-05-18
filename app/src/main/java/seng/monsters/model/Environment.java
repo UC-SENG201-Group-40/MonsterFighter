@@ -74,12 +74,12 @@ public enum Environment {
     @Override
     public String toString() {
         return switch (this) {
-            case DESERT -> "desert";
-            case BEACH -> "beach";
-            case FIELD -> "field";
-            case FOREST -> "forest";
-            case HILL -> "hill";
-            case URBAN -> "urban";
+            case DESERT -> "Desert";
+            case BEACH -> "Beach";
+            case FIELD -> "Field";
+            case FOREST -> "Forest";
+            case HILL -> "Hill";
+            case URBAN -> "Urban";
         };
     }
 }
