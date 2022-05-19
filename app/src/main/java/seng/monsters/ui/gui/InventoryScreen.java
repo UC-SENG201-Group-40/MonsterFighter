@@ -117,6 +117,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used
      * @param errorLabel The error label to prompt error messages
      * @param countLabel The count label for this item, to update the count once succeed
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The use button to enable or disable it if item is not available anymore
      * @param sellButton The button itself to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
@@ -151,6 +152,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used
      * @param errorLabel The error label to prompt error messages
      * @param countLabel The count label for this item, to update the count once succeed
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The button itself to enable or disable it if item is not available anymore
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
@@ -180,6 +182,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used on the monster
      * @param errorLabel The error label to display failure in using the item
      * @param countLabel The count to update the count of item after usage
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The use button to disable if item count hits 0
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return A consumer function to be passed to the pop-up as callback
