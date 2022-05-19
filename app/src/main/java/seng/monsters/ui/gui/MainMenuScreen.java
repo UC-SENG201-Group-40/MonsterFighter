@@ -155,7 +155,7 @@ public class MainMenuScreen extends Screen {
         return ignoredEvent -> {
             if (gameManager.hasNotBattleOnce()) {
                 errorLabel.setVisible(true);
-                errorLabel.setText("You can sleep and go to the next sinc you haven't battle once for the day");
+                errorLabel.setText("You must battle at least once before you can sleep!");
                 return;
             }
 
