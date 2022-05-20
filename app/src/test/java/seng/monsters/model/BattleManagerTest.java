@@ -51,15 +51,15 @@ class BattleManagerTest {
     void nextIteration() {
         // Both trainer has no monsters, nextIteration should do anything
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
-        final var prevFeedSize = battleManager.getFeeds().size();
+        final int prevFeedSize = battleManager.getFeeds().size();
         battleManager.nextIteration();
         assertEquals(prevFeedSize, battleManager.getFeeds().size());
 
         // --- Setup 1 ---
-        final var mon0 = new Monster.Tree(10);
-        final var mon1 = new Monster.Doger(10);
-        final var isChangeMonsterCalled = new AtomicBoolean(false);
-        final var isEndGameCalled = new AtomicBoolean(false);
+        final Monster mon0 = new Monster.Tree(10);
+        final Monster mon1 = new Monster.Doger(10);
+        final AtomicBoolean isChangeMonsterCalled = new AtomicBoolean(false);
+        final AtomicBoolean isEndGameCalled = new AtomicBoolean(false);
         player.add(mon0);
         player.add(mon1);
         enemy.add(new Monster.Raver(10));
@@ -96,8 +96,8 @@ class BattleManagerTest {
         // --- Setup 2 ---
         mon0.healSelf(mon0.maxHp());
         mon1.healSelf(mon1.maxHp());
-        final var isEachFrameCalled = new AtomicBoolean(false);
-        final var isEachDamageCalled = new AtomicBoolean(false);
+        final AtomicBoolean isEachFrameCalled = new AtomicBoolean(false);
+        final AtomicBoolean isEachDamageCalled = new AtomicBoolean(false);
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
@@ -120,7 +120,7 @@ class BattleManagerTest {
 
         // The battle is run normally until the attack "lands"
         assertFalse(battleManager.isSettled());
-        for (var i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++) {
             battleManager.nextIteration();
         }
         assertTrue(isEachDamageCalled.get());
@@ -134,11 +134,11 @@ class BattleManagerTest {
      */
     @Test
     void getFeeds() {
-        for (var i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             player.add(new Monster.Doger(1));
             enemy.add(new Monster.Tree(1));
         }
-        final var hasTakenDamage = new AtomicBoolean(false);
+        final AtomicBoolean hasTakenDamage = new AtomicBoolean(false);
         battleManager = new BattleManager(
             new DudUI() {
                 @Override
@@ -172,11 +172,11 @@ class BattleManagerTest {
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertFalse(battleManager.isEitherFallen());
 
-        final var mon0 = battleManager.getBattlingPlayerMonster();
+        final Monster mon0 = battleManager.getBattlingPlayerMonster();
         mon0.takeDamage(mon0.maxHp());
         assertTrue(battleManager.isEitherFallen());
 
-        final var mon1 = battleManager.getBattlingEnemyMonster();
+        final Monster mon1 = battleManager.getBattlingEnemyMonster();
         mon0.healSelf(mon0.maxHp());
         mon1.takeDamage(mon1.maxHp());
         assertTrue(battleManager.isEitherFallen());
@@ -195,7 +195,7 @@ class BattleManagerTest {
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertTrue(battleManager.isSettled());
 
-        final var mon = new Monster.Doger(1);
+        final Monster mon = new Monster.Doger(1);
         player.add(mon);
         enemy.add(new Monster.Doger(1));
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
@@ -216,9 +216,9 @@ class BattleManagerTest {
      */
     @Test
     void reward() {
-        final var alive = new Monster.Doger(10);
-        final var dead1 = new Monster.Doger(10);
-        final var dead2 = new Monster.Doger(10);
+        final Monster alive = new Monster.Doger(10);
+        final Monster dead1 = new Monster.Doger(10);
+        final Monster dead2 = new Monster.Doger(10);
         player.add(alive);
         enemy.add(dead1);
         enemy.add(dead2);

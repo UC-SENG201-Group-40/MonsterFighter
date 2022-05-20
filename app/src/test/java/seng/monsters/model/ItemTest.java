@@ -61,7 +61,7 @@ class ItemTest {
 
         // RareCandy should increase the level of monster by 1 only 1
         // RareCandy should never throw an Exception
-        final var prevLevel = labMonster.getLevel();
+        final int prevLevel = labMonster.getLevel();
         new Item.RareCandy().applyTo(labMonster);
         assertEquals(prevLevel + 1, labMonster.getLevel());
 
@@ -88,7 +88,7 @@ class ItemTest {
      */
     @Test
     void sellPrice() {
-        final var res = Item.all()
+        final boolean res = Item.all()
             .stream()
             .map(item -> item.buyPrice() / 2 == item.sellPrice())
             .reduce(true, (acc, bool) -> acc && bool);
@@ -118,16 +118,16 @@ class ItemTest {
      */
     @Test
     void testHashCode() {
-        final var potion = new Item.Potion();
+        final Item potion = new Item.Potion();
         assertEquals(Objects.hash(potion.getName()), potion.hashCode());
 
-        final var revive = new Item.Revive();
+        final Item revive = new Item.Revive();
         assertEquals(Objects.hash(revive.getName()), revive.hashCode());
 
-        final var rareCandy = new Item.RareCandy();
+        final Item rareCandy = new Item.RareCandy();
         assertEquals(Objects.hash(rareCandy.getName()), rareCandy.hashCode());
 
-        final var fullRestore = new Item.FullRestore();
+        final Item fullRestore = new Item.FullRestore();
         assertEquals(Objects.hash(fullRestore.getName()), fullRestore.hashCode());
     }
 }

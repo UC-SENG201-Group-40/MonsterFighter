@@ -360,7 +360,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
             timer.start();
 
             // Update the sprites to be position properly in the direction of the defending monster
-            final var isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
+            final boolean isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
             Screen.imageIconFromResource("/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png")
                 .ifPresent(punchImg::setIcon);
             repaintParties();

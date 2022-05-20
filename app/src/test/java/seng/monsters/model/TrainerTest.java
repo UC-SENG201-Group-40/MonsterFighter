@@ -71,8 +71,8 @@ class TrainerTest {
      */
     @Test
     void testRemove() {
-        final var mon = new Monster.Eel(1);
-        final var notMon = new Monster.Eel(1);
+        final Monster mon = new Monster.Eel(1);
+        final Monster notMon = new Monster.Eel(1);
         trainer.add(mon);
         trainer.remove(notMon);
         assertEquals(1, trainer.getParty().size());
@@ -93,12 +93,12 @@ class TrainerTest {
      */
     @Test
     void pop() {
-        final var mon = new Monster.Eel("Bob", 10);
+        final Monster mon = new Monster.Eel("Bob", 10);
         trainer.add(mon);
 
         assertThrows(IndexOutOfBoundsException.class, () -> trainer.pop(1));
 
-        final var popped = trainer.pop(0);
+        final Monster popped = trainer.pop(0);
         assertEquals(mon, popped);
         assertEquals("Bob", popped.getName());
 
@@ -114,9 +114,9 @@ class TrainerTest {
      */
     @Test
     void moveMonster() {
-        final var mon0 = new Monster.Eel("Bob", 10);
-        final var mon1 = new Monster.Quacker("Paul", 10);
-        final var mon3 = new Monster.Raver("Not In", 10);
+        final Monster mon0 = new Monster.Eel("Bob", 10);
+        final Monster mon1 = new Monster.Quacker("Paul", 10);
+        final Monster mon3 = new Monster.Raver("Not In", 10);
         trainer.add(mon0);
         trainer.add(mon1);
 
@@ -138,8 +138,8 @@ class TrainerTest {
      */
     @Test
     void switchMonster() {
-        final var mon0 = new Monster.Eel("Bob", 10);
-        final var mon1 = new Monster.Quacker("Paul", 10);
+        final Monster mon0 = new Monster.Eel("Bob", 10);
+        final Monster mon1 = new Monster.Quacker("Paul", 10);
         trainer.add(mon0);
         trainer.add(mon1);
 

@@ -4,7 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,8 +103,8 @@ class GameManagerTest {
         assertTrue(manager.getAvailableBattles().size() > 0);
         assertTrue(manager.getAvailableBattles().stream().noneMatch(Trainer::isWhitedOut));
 
-        final var amountEnemies = Math.max(3, Math.min(5, 5 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
-        final var amountMonster = Math.max(1, Math.min(4, 4 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
+        final int amountEnemies = Math.max(3, Math.min(5, 5 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
+        final int amountMonster = Math.max(1, Math.min(4, 4 * manager.getDifficulty() * manager.getCurrentDay() / manager.getMaxDays()));
         assertEquals(amountEnemies, manager.getAvailableBattles().size());
         assertTrue(manager.getAvailableBattles().stream().allMatch(trainer -> trainer.getParty().size() == amountMonster));
 
@@ -205,10 +207,10 @@ class GameManagerTest {
         manager.setCurrentDay(3);
         manager.setMaxDays(5);
 
-        final var currentHp = perfectMon.getCurrentHp();
-        final var currentDay = manager.getCurrentDay();
-        final var monsterStock = manager.getShop().getMonsterStock();
-        final var availableBattles = manager.getAvailableBattles().size();
+        final int currentHp = perfectMon.getCurrentHp();
+        final int currentDay = manager.getCurrentDay();
+        final List<Monster> monsterStock = manager.getShop().getMonsterStock();
+        final int availableBattles = manager.getAvailableBattles().size();
 
         assertFalse(manager.nextDay());
 
@@ -253,9 +255,9 @@ class GameManagerTest {
     void refreshCurrentDay() {
         manager.getAvailableBattles().forEach(trainer -> trainer.getParty().forEach(mon -> mon.takeDamage(mon.maxHp())));
 
-        final var monsterStock = manager.getShop().getMonsterStock();
-        final var availableBattles = manager.getAvailableBattles().size();
-        final var currentEnvironment = manager.getEnvironment();
+        final List<Monster> monsterStock = manager.getShop().getMonsterStock();
+        final int availableBattles = manager.getAvailableBattles().size();
+        final Environment currentEnvironment = manager.getEnvironment();
 
         manager.refreshCurrentDay();
 
@@ -281,7 +283,7 @@ class GameManagerTest {
     void partyMonstersLeave() {
         manager.getTrainer().add(ejectMon);
 
-        final var leaveMon = manager.partyMonstersLeave();
+        final Optional<Monster> leaveMon = manager.partyMonstersLeave();
 
         assertTrue(manager.getTrainer().isWhitedOut());
 
@@ -305,7 +307,7 @@ class GameManagerTest {
         perfectMon.takeDamage(1);
         manager.getTrainer().add(perfectMon);
 
-        final var currentHp = perfectMon.getCurrentHp();
+        final int currentHp = perfectMon.getCurrentHp();
 
         manager.partyMonstersHeal();
 
@@ -323,9 +325,9 @@ class GameManagerTest {
     void partyMonstersLevelUp() {
         manager.getTrainer().add(perfectMon);
 
-        final var currentLevel = perfectMon.getLevel();
+        final int currentLevel = perfectMon.getLevel();
 
-        final var levelledUpMons = manager.partyMonstersLevelUp();
+        final List<Monster> levelledUpMons = manager.partyMonstersLevelUp();
 
         assertTrue(levelledUpMons.contains(perfectMon));
         assertNotEquals(currentLevel, perfectMon.getLevel());
@@ -364,7 +366,7 @@ class GameManagerTest {
     void updateAvailableBattles() {
         manager.getAvailableBattles().forEach(trainer -> trainer.getParty().forEach(mon -> mon.takeDamage(mon.maxHp())));
 
-        final var availableBattles = manager.getAvailableBattles().size();
+        final int availableBattles = manager.getAvailableBattles().size();
 
         manager.updateAvailableBattles();
 
@@ -381,7 +383,7 @@ class GameManagerTest {
      */
     @Test
     void useItemFromInventory() {
-        final var mon = new Monster.Shark(9);
+        final Monster mon = new Monster.Shark(9);
         assertThrows(Inventory.ItemNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), mon));
         assertEquals(9, mon.getLevel());
 
@@ -403,7 +405,7 @@ class GameManagerTest {
      */
     @Test
     void testUseItemFromInventory() {
-        final var mon = new Monster.Shark(9);
+        final Monster mon = new Monster.Shark(9);
         assertThrows(Trainer.MonsterDoesNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), 0));
         assertEquals(9, mon.getLevel());
 
@@ -429,14 +431,14 @@ class GameManagerTest {
      */
     @Test
     void switchMonsterOnParty() {
-        final var mon1 = new Monster.Shark(10);
-        final var mon2 = new Monster.Doger(10);
+        final Monster mon1 = new Monster.Shark(10);
+        final Monster mon2 = new Monster.Doger(10);
         manager.getTrainer().add(mon1);
         manager.getTrainer().add(mon2);
 
         manager.switchMonsterOnParty(0, 1);
 
-        final var party = manager.getTrainer().getParty();
+        final List<Monster> party = manager.getTrainer().getParty();
         assertEquals(mon2, party.get(0));
         assertEquals(mon1, party.get(1));
 
@@ -452,14 +454,14 @@ class GameManagerTest {
      */
     @Test
     void testSwitchMonsterOnParty() {
-        final var mon1 = new Monster.Shark(10);
-        final var mon2 = new Monster.Doger(10);
+        final Monster mon1 = new Monster.Shark(10);
+        final Monster mon2 = new Monster.Doger(10);
         manager.getTrainer().add(mon1);
         manager.getTrainer().add(mon2);
 
         manager.switchMonsterOnParty(mon1, 1);
 
-        final var party = manager.getTrainer().getParty();
+        final List<Monster> party = manager.getTrainer().getParty();
         assertEquals(mon2, party.get(0));
         assertEquals(mon1, party.get(1));
 
@@ -478,8 +480,8 @@ class GameManagerTest {
      */
     @Test
     void buy() {
-        final var anyItem = manager.getShop().getItemsStock().stream().map(Map.Entry::getKey).findAny().orElseThrow();
-        final var anyMonster = manager.getShop().getMonsterStock().stream().findAny().orElseThrow();
+        final Item anyItem = manager.getShop().getItemsStock().stream().map(Map.Entry::getKey).findAny().orElseThrow();
+        final Monster anyMonster = manager.getShop().getMonsterStock().stream().findAny().orElseThrow();
 
         manager.setGold(0);
 
@@ -512,8 +514,8 @@ class GameManagerTest {
      */
     @Test
     void sell() {
-        final var anyItem = new Item.FullRestore();
-        final var anyMonster = new Monster.Quacker(10);
+        final Item anyItem = new Item.FullRestore();
+        final Monster anyMonster = new Monster.Quacker(10);
 
         manager.setGold(0);
 
@@ -547,7 +549,7 @@ class GameManagerTest {
 
         manager.refreshCurrentDay();
         manager.getTrainer().add(new Monster.Shark(1));
-        final var battleManager = manager.prepareBattle(new BattleManager.UI() {
+        final BattleManager battleManager = manager.prepareBattle(new BattleManager.UI() {
             @Override
             public void onEachAttackProgress(int percentage) {
             }
@@ -566,7 +568,7 @@ class GameManagerTest {
         }, 0);
 
         while (!battleManager.isSettled()) {
-            final var mon = battleManager.getBattlingEnemyMonster();
+            final Monster mon = battleManager.getBattlingEnemyMonster();
             mon.takeDamage(mon.maxHp());
             battleManager.nextIteration();
         }

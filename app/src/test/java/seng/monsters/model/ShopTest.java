@@ -4,6 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShopTest {
@@ -45,7 +48,7 @@ class ShopTest {
         );
 
         // Player has sufficient funds but stock is still empty (2)
-        final var monster = new Monster.Eel(100);
+        final Monster monster = new Monster.Eel(100);
         gameManager.setGold(monster.buyPrice());
         assertThrows(Shop.NotInStockException.class,
             () -> shop.buyPurchasable(monster)
@@ -57,23 +60,23 @@ class ShopTest {
         shop.restock();
 
 
-        var maybeItem = shop.getItemsStock().stream().findAny();
+        Optional<Map.Entry<Item, Integer>> maybeItem = shop.getItemsStock().stream().findAny();
         while (maybeItem.isEmpty()) {
             shop.restock();
             maybeItem = shop.getItemsStock().stream().findAny();
         }
-        final var item = maybeItem.get().getKey();
+        final Item item = maybeItem.get().getKey();
         gameManager.setGold(item.buyPrice());
         shop.buyPurchasable(item);
         assertEquals(0, gameManager.getGold());
 
-        var maybeMonster = shop.getMonsterStock().stream().findAny();
+        Optional<Monster> maybeMonster = shop.getMonsterStock().stream().findAny();
         while (maybeMonster.isEmpty()) {
             shop.restock();
             maybeMonster = shop.getMonsterStock().stream().findAny();
         }
 
-        final var monster1 = maybeMonster.get();
+        final Monster monster1 = maybeMonster.get();
         gameManager.setGold(monster1.buyPrice());
         shop.buyPurchasable(monster1);
         assertEquals(0, gameManager.getGold());
@@ -110,11 +113,11 @@ class ShopTest {
      */
     @Test
     void sellPurchasable() {
-        final var definitelyInPartyMonster = new Monster.Eel(69);
+        final Monster definitelyInPartyMonster = new Monster.Eel(69);
         shop.sellPurchasable(definitelyInPartyMonster);
         assertEquals(definitelyInPartyMonster.sellPrice(), gameManager.getGold());
 
-        final var definitelyInInventoryItem = new Item.RareCandy();
+        final Item definitelyInInventoryItem = new Item.RareCandy();
         gameManager.setGold(0);
         shop.sellPurchasable(definitelyInInventoryItem);
         assertEquals(definitelyInInventoryItem.sellPrice(), gameManager.getGold());
@@ -133,16 +136,16 @@ class ShopTest {
         gameManager.setCurrentDay(1);
         gameManager.setMaxDays(2);
 
-        final var day0 = gameManager.getCurrentDay();
-        final var mon0 = shop.randomMonster();
+        final int day0 = gameManager.getCurrentDay();
+        final Monster mon0 = shop.randomMonster();
         assertTrue(mon0.getLevel() <= (3 + day0) && mon0.getLevel() >= (-3 + day0));
 
         gameManager.setDifficulty(2);
         gameManager.setCurrentDay(1);
         gameManager.setMaxDays(2);
 
-        final var day1 = gameManager.getCurrentDay();
-        final var mon1 = shop.randomMonster();
+        final int day1 = gameManager.getCurrentDay();
+        final Monster mon1 = shop.randomMonster();
         assertTrue(mon1.getLevel() <= (6 + day1) && mon1.getLevel() >= (-6 + day1));
     }
 
@@ -159,9 +162,9 @@ class ShopTest {
         gameManager.setCurrentDay(1);
         gameManager.setMaxDays(2);
 
-        final var day0 = gameManager.getCurrentDay();
-        final var stocks0 = shop.randomItemStock();
-        for (final var entry: stocks0.entrySet()) {
+        final int day0 = gameManager.getCurrentDay();
+        final Map<Item, Integer> stocks0 = shop.randomItemStock();
+        for (final Map.Entry<Item, Integer> entry: stocks0.entrySet()) {
             assertTrue(entry.getValue() >= 1 && entry.getValue() <= (day0 + 1));
         }
 
@@ -169,9 +172,9 @@ class ShopTest {
         gameManager.setCurrentDay(1);
         gameManager.setMaxDays(2);
 
-        final var day1 = gameManager.getCurrentDay();
-        final var stocks1 = shop.randomItemStock();
-        for (final var entry: stocks1.entrySet()) {
+        final int day1 = gameManager.getCurrentDay();
+        final Map<Item, Integer>  stocks1 = shop.randomItemStock();
+        for (final Map.Entry<Item, Integer> entry: stocks1.entrySet()) {
             assertTrue(entry.getValue() >= 1 && entry.getValue() <= (day1 * 2 + 1));
         }
 

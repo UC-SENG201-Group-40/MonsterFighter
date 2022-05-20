@@ -31,8 +31,8 @@ class MonsterTest {
      */
     @Test
     void levelUp() {
-        for (final var monster : all) {
-            final var prevLevel = monster.getLevel();
+        for (final Monster monster : all) {
+            final int prevLevel = monster.getLevel();
             monster.levelUp();
             assertEquals(prevLevel + 1, monster.getLevel());
         }
@@ -48,7 +48,7 @@ class MonsterTest {
      */
     @Test
     void healSelf() {
-        for (final var monster : all) {
+        for (final Monster monster : all) {
             monster.takeDamage(20);
             monster.healSelf(20);
             assertEquals(monster.maxHp(), monster.getCurrentHp());
@@ -61,7 +61,7 @@ class MonsterTest {
             monster.healSelf(10);
             assertFalse(monster.isFainted());
 
-            final var prevHp = monster.getCurrentHp();
+            final int prevHp = monster.getCurrentHp();
             monster.healSelf(-10);
             assertEquals(prevHp, monster.getCurrentHp());
         }
@@ -77,11 +77,11 @@ class MonsterTest {
      */
     @Test
     void takeDamage() {
-        for (final var monster : all) {
+        for (final Monster monster : all) {
             monster.takeDamage(20);
             assertNotEquals(monster.maxHp(), monster.getCurrentHp());
 
-            final var prevHp = monster.getCurrentHp();
+            final int prevHp = monster.getCurrentHp();
             monster.takeDamage(20);
             assertNotEquals(prevHp, monster.getCurrentHp());
 
@@ -93,7 +93,7 @@ class MonsterTest {
             assertEquals(0, monster.getCurrentHp());
 
             monster.healSelf(20);
-            final var prevHp2 = monster.getCurrentHp();
+            final int prevHp2 = monster.getCurrentHp();
             monster.takeDamage(-100);
             assertEquals(prevHp2, monster.getCurrentHp());
         }
@@ -107,8 +107,8 @@ class MonsterTest {
      */
     @Test
     void setName() {
-        for (final var monster : all) {
-            final var prevName = monster.getName();
+        for (final Monster monster : all) {
+            final String prevName = monster.getName();
             monster.setName("amongus");
             assertNotEquals(prevName, monster.getName());
             assertEquals("amongus", monster.getName());
@@ -128,19 +128,19 @@ class MonsterTest {
      */
     @Test
     void setBaseHp() {
-        for (final var monster : all) {
-            final var prevHp = monster.getCurrentHp();
+        for (final Monster monster : all) {
+            final int prevHp = monster.getCurrentHp();
             monster.setBaseHp(10);
             assertNotEquals(prevHp, monster.getCurrentHp());
             assertEquals(monster.maxHp(), monster.getCurrentHp());
 
-            final var prevMaxHp = monster.maxHp();
+            final int prevMaxHp = monster.maxHp();
             monster.setBaseHp(2000);
             assertEquals(10, monster.getCurrentHp());
             assertNotEquals(prevMaxHp, monster.maxHp());
 
-            final var prevHp2 = monster.getCurrentHp();
-            final var prevMaxHp2 = monster.maxHp();
+            final int prevHp2 = monster.getCurrentHp();
+            final int prevMaxHp2 = monster.maxHp();
             monster.setBaseHp(-100);
             assertEquals(prevHp2, monster.getCurrentHp());
             assertEquals(prevMaxHp2, monster.maxHp());
@@ -156,8 +156,8 @@ class MonsterTest {
      */
     @Test
     void maxHp() {
-        for (final var monster : all) {
-            var maxHp = monster.maxHp();
+        for (final Monster monster : all) {
+            int maxHp = monster.maxHp();
             monster.levelUp();
             assertNotEquals(maxHp, monster.maxHp());
             assertEquals(Math.round(maxHp * 1.1), monster.maxHp());
@@ -177,12 +177,12 @@ class MonsterTest {
      */
     @Test
     void damage() {
-        for (final var monster : all) {
+        for (final Monster monster : all) {
             monster.levelUp();
-            final var unboosted = monster.damage(Environment.FIELD);
+            final int unboosted = monster.damage(Environment.FIELD);
             assertNotEquals(monster.baseDamage(), unboosted);
 
-            final var boosted = monster.damage(monster.idealEnvironment());
+            final int boosted = monster.damage(monster.idealEnvironment());
             assertNotEquals(unboosted, boosted);
         }
     }
@@ -195,7 +195,7 @@ class MonsterTest {
      */
     @Test
     void isFainted() {
-        for (final var monster : all) {
+        for (final Monster monster : all) {
             assertFalse(monster.isFainted());
 
             monster.takeDamage(monster.maxHp() / 2);
@@ -214,7 +214,7 @@ class MonsterTest {
      */
     @Test
     void sellPrice() {
-        for (final var monster : all) {
+        for (final Monster monster : all) {
             if (monster instanceof Monster.Tree) {
                 assertEquals(monster.buyPrice(), monster.sellPrice());
             } else {
@@ -231,10 +231,10 @@ class MonsterTest {
      */
     @Test
     void testEquals() {
-        final var monster = new Monster.Shark("FishAndChips", 1);
+        final Monster.Shark monster = new Monster.Shark("FishAndChips", 1);
         assertNotEquals(new Monster.Shark(1), monster);
 
-        final var pointer = (Monster) monster;
+        final Monster pointer = monster;
         assertEquals(monster, pointer);
 
         pointer.levelUp();
@@ -251,10 +251,10 @@ class MonsterTest {
      */
     @Test
     void testRandomness() {
-        final var shouldLeaveTest = all.stream()
+        final boolean shouldLeaveTest = all.stream()
             .mapToInt(monster -> {
-                var res = 0;
-                for (var i = 0; i < 100; i++) {
+                int res = 0;
+                for (int i = 0; i < 100; i++) {
                     if (monster.shouldLeave())
                         res++;
                 }
@@ -263,9 +263,9 @@ class MonsterTest {
             .allMatch(freq -> 100 >= 2 * freq);
         assertTrue(shouldLeaveTest);
 
-        for (final var monster: all) {
-            var hasDone = false;
-            for (var i = 0; i < 200; i++) {
+        for (final Monster monster: all) {
+            boolean hasDone = false;
+            for (int i = 0; i < 200; i++) {
                 if (monster.shouldLevelUp()) {
                     hasDone = true;
                     break;
@@ -284,19 +284,19 @@ class MonsterTest {
      */
     @Test
     void uniqueName() {
-        final var sameName = "GoodName";
+        final String sameName = "GoodName";
         all.forEach(monster -> monster.setName(sameName));
 
-        final var uniqueNames = new HashSet<String>();
-        for (final var monster: all) {
-            final var name = monster.uniqueName();
+        final HashSet<String> uniqueNames = new HashSet<>();
+        for (final Monster monster: all) {
+            final String name = monster.uniqueName();
             assertFalse(uniqueNames.contains(name));
             uniqueNames.add(name);
         }
 
-        final var descriptions = new HashSet<String>();
-        for (final var monster: all) {
-            final var desc = monster.description();
+        final HashSet<String> descriptions = new HashSet<>();
+        for (final Monster monster: all) {
+            final String desc = monster.description();
             assertFalse(descriptions.contains(desc));
             descriptions.add(desc);
         }

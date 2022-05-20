@@ -82,7 +82,7 @@ public class MonsterShopCLITest extends CLITestBase {
         monsterShopCLI.buyPurchasableInterface(null);
 
         // Attempt to buy a monster with no funds
-        final var previousMonsterStockNumber = shop.getMonsterStock().size();
+        final int previousMonsterStockNumber = shop.getMonsterStock().size();
         provideMultipleInput(List.of("1", "0"));
         monsterShopCLI.buyPurchasableInterface(null);
         assertEquals(2, trainer.getParty().size());
@@ -123,7 +123,7 @@ public class MonsterShopCLITest extends CLITestBase {
         // Sell a monster
         provideMultipleInput(List.of("2", "0"));
         monsterShopCLI.sellPurchasableInterface(null);
-        final var currentGold = gameManager.getGold();
+        final int currentGold = gameManager.getGold();
         assertEquals(1, trainer.getParty().size());
         assertNotEquals(0, currentGold);
         assertTrue(acquireOutput().contains("The bastardisation of man sold!"));
