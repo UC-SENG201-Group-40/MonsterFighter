@@ -67,7 +67,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLeave() {
-            final var line = isFainted() ? 0.25 : 0.01;
+            final double line = isFainted() ? 0.25 : 0.01;
             return Math.random() <= line;
         }
     }
@@ -125,7 +125,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public boolean shouldLeave() {
-            final var line = isFainted() ? 0.2 : 0.05;
+            final double line = isFainted() ? 0.2 : 0.05;
             return Math.random() <= line;
         }
     }
@@ -235,7 +235,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int damage(Environment env) {
-            final var res = super.damage(env);
+            final int res = super.damage(env);
             healSelf(res / 5);
             return res;
         }
@@ -470,7 +470,7 @@ public abstract class Monster implements Purchasable {
      * Increase the level of the monster and all its properties
      */
     public void levelUp() {
-        final var hpPercentage = this.currentHp * 100 / maxHp();
+        final int hpPercentage = this.currentHp * 100 / maxHp();
         level += 1;
         this.currentHp = hpPercentage * maxHp() / 100;
     }
@@ -538,7 +538,7 @@ public abstract class Monster implements Purchasable {
      * @return The damage taking level
      */
     public int scaledDamage() {
-        final var res = Math.min(
+        final double res = Math.min(
             Integer.MAX_VALUE - 1,
             baseDamage() * multiplier()
         );
@@ -552,8 +552,8 @@ public abstract class Monster implements Purchasable {
      * @return The damage taking account the environment boost
      */
     public int damage(Environment env) {
-        final var envMultiplier = env == idealEnvironment() ? 1.5 : 1;
-        final var res = Math.min(
+        final double envMultiplier = env == idealEnvironment() ? 1.5 : 1;
+        final double res = Math.min(
             Integer.MAX_VALUE - 1,
             baseDamage() * multiplier() * envMultiplier
         );
@@ -575,7 +575,7 @@ public abstract class Monster implements Purchasable {
      * @return The integer representing the price
      */
     public int buyPrice() {
-        final var basePrice = Math.min(
+        final double basePrice = Math.min(
             Integer.MAX_VALUE - 1,
             (baseHp + baseDamage() + healRate() + speed()) * multiplier()
         );

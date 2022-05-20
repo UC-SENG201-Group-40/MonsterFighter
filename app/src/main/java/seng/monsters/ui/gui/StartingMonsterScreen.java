@@ -84,7 +84,7 @@ public class StartingMonsterScreen extends Screen {
      */
     private ActionListener comboBoxAction(JComboBox<String> comboBox) {
         return ignoredEvent -> {
-            final var index = comboBox.getSelectedIndex();
+            final int index = comboBox.getSelectedIndex();
             if (index < 0)
                 return;
             selectedMonster.set(startingMonsters.get(index));
@@ -99,10 +99,10 @@ public class StartingMonsterScreen extends Screen {
      */
     private ActionListener submitAction(JComboBox<String> comboBox) {
         return ignoredEvent -> {
-            final var monster = selectedMonster.get();
+            final Monster monster = selectedMonster.get();
             comboBox.setEnabled(false);
 
-            final var popUp = new JoiningPopUp(monster);
+            final JoiningPopUp popUp = new JoiningPopUp(monster);
             popUp.onEnd(
                 popUpRenameAction(monster)
             );

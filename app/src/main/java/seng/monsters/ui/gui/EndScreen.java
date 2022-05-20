@@ -118,7 +118,7 @@ public class EndScreen extends Screen {
      * @return Green if 50% or above, Orange if 49% to 25%, otherwise Red
      */
     private Color color(int value, int max) {
-        final var percentage = value * 100 / max;
+        final int percentage = value * 100 / max;
         if (percentage < 25)
             return new Color(112, 0, 0);
         if (percentage < 50)

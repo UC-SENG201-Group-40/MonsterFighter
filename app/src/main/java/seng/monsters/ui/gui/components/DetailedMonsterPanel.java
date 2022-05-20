@@ -309,7 +309,7 @@ public final class DetailedMonsterPanel {
      * @return Green if 50% or above, Orange if 49% to 25%, otherwise Red
      */
     private Color hpColor() {
-        final var percentage = monster.getCurrentHp() * 100 / monster.maxHp();
+        final int percentage = monster.getCurrentHp() * 100 / monster.maxHp();
         if (percentage < 25)
             return new Color(112, 0, 0);
         if (percentage < 50)

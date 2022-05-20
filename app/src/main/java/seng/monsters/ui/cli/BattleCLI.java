@@ -6,12 +6,10 @@
 //
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.BattleManager;
-import seng.monsters.model.Environment;
-import seng.monsters.model.GameManager;
-import seng.monsters.model.Trainer;
+import seng.monsters.model.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -52,8 +50,8 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     private String hpFeed() {
-        final var playerMon = battler.getBattlingPlayerMonster();
-        final var enemyMon = battler.getBattlingEnemyMonster();
+        final Monster playerMon = battler.getBattlingPlayerMonster();
+        final Monster enemyMon = battler.getBattlingEnemyMonster();
         return String.format(
             "%s (HP: %d) vs %s (HP: %d)",
             playerMon.getName(), playerMon.getCurrentHp(),
@@ -62,17 +60,17 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
     }
 
     private String partyFeed() {
-        final var playerMon = battler.getBattlingPlayerMonster();
-        final var enemyMon = battler.getBattlingEnemyMonster();
+        final Monster playerMon = battler.getBattlingPlayerMonster();
+        final Monster enemyMon = battler.getBattlingEnemyMonster();
 
-        final var party1 = battler.getPlayer()
+        final String party1 = battler.getPlayer()
             .getParty()
             .stream()
             .map(mon -> mon.isFainted() ? "(_)" : "(x)")
             .reduce((acc, x) -> acc + "-" + x)
             .orElse("");
 
-        final var party2 = battler.getEnemy()
+        final String party2 = battler.getEnemy()
             .getParty()
             .stream()
             .map(mon -> mon.isFainted() ? "(_)" : "(x)")
@@ -111,7 +109,7 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
 
     @Override
     public void onEnd() {
-        final var feeds = battler
+        final List<String> feeds = battler
             .getFeeds()
             .stream()
             .filter(each -> !loggedFeeds.contains(each))

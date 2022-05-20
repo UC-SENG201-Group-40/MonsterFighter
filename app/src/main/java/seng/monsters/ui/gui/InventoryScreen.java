@@ -62,13 +62,13 @@ public class InventoryScreen extends Screen {
         backToMainMenu.setBounds(331, 366, 156, 30);
         frame.getContentPane().add(backToMainMenu);
 
-        final var distanceFromTop = 100;
-        final var distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
+        final int distanceFromTop = 100;
+        final int distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
 
-        for (var i = 0; i < items.size(); i++) {
-            final var item = items.get(i);
-            final var itemCount = gameManager.getInventory().getItemNumber(item);
-            final var distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
+        for (int i = 0; i < items.size(); i++) {
+            final Item item = items.get(i);
+            final int itemCount = gameManager.getInventory().getItemNumber(item);
+            final int distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
 
             ItemPanel panel = new ItemPanel(item);
             panel.setBounds(distanceX, distanceFromTop);
@@ -117,6 +117,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used
      * @param errorLabel The error label to prompt error messages
      * @param countLabel The count label for this item, to update the count once succeed
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The use button to enable or disable it if item is not available anymore
      * @param sellButton The button itself to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
@@ -137,7 +138,7 @@ public class InventoryScreen extends Screen {
                 errorLabel.setText("There is no such monster in your inventory");
                 errorLabel.setVisible(true);
             } finally {
-                final var newCount = inventory.getItemNumber(item);
+                final int newCount = inventory.getItemNumber(item);
                 countLabel.setText(String.format("%dx", newCount));
                 sellButton.setEnabled(newCount > 0);
                 useButton.setEnabled(newCount > 0);
@@ -151,6 +152,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used
      * @param errorLabel The error label to prompt error messages
      * @param countLabel The count label for this item, to update the count once succeed
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The button itself to enable or disable it if item is not available anymore
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return An action listener that can be passed into the button
@@ -180,6 +182,7 @@ public class InventoryScreen extends Screen {
      * @param item       The item to be used on the monster
      * @param errorLabel The error label to display failure in using the item
      * @param countLabel The count to update the count of item after usage
+     * @param itemActionLabel The action label to be updated and displayed when an item is used or sold
      * @param useButton  The use button to disable if item count hits 0
      * @param sellButton The sell button to enable or disable it if item is not available anymore
      * @return A consumer function to be passed to the pop-up as callback
@@ -204,7 +207,7 @@ public class InventoryScreen extends Screen {
                 errorLabel.setText("The item has no effect, " + err.getMessage().toLowerCase() + "!");
                 errorLabel.setVisible(true);
             } finally {
-                final var newCount = inventory.getItemNumber(item);
+                final int newCount = inventory.getItemNumber(item);
                 countLabel.setText(String.format("%dx", newCount));
                 sellButton.setEnabled(newCount > 0);
                 useButton.setEnabled(newCount > 0);

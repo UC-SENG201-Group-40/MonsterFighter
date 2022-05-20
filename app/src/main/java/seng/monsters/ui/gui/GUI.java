@@ -35,7 +35,7 @@ public final class GUI {
      * @param screen The UI Screen to be displayed
      */
     public void navigateTo(Screen screen) {
-        final var oldScreen = activeScreen;
+        final Screen oldScreen = activeScreen;
         activeScreen = screen;
         activeScreen.render();
         oldScreen.dispose();

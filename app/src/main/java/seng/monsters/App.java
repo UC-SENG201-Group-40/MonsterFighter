@@ -18,7 +18,7 @@ public class App {
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            final var gui = new GUI();
+            final GUI gui = new GUI();
         });
     }
 }

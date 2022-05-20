@@ -1,9 +1,8 @@
 package seng.monsters.ui.cli;
 
-import seng.monsters.model.GameManager;
-import seng.monsters.model.Purchasable;
-import seng.monsters.model.Shop;
-import seng.monsters.model.Trainer;
+import seng.monsters.model.*;
+
+import java.util.List;
 
 /**
  * A CLi for displaying monster from the shop and allowing the player to buy monsters
@@ -27,7 +26,7 @@ public final class MonsterShopCLI extends ShopCLI {
     public void buyPurchasable(int scannerInput) throws IllegalArgumentException, Trainer.PartyFullException {
         try {
             if ((scannerInput > 0) && (scannerInput < shop.getMonsterStock().size() + 1)) {
-                final var mon = shop.getMonsterStock().get(scannerInput - 1);
+                final Monster mon = shop.getMonsterStock().get(scannerInput - 1);
                 if (party.size() == 4) {
                     throw new Trainer.PartyFullException("Cannot add more than 4 monster");
                 }
@@ -57,7 +56,7 @@ public final class MonsterShopCLI extends ShopCLI {
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < party.size() + 1)) {
-                final var mon = party.get(scannerInput - 1);
+                final Monster mon = party.get(scannerInput - 1);
                 gameManager.sell(mon);
                 sellPurchasableInterface(mon);
             } else if (scannerInput != 0) {
@@ -81,9 +80,9 @@ public final class MonsterShopCLI extends ShopCLI {
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a monster to buy:");
-        final var shopMonsters = shop.getMonsterStock();
+        final List<Monster> shopMonsters = shop.getMonsterStock();
         for (int i = 0; i < shopMonsters.size(); i++) {
-            final var mon = shopMonsters.get(i);
+            final Monster mon = shopMonsters.get(i);
             System.out.printf("\n%d - %s (Level %d)\n", i + 1, mon.getName(), mon.getLevel());
             System.out.printf("Price: %d Gold\n", mon.buyPrice());
             System.out.printf("Max Hp: %d\n", mon.maxHp());
@@ -108,7 +107,7 @@ public final class MonsterShopCLI extends ShopCLI {
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select a monster to sell:");
         for (int i = 0; i < party.size(); i++) {
-            final var mon = party.get(i);
+            final Monster mon = party.get(i);
             System.out.printf("%d - %s (Sell Price: %d)\n", i + 1, mon.getName(), mon.sellPrice());
         }
         System.out.println("\n0 - Cancel");
