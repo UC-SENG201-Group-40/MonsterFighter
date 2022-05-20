@@ -1,6 +1,7 @@
 package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
+import seng.monsters.model.Monster;
 import seng.monsters.ui.gui.components.JoiningPopUp;
 import seng.monsters.ui.gui.components.LeavingPopUp;
 import seng.monsters.ui.gui.components.LevelledUpPopUp;
@@ -10,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.List;
 
 /**
  * A screen to show all the current day properties, navigate to party, inventory, and shop, select a battle, and sleep
@@ -159,7 +162,7 @@ public class MainMenuScreen extends Screen {
                 return;
             }
 
-            final var isEnded = gameManager.nextDay();
+            final boolean isEnded = gameManager.nextDay();
 
             if (isEnded) {
                 gui.navigateTo(new EndScreen(gui, gameManager, gameManager.getCurrentDay() > gameManager.getMaxDays()));
@@ -168,14 +171,14 @@ public class MainMenuScreen extends Screen {
 
             gui.navigateBackToMainMenu();
 
-            final var maybeLeaving = gameManager.partyMonstersLeave();
+            final Optional<Monster> maybeLeaving = gameManager.partyMonstersLeave();
             maybeLeaving.ifPresent(LeavingPopUp::new);
 
-            final var levelledUp = gameManager.partyMonstersLevelUp();
+            final List<Monster> levelledUp = gameManager.partyMonstersLevelUp();
             if (!levelledUp.isEmpty())
                 new LevelledUpPopUp(levelledUp);
 
-            final var maybeJoining = gameManager.monsterJoinsParty();
+            final Optional<Monster> maybeJoining = gameManager.monsterJoinsParty();
             maybeJoining.ifPresent(JoiningPopUp::new);
         };
     }

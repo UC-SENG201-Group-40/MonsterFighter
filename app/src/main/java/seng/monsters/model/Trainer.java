@@ -81,7 +81,7 @@ public final class Trainer {
      * @param monster The index of the monster
      */
     public void remove(Monster monster) {
-        final var i = party.indexOf(monster);
+        final int i = party.indexOf(monster);
         remove(i);
     }
 
@@ -93,7 +93,7 @@ public final class Trainer {
      * @throws IndexOutOfBoundsException If the index is invalid
      */
     public Monster pop(int index) throws IndexOutOfBoundsException {
-        final var monster = party.get(index);
+        final Monster monster = party.get(index);
         party.remove(index);
         return monster;
     }
@@ -106,7 +106,7 @@ public final class Trainer {
      * @throws IndexOutOfBoundsException If either the index is out of bound
      */
     public void moveMonster(Monster monster, int to) throws IndexOutOfBoundsException {
-        final var from = party.indexOf(monster);
+        final int from = party.indexOf(monster);
         switchMonster(from, to);
     }
 
@@ -119,7 +119,7 @@ public final class Trainer {
      */
     public void switchMonster(int from, int to) throws IndexOutOfBoundsException {
         if (from != to) {
-            final var temp = party.get(from);
+            final Monster temp = party.get(from);
             party.set(from, party.get(to));
             party.set(to, temp);
         }

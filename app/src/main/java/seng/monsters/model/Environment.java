@@ -67,7 +67,7 @@ public enum Environment {
      */
     public static Environment generateRandomEnvironment() {
         Environment[] environments = Environment.values();
-        final var random = new Random();
+        final Random random = new Random();
         return environments[random.nextInt(environments.length)];
     }
 

@@ -3,6 +3,7 @@ package seng.monsters.ui.gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -127,7 +128,7 @@ public class MonsterShopScreen extends Screen {
      */
     private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
         return ignoredEvent -> {
-            final var index = comboBox.getSelectedIndex();
+            final int index = comboBox.getSelectedIndex();
             if (index < 0 || index >= gameManager.getShop().getMonsterStock().size())
                 return;
             chosenMonster.set(gameManager.getShop().getMonsterStock().get(index));
@@ -146,7 +147,7 @@ public class MonsterShopScreen extends Screen {
     private ActionListener buyAction(JButton buyButton, JLabel errorLabel, JLabel monsterBoughtLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
         return ignoredEvent -> {
             try {
-                final var boughtMonster = chosenMonster.get();
+                final Monster boughtMonster = chosenMonster.get();
 
                 gameManager.buy(boughtMonster);
                 errorLabel.setVisible(false);
@@ -173,7 +174,7 @@ public class MonsterShopScreen extends Screen {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Your party is full!");
             } finally {
-                final var stock = gameManager.getShop().getMonsterStock();
+                final List<Monster> stock = gameManager.getShop().getMonsterStock();
                 if (stock.isEmpty()) {
                     gui.navigateBackToMainMenu();
                 } else {

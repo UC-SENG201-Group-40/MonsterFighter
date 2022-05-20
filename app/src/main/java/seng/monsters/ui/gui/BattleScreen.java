@@ -14,7 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.List;
 
 /**
  * A screen to display the battle and all the fancy actions
@@ -319,9 +321,9 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
      * Repaint / update the party radio buttons
      */
     private void repaintParties() {
-        final var playerParty = battleManager.getPlayer().getParty();
-        final var enemyParty = battleManager.getEnemy().getParty();
-        for (var i = 0; i < 4; i++) {
+        final List<Monster> playerParty = battleManager.getPlayer().getParty();
+        final List<Monster> enemyParty = battleManager.getEnemy().getParty();
+        for (int i = 0; i < 4; i++) {
             this.playerPartyButtons[i].setSelected(i < playerParty.size() && !playerParty.get(i).isFainted());
             this.enemyPartyButtons[i].setSelected(i < enemyParty.size() && !enemyParty.get(i).isFainted());
         }
@@ -331,12 +333,12 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
      * Repaint / update the display feed
      */
     private void repaintFeeds() {
-        final var feeds = battleManager.getFeeds();
-        final var latestFeeds = feeds.stream().toList().subList(
+        final Collection<String> feeds = battleManager.getFeeds();
+        final List<String> latestFeeds = feeds.stream().toList().subList(
             Math.max(feeds.size() - 4, 0),
             feeds.size()
         );
-        for (var i = 0; i < latestFeeds.size(); i++) {
+        for (int i = 0; i < latestFeeds.size(); i++) {
             feedLabels[i].setText(latestFeeds.get(i));
         }
     }
@@ -366,7 +368,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
             timer.start();
 
             // Update the sprites to be position properly in the direction of the defending monster
-            final var isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
+            final boolean isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
             punchImg.setIcon(
                 new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
                     "/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png"

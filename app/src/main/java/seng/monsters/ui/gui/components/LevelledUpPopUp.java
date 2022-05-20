@@ -43,13 +43,13 @@ public class LevelledUpPopUp extends PopUp {
         frame.getContentPane().add(titleLabel);
 
         // The icon for the monster joining
-        final var diffY = 20;
+        final int diffY = 20;
 
         JPanel panel = new JPanel();
         panel.setOpaque(false);
         panel.setLayout(null);
         panel.setBounds((PopUp.WIDTH - PartySlotPanel.WIDTH) / 2, 71, PartySlotPanel.WIDTH, PartySlotPanel.WIDTH * 4 + 3 * diffY);
-        for (var i = 0; i < monsters.size(); i++) {
+        for (int i = 0; i < monsters.size(); i++) {
             PartySlotPanel slot = new PartySlotPanel(monsters.get(i));
             slot.setBounds(0, i * (PartySlotPanel.HEIGHT + diffY));
             slot.applyToPanel(panel);

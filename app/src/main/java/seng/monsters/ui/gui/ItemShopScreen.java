@@ -69,13 +69,13 @@ public class ItemShopScreen extends Screen {
         backToMainMenu.setBounds(456, 366, 156, 30);
         frame.getContentPane().add(backToMainMenu);
 
-        final var distanceFromTop = 100;
-        final var distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
+        final int distanceFromTop = 100;
+        final int distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
 
-        for (var i = 0; i < items.size(); i++) {
-            final var item = items.get(i);
-            final var itemCount = gameManager.getShop().getItemStock(item);
-            final var distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
+        for (int i = 0; i < items.size(); i++) {
+            final Item item = items.get(i);
+            final int itemCount = gameManager.getShop().getItemStock(item);
+            final int distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
 
             ItemPanel panel = new ItemPanel(item);
             panel.setBounds(distanceX, distanceFromTop);
@@ -139,7 +139,7 @@ public class ItemShopScreen extends Screen {
                 errorLabel.setVisible(true);
                 errorLabel.setText("Your party is full!");
             } finally {
-                final var newCount = gameManager.getShop().getItemStock(item);
+                final int newCount = gameManager.getShop().getItemStock(item);
                 countLabel.setText(String.format("%dx (%d gold)", newCount, item.buyPrice()));
                 buyButton.setEnabled(newCount > 0);
                 goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));

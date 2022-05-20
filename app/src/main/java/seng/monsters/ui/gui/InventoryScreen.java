@@ -62,13 +62,13 @@ public class InventoryScreen extends Screen {
         backToMainMenu.setBounds(331, 366, 156, 30);
         frame.getContentPane().add(backToMainMenu);
 
-        final var distanceFromTop = 100;
-        final var distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
+        final int distanceFromTop = 100;
+        final int distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
 
-        for (var i = 0; i < items.size(); i++) {
-            final var item = items.get(i);
-            final var itemCount = gameManager.getInventory().getItemNumber(item);
-            final var distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
+        for (int i = 0; i < items.size(); i++) {
+            final Item item = items.get(i);
+            final int itemCount = gameManager.getInventory().getItemNumber(item);
+            final int distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
 
             ItemPanel panel = new ItemPanel(item);
             panel.setBounds(distanceX, distanceFromTop);
@@ -138,7 +138,7 @@ public class InventoryScreen extends Screen {
                 errorLabel.setText("There is no such monster in your inventory");
                 errorLabel.setVisible(true);
             } finally {
-                final var newCount = inventory.getItemNumber(item);
+                final int newCount = inventory.getItemNumber(item);
                 countLabel.setText(String.format("%dx", newCount));
                 sellButton.setEnabled(newCount > 0);
                 useButton.setEnabled(newCount > 0);
@@ -207,7 +207,7 @@ public class InventoryScreen extends Screen {
                 errorLabel.setText("The item has no effect, " + err.getMessage().toLowerCase() + "!");
                 errorLabel.setVisible(true);
             } finally {
-                final var newCount = inventory.getItemNumber(item);
+                final int newCount = inventory.getItemNumber(item);
                 countLabel.setText(String.format("%dx", newCount));
                 sellButton.setEnabled(newCount > 0);
                 useButton.setEnabled(newCount > 0);

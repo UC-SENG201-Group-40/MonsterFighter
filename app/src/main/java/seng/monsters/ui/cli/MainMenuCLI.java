@@ -5,6 +5,7 @@ import seng.monsters.model.Monster;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -62,7 +63,7 @@ public final class MainMenuCLI extends TestableCLI {
                     mainMenuInterface();
                 }
                 case 5 -> {
-                    final var hasEnded = gameManager.nextDay();
+                    final boolean hasEnded = gameManager.nextDay();
                     if (hasEnded) {
                         displayEndScreen();
                     } else {
@@ -93,14 +94,14 @@ public final class MainMenuCLI extends TestableCLI {
     }
 
     private void displayNightEvents() {
-        final var leftParty = gameManager.partyMonstersLeave();
-        final var levelledUp = gameManager.partyMonstersLevelUp();
-        final var monsterJoining = gameManager.monsterJoinsParty();
+        final Optional<Monster> leftParty = gameManager.partyMonstersLeave();
+        final List<Monster> levelledUp = gameManager.partyMonstersLevelUp();
+        final Optional<Monster> monsterJoining = gameManager.monsterJoinsParty();
         System.out.printf("%nThe environment has been changed to a(n) %s environment!%n",
             gameManager.getEnvironment());
         leftParty.ifPresent(monster -> System.out.printf("%s has expired...%n", monster.getName()));
         monsterJoining.ifPresent(monster -> monsterJoinsPartyInterface(input(), monster));
-        for (final var mon : levelledUp) {
+        for (final Monster mon : levelledUp) {
             System.out.printf("%s has levelled up from %d to %d!%n", mon.getName(), mon.getLevel() - 1, mon.getLevel());
         }
         System.out.println("Your monsters have healed!");
@@ -114,7 +115,7 @@ public final class MainMenuCLI extends TestableCLI {
         } catch (InterruptedException e) {
             return;
         }
-        final var day = gameManager.getCurrentDay();
+        final int day = gameManager.getCurrentDay();
         if (day == gameManager.getMaxDays() + 1) {
             if (gameManager.getScore() == 0) {
                 System.out.println("YOU CHEESED THE GAME%n");
@@ -158,7 +159,7 @@ public final class MainMenuCLI extends TestableCLI {
      */
     public static Monster monsterJoinsParty(Scanner input, Monster mon) throws IllegalArgumentException {
         try {
-            final var name = input.next();
+            final String name = input.next();
             if (((name.length() >= 3) && (name.length() <= 15) && (name.matches("[a-zA-Z]+")))) {
                 mon.setName(name);
             } else if (!name.matches("")) {

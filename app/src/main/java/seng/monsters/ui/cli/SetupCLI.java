@@ -23,11 +23,11 @@ public final class SetupCLI extends TestableCLI {
      * out of the returned values.
      */
     public void setup() {
-        final var name = chooseNameInterface();
-        final var maxDays = chooseMaxDaysInterface();
-        final var difficulty = selectDifficultyInterface();
-        final var gameManager = new GameManager(0, 1, maxDays, difficulty, name);
-        final var mon = selectStartingMonsterInterface();
+        final String name = chooseNameInterface();
+        final int maxDays = chooseMaxDaysInterface();
+        final int difficulty = selectDifficultyInterface();
+        final GameManager gameManager = new GameManager(0, 1, maxDays, difficulty, name);
+        final Monster mon = selectStartingMonsterInterface();
         System.out.printf("\n%s, Your adventure has begun!", name);
         gameManager.getTrainer().add(mon);
         MainMenuCLI.make(gameManager);
@@ -222,7 +222,7 @@ public final class SetupCLI extends TestableCLI {
         System.out.println("\n===========================\n");
         System.out.println("Select a starting monster (1-3):");
         for (int i = 0; i < starterMonsters.size(); i++) {
-            final var mon = starterMonsters.get(i);
+            final Monster mon = starterMonsters.get(i);
             System.out.printf("\n%d - %s (Level %d)\n", i + 1, mon.getName(), mon.getLevel());
             System.out.printf("Max Hp: %d HP\n", mon.maxHp());
             System.out.printf("Overnight Heal Rate: %d\n", mon.healRate());
@@ -237,7 +237,7 @@ public final class SetupCLI extends TestableCLI {
      */
     public static void make() {
         try {
-            final var setupCLI = new SetupCLI();
+            final SetupCLI setupCLI = new SetupCLI();
             setupCLI.setup();
         } catch (Exception e) {
             e.printStackTrace();
