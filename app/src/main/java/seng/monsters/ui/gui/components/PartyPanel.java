@@ -91,8 +91,8 @@ public final class PartyPanel {
         panel = new JPanel();
         panel.setOpaque(false);
 
-        final var party = trainer.getParty();
-        final var diffY = 20;
+        final List<Monster> party = trainer.getParty();
+        final int diffY = 20;
 
         slots = IntStream.range(0, party.size())
             .mapToObj(i -> {
@@ -126,12 +126,12 @@ public final class PartyPanel {
      * Refresh the party display
      */
     public void refresh() {
-        for (var i = 0; i < trainer.getParty().size(); i++) {
-            final var newMon = trainer.getParty().get(i);
+        for (int i = 0; i < trainer.getParty().size(); i++) {
+            final Monster newMon = trainer.getParty().get(i);
             slots.get(i).refresh(newMon);
             slots.get(i).setVisible(true);
         }
-        for (var i = trainer.getParty().size(); i < slots.size(); i++) {
+        for (int i = trainer.getParty().size(); i < slots.size(); i++) {
             slots.get(i).setVisible(false);
         }
     }

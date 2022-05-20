@@ -104,7 +104,7 @@ public class JoiningPopUp extends PopUp {
      */
     private ActionListener doneAction(JTextField textField, JLabel errorLabel) {
         return ignoredEvent -> {
-            final var input = textField.getText();
+            final String input = textField.getText();
             try {
                 monster.setName(input);
                 onEnd.accept(ignoredEvent);

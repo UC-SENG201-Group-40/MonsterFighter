@@ -70,8 +70,8 @@ public final class PartyCLI extends TestableCLI {
     public void selectMonsterToMove(int scannerInput) throws IllegalArgumentException, IndexOutOfBoundsException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
-                final var mon = party.get(scannerInput - 1);
-                final var monsterMoved = moveMonsterInterface(mon);
+                final Monster mon = party.get(scannerInput - 1);
+                final boolean monsterMoved = moveMonsterInterface(mon);
                 partyStatsInterface(monsterMoved);
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
@@ -125,7 +125,7 @@ public final class PartyCLI extends TestableCLI {
         }
         System.out.println("Here is your party. Select a monster to move, or return to the main menu:");
         for (int i = 0; i < party.size(); i++) {
-            final var mon = party.get(i);
+            final Monster mon = party.get(i);
             System.out.printf("\n%d - %s (Level %d, %d/%d HP)\n",
                 i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
             System.out.printf("Monster Type: %s\n", mon.monsterType());
@@ -147,7 +147,7 @@ public final class PartyCLI extends TestableCLI {
         System.out.println("\n===========================\n");
         System.out.printf("Which monster would you like to swap %s with?\n", mon.getName());
         for (int i = 0; i < party.size(); i++) {
-            final var swapMon = party.get(i);
+            final Monster swapMon = party.get(i);
             System.out.printf("%d - %s\n", i + 1, swapMon.getName());
         }
         System.out.println("\n0 - Cancel");
@@ -159,7 +159,7 @@ public final class PartyCLI extends TestableCLI {
      */
     public static void make(GameManager gameManager) {
         try {
-            final var partyCLI = new PartyCLI(gameManager);
+            final PartyCLI partyCLI = new PartyCLI(gameManager);
             partyCLI.partyStatsInterface(false);
         } catch (Exception e) {
             e.printStackTrace();

@@ -240,6 +240,11 @@ public final class BattleManager {
             winner().getParty().stream().filter(m -> !m.isFainted()).toList().size(),
             loser().getName()
         ));
+        if (winner() == player) {
+            feeds.add(String.format(
+                    "You gained %d gold and %d score!",
+                    goldReward(), scoreReward()));
+        }
         isSettled.set(true);
         ui.onEnd();
     }

@@ -119,9 +119,9 @@ public final class InventoryCLI extends TestableCLI {
     private void displayInventoryOptions() {
         System.out.println("\n===========================\n");
         System.out.println("Here is your inventory. Select an item to use, or return to the main menu:");
-        final var items = Item.all();
-        for (var i = 0; i < items.size(); i++) {
-            final var item = items.get(i);
+        final List<Item> items = Item.all();
+        for (int i = 0; i < items.size(); i++) {
+            final Item item = items.get(i);
             System.out.printf("%d - %s (Stock: %d)%n",
                     i + 1, item.getName(), inventory.getItemNumber(item));
             System.out.printf("    %s%n%n",
@@ -144,7 +144,7 @@ public final class InventoryCLI extends TestableCLI {
         System.out.printf("You have %d %s(s). Select a monster to use one on, or return to the inventory menu:%n"
             , inventory.getItemNumber(item), item.getName());
         for (int i = 0; i < party.size(); i++) {
-            final var mon = party.get(i);
+            final Monster mon = party.get(i);
             System.out.printf("%d - %s (Level %d, %dHp/%dHp)%n",
                     i + 1, mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp());
         }
@@ -157,7 +157,7 @@ public final class InventoryCLI extends TestableCLI {
      */
     public static void make(GameManager gameManager) {
         try {
-            final var inventoryCLI = new InventoryCLI(gameManager);
+            final InventoryCLI inventoryCLI = new InventoryCLI(gameManager);
             inventoryCLI.inventoryInterface();
         } catch (Exception e) {
             e.printStackTrace();

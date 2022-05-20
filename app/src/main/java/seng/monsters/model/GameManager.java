@@ -556,7 +556,8 @@ public class GameManager {
     private List<String> getRandomTrainerNames() {
         final InputStream file = Objects.requireNonNull(GameManager.class.getResourceAsStream("/txt/roles.txt"));
         final Scanner scanner = new Scanner(file);
-        final ArrayList<String> res = new ArrayList<String>(56);
+        final ArrayList<String> res = new ArrayList<>(56);
+        int i = 0;
         while (scanner.hasNextLine()) {
             final String name = scanner.nextLine();
             if (name.isBlank())

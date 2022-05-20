@@ -87,7 +87,7 @@ public class SettingsScreen extends Screen {
 
         // Setting the on change callback for the difficulty
         difficulty.onChange(currDifficulty -> {
-            final var difficulties = List.of("Normal", "Hard", "Impossible");
+            final List<String> difficulties = List.of("Normal", "Hard", "Impossible");
             difficultyLabel.setText(difficulties.get(currDifficulty - 1));
         });
 
@@ -119,7 +119,7 @@ public class SettingsScreen extends Screen {
      */
     private ActionListener verifyMaxDaysAction(JTextField maxDaysTextField, JLabel errorLabel) {
         return ignoredEvent -> {
-            final var input = maxDaysTextField.getText();
+            final String input = maxDaysTextField.getText();
             try {
                 final int maxDaysInput = Integer.decode(input);
                 if (maxDaysInput < 5 || maxDaysInput > 15)

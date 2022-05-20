@@ -3,6 +3,7 @@ package seng.monsters.ui.gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.JButton;
@@ -100,11 +101,17 @@ public class MonsterShopScreen extends Screen {
         errorLabel.setForeground(new Color(255, 0, 0));
         panel.add(errorLabel);
 
+        JLabel monsterBoughtLabel = new JLabel();
+        monsterBoughtLabel.setBounds(8, 100, 222, 30);
+        monsterBoughtLabel.setVisible(false);
+        monsterBoughtLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(monsterBoughtLabel);
+
         chosenMonster.onChange(monsterPanel::refresh);
 
         monsterStockComboBox.addActionListener(comboBoxSelectionAction(monsterStockComboBox));
         backToMainMenu.addActionListener(backToMainMenuAction());
-        buyButton.addActionListener(buyAction(buyButton, errorLabel, goldLabel, monsterStockComboBox));
+        buyButton.addActionListener(buyAction(buyButton, errorLabel, monsterBoughtLabel, goldLabel, monsterStockComboBox));
 
         frame.setVisible(true);
     }
@@ -118,7 +125,7 @@ public class MonsterShopScreen extends Screen {
      */
     private ActionListener comboBoxSelectionAction(JComboBox<String> comboBox) {
         return ignoredEvent -> {
-            final var index = comboBox.getSelectedIndex();
+            final int index = comboBox.getSelectedIndex();
             if (index < 0 || index >= gameManager.getShop().getMonsterStock().size())
                 return;
             chosenMonster.set(gameManager.getShop().getMonsterStock().get(index));
@@ -134,10 +141,10 @@ public class MonsterShopScreen extends Screen {
      * @param partyComboBox The combo box to update the monster displayed in the shop
      * @return An action listener for the buy button
      */
-    private ActionListener buyAction(JButton buyButton, JLabel errorLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
+    private ActionListener buyAction(JButton buyButton, JLabel errorLabel, JLabel monsterBoughtLabel, JLabel goldLabel, JComboBox<String> partyComboBox) {
         return ignoredEvent -> {
             try {
-                final var boughtMonster = chosenMonster.get();
+                final Monster boughtMonster = chosenMonster.get();
 
                 gameManager.buy(boughtMonster);
                 errorLabel.setVisible(false);
@@ -145,21 +152,26 @@ public class MonsterShopScreen extends Screen {
 
                 JoiningPopUp popUp = new JoiningPopUp(chosenMonster.get());
                 popUp.onEnd(popUpAction(buyButton));
+                monsterBoughtLabel.setText(String.format("%s has been bought!", chosenMonster.get().getName()));
+                monsterBoughtLabel.setVisible(true);
             } catch (Shop.InsufficientFundsException err) {
+                monsterBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
                     "Insufficient gold to buy %s!", chosenMonster.get().getName()
                 ));
             } catch (Shop.NotInStockException err) {
+                monsterBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
                     "The item, %s not in stock!", chosenMonster.get().getName()
                 ));
             } catch (Trainer.PartyFullException err) {
+                monsterBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText("Your party is full!");
             } finally {
-                final var stock = gameManager.getShop().getMonsterStock();
+                final List<Monster> stock = gameManager.getShop().getMonsterStock();
                 if (stock.isEmpty()) {
                     gui.navigateBackToMainMenu();
                 } else {

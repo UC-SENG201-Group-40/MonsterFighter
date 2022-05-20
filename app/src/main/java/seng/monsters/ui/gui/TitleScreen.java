@@ -74,7 +74,7 @@ public class TitleScreen extends Screen {
      */
     private ActionListener submitAction(JTextField textField, JLabel errorLabel) {
         return ignoredEvent -> {
-            final var input = textField.getText();
+            final String input = textField.getText();
             try {
                 gameManager.setTrainerName(input);
                 gui.navigateTo(new SettingsScreen(gui, gameManager));
