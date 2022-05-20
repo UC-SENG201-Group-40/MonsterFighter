@@ -3,8 +3,10 @@ package seng.monsters.ui.cli;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng.monsters.model.Monster;
 
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,12 +42,12 @@ class SetupCLITest extends CLITestBase {
     void chooseNameInterface() {
         // Valid input
         provideInput("ThisIsValid");
-        final var name1 = setupCLI.chooseNameInterface();
+        final String name1 = setupCLI.chooseNameInterface();
         assertEquals("ThisIsValid", name1);
 
         // Invalid (just symbols, mixed w/ numbers, mixed all, 2 characters, over 15 characters, then valid
         provideMultipleInput(List.of("#*(#))*", "Invalid1", "Invalid#$2", "aa", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "ThisIsValid"));
-        final var name2 = setupCLI.chooseNameInterface();
+        final String name2 = setupCLI.chooseNameInterface();
         assertEquals("ThisIsValid", name2);
     }
 
@@ -60,13 +62,13 @@ class SetupCLITest extends CLITestBase {
     void chooseMaxDaysInterface() {
         // Valid input
         provideInput("5");
-        final var maxDays1 = setupCLI.chooseMaxDaysInterface();
+        final int maxDays1 = setupCLI.chooseMaxDaysInterface();
         assertTrue(acquireOutput().contains("5 days chosen."));
         assertEquals(5, maxDays1);
 
         // Invalid then valid
         provideMultipleInput(List.of("1000", "5"));
-        final var maxDays2 = setupCLI.chooseMaxDaysInterface();
+        final int maxDays2 = setupCLI.chooseMaxDaysInterface();
         assertEquals(5, maxDays2);
         assertTrue(acquireOutput().contains("Invalid input! (Must be a number between 5 and 15 inclusive)"));
     }
@@ -82,13 +84,13 @@ class SetupCLITest extends CLITestBase {
     void selectDifficultyInterface() {
         // Valid difficulty
         provideInput("1");
-        final var difficulty1 = setupCLI.selectDifficultyInterface();
+        final int difficulty1 = setupCLI.selectDifficultyInterface();
         assertEquals(1, difficulty1);
 
 
         // Invalid once and then valid
         provideMultipleInput(List.of("100", "3"));
-        final var difficulty2 = setupCLI.selectDifficultyInterface();
+        final int difficulty2 = setupCLI.selectDifficultyInterface();
         assertEquals(3, difficulty2);
     }
 
@@ -104,7 +106,7 @@ class SetupCLITest extends CLITestBase {
     void selectStartingMonsterInterface() {
         // Valid monster index
         provideMultipleInput(List.of("1", "Honkers"));
-        final var startingMonster1 = setupCLI.selectStartingMonsterInterface();
+        final Monster startingMonster1 = setupCLI.selectStartingMonsterInterface();
         assertEquals("Quacker", startingMonster1.monsterType());
         assertEquals(3, startingMonster1.getLevel());
         assertEquals("Honkers", startingMonster1.getName());
@@ -112,7 +114,7 @@ class SetupCLITest extends CLITestBase {
 
         // Invalid once, and then valid index
         provideMultipleInput(List.of("100", "2", "Crab"));
-        final var startingMonster2 = setupCLI.selectStartingMonsterInterface();
+        final Monster startingMonster2 = setupCLI.selectStartingMonsterInterface();
         assertTrue(acquireOutput().contains("Invalid input!"));
         assertEquals("Raver", startingMonster2.monsterType());
         assertEquals(3, startingMonster2.getLevel());
@@ -129,12 +131,12 @@ class SetupCLITest extends CLITestBase {
     @Test
     void chooseName() {
         // Valid input
-        final var name1 = setupCLI.chooseName("ThisIsValid");
+        final String name1 = setupCLI.chooseName("ThisIsValid");
         assertEquals("ThisIsValid", name1);
 
         // Invalid (just symbols, mixed w/ numbers, mixed all, 2 characters, over 15 characters, then valid
         provideMultipleInput(List.of("Invalid1", "Invalid#$2", "aa", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "ThisIsValid"));
-        final var name2 = setupCLI.chooseName("#*(#))*");
+        final String name2 = setupCLI.chooseName("#*(#))*");
         assertEquals("ThisIsValid", name2);
     }
 
@@ -148,13 +150,13 @@ class SetupCLITest extends CLITestBase {
     @Test
     void chooseMaxDays() {
         // Valid input
-        final var maxDays1 = setupCLI.chooseMaxDays(5);
+        final int maxDays1 = setupCLI.chooseMaxDays(5);
         assertTrue(acquireOutput().contains("5 days chosen."));
         assertEquals(5, maxDays1);
 
         // Invalid then valid
         provideInput("5");
-        final var maxDays2 = setupCLI.chooseMaxDays(1000);
+        final int maxDays2 = setupCLI.chooseMaxDays(1000);
         assertEquals(5, maxDays2);
         assertTrue(acquireOutput().contains("Invalid input! (Must be a number between 5 and 15 inclusive)"));
     }
@@ -169,13 +171,13 @@ class SetupCLITest extends CLITestBase {
     @Test
     void selectDifficulty() {
         // Valid difficulty
-        final var difficulty1 = setupCLI.selectDifficulty(1);
+        final int difficulty1 = setupCLI.selectDifficulty(1);
         assertEquals(1, difficulty1);
 
 
         // Invalid once and then valid
         provideInput("3");
-        final var difficulty2 = setupCLI.selectDifficulty(100);
+        final int difficulty2 = setupCLI.selectDifficulty(100);
         assertEquals(3, difficulty2);
     }
 
@@ -191,7 +193,7 @@ class SetupCLITest extends CLITestBase {
     void selectStartingMonster() {
         // Valid monster index
         provideInput("Honkers");
-        final var startingMonster1 = setupCLI.selectStartingMonster(1);
+        final Monster startingMonster1 = setupCLI.selectStartingMonster(1);
         assertEquals("Quacker", startingMonster1.monsterType());
         assertEquals(3, startingMonster1.getLevel());
         assertEquals("Honkers", startingMonster1.getName());
@@ -199,7 +201,7 @@ class SetupCLITest extends CLITestBase {
 
         // Invalid once, and then valid index
         provideMultipleInput(List.of("2", "Crab"));
-        final var startingMonster2 = setupCLI.selectStartingMonster(100);
+        final Monster startingMonster2 = setupCLI.selectStartingMonster(100);
         assertTrue(acquireOutput().contains("Invalid input!"));
         assertEquals("Raver", startingMonster2.monsterType());
         assertEquals(3, startingMonster2.getLevel());

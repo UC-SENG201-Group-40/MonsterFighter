@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng.monsters.model.GameManager;
 import seng.monsters.model.Monster;
+import seng.monsters.model.Trainer;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -45,8 +46,8 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void partyStatsInterface() {
-        final var trainer = gameManager.getTrainer();
-        final var monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
+        final Trainer trainer = gameManager.getTrainer();
+        final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
         // Immediately exit with 0
@@ -95,8 +96,8 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void moveMonsterInterface() {
-        final var trainer = gameManager.getTrainer();
-        final var monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
+        final Trainer trainer = gameManager.getTrainer();
+        final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
         // Immediately exit with 0
@@ -138,8 +139,8 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void selectMonsterToMove() {
-        final var trainer = gameManager.getTrainer();
-        final var monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
+        final Trainer trainer = gameManager.getTrainer();
+        final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
         partyCLI.selectMonsterToMove(0);
@@ -186,8 +187,8 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void selectMonsterToSwap() {
-        final var trainer = gameManager.getTrainer();
-        final var monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
+        final Trainer trainer = gameManager.getTrainer();
+        final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
         assertFalse(partyCLI.selectMonsterToSwap(new Monster.Tree(1), 0));
@@ -223,14 +224,14 @@ class PartyCLITest extends CLITestBase {
     @Test
     void displayPartyStats() {
         partyCLI.displayPartyStats(false);
-        final var res0 = acquireOutput();
+        final String res0 = acquireOutput();
         assertFalse(Stream.of(1, 2, 3, 4).map(Object::toString).anyMatch(s -> res0.contains(s + " - ")));
 
-        final var trainer = gameManager.getTrainer();
-        final var monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
+        final Trainer trainer = gameManager.getTrainer();
+        final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
         partyCLI.displayPartyStats(false);
-        final var res1 = acquireOutput();
+        final String res1 = acquireOutput();
         assertTrue(monsters.stream()
             .map(mon ->
                 String.format("\n%s - %s (Level %d, %d/%d HP)\n", mon.getName(), mon.getName(), mon.getLevel(), mon.getCurrentHp(), mon.maxHp())
@@ -254,14 +255,14 @@ class PartyCLITest extends CLITestBase {
     @Test
     void displayMoveMonsters() {
         partyCLI.displayMoveMonsters(new Monster.Tree("A", 1));
-        final var res0 = acquireOutput();
+        final String res0 = acquireOutput();
         assertTrue(res0.contains("Which monster would you like to swap A with?"));
         assertFalse(Stream.of(1, 2, 3, 4).map(Object::toString).anyMatch(s -> res0.contains(s + " - ")));
 
-        final var trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getTrainer();
         List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1)).forEach(trainer::add);
         partyCLI.displayMoveMonsters(new Monster.Tree("A", 1));
-        final var res1 = acquireOutput();
+        final String res1 = acquireOutput();
         assertTrue(Stream.of(1, 2).map(Object::toString).allMatch(s -> res1.contains(s + " - " + s)));
     }
 }

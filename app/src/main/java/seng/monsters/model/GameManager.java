@@ -342,8 +342,8 @@ public class GameManager {
     protected void updateAvailableBattles() {
         final Random rng = new Random();
         final List<String> names = getRandomTrainerNames();
-        final int amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / 5));
-        final int amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / 5));
+        final int amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final int amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 

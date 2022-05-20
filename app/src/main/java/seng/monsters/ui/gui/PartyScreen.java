@@ -46,12 +46,11 @@ public class PartyScreen extends Screen {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(
-            new ImageIcon(
-                Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
-                )))
-        ));
+        Screen
+            .imageIconFromResource(
+                String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
+            )
+            .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
         JButton backToMainMenu = new JButton("Main menu");
         backToMainMenu.setBounds(351, 398, 117, 29);
@@ -103,6 +102,7 @@ public class PartyScreen extends Screen {
 
     /**
      * The action performed when a monster is selected
+     *
      * @return A bi consumer for the PartySlotPanel
      */
     private BiConsumer<ActionEvent, Monster> slotAction() {
@@ -111,6 +111,7 @@ public class PartyScreen extends Screen {
 
     /**
      * The action performed when a monster is being sold
+     *
      * @param sellButton The sell button to be disabled so to prevent concurrent selling the same monster
      * @param errorLabel The error label to display the exception
      * @param monsterActionLabel The action label to be updated and displayed when a monster is moved or sold

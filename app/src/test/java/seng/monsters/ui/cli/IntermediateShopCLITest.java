@@ -11,7 +11,7 @@ public class IntermediateShopCLITest extends CLITestBase {
 
     @BeforeEach
     void setUp() {
-        final var gameManager = new GameManager(0, 1, 5, 1, "Idiot");
+        final GameManager gameManager = new GameManager(0, 1, 5, 1, "Idiot");
         intermediateShopCLI = new IntermediateShopCLI(gameManager);
         baseSetup();
     }

@@ -8,6 +8,7 @@
 package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.Monster;
+import seng.monsters.ui.gui.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,12 +44,9 @@ public class LeavingPopUp extends PopUp {
         frame.getContentPane().add(titleLabel);
 
         // The icon for the monster joining
-        JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(LeavingPopUp.class.getResource(
-                String.format("/images/%s.gif", monster.monsterType().toLowerCase())
-            ))
-        ));
+        JLabel iconLabel = new JLabel(monster.monsterType());
+        Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds((PopUp.WIDTH - 146) / 2, 160, 146, 171);
         frame.getContentPane().add(iconLabel);
 

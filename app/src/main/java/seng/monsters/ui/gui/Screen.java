@@ -2,8 +2,13 @@ package seng.monsters.ui.gui;
 
 import seng.monsters.model.GameManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A interface for all the GUI Window Screen
@@ -72,5 +77,24 @@ public abstract class Screen {
      */
     public static Color backgroundColor() {
         return new Color(255, 255, 204);
+    }
+
+    /**
+     * Get the image resource and return it as ImageIcon
+     * @param path The path to resource
+     * @return ImageIcon from the image if any
+     */
+    public static Optional<ImageIcon> imageIconFromResource(String path) {
+        try {
+            final URL url = Screen.class.getResource(path);
+            if (url != null)
+                return Optional.of(new ImageIcon(url));
+            final InputStream stream = Screen.class.getResourceAsStream(path);
+            if (stream != null)
+                return Optional.of(new ImageIcon(ImageIO.read(stream)));
+            return Optional.empty();
+        } catch (java.io.IOException | NullPointerException ignored) {
+            return Optional.empty();
+        }
     }
 }

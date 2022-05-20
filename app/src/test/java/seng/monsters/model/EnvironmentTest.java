@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,8 +20,8 @@ class EnvironmentTest {
      */
     @Test
     void all() {
-        final var res = Environment.all();
-        final var unique = new HashSet<>(res);
+        final List<Environment> res = Environment.all();
+        final HashSet<Environment> unique = new HashSet<>(res);
 
         // Check if all items are unique
         assertEquals(unique.size(), res.size());

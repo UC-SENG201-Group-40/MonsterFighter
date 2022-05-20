@@ -20,7 +20,7 @@ class InventoryCLITest extends CLITestBase {
 
     @BeforeEach
     void setUp() {
-        final var gameManager = new GameManager(1000, 1, 5, 1, "Test");
+        final GameManager gameManager = new GameManager(1000, 1, 5, 1, "Test");
         labMonster = new Monster.Doger("Good boi", 10);
         inventoryCLI = new InventoryCLI(gameManager);
         inventory = gameManager.getInventory();
@@ -68,13 +68,13 @@ class InventoryCLITest extends CLITestBase {
 
         // Valid index and item
         labMonster.takeDamage(labMonster.maxHp() / 2);
-        final var currHp = labMonster.getCurrentHp();
+        final int currHp = labMonster.getCurrentHp();
         provideMultipleInput(List.of("1", "1", "0", "0"));
         inventoryCLI.inventoryInterface();
         assertNotEquals(currHp, labMonster.getCurrentHp());
 
         // Invalid input and exit with 0
-        final var currHp2 = labMonster.getCurrentHp();
+        final int currHp2 = labMonster.getCurrentHp();
         provideMultipleInput(List.of("100", "0", "0"));
         inventoryCLI.inventoryInterface();
         assertEquals(currHp2, labMonster.getCurrentHp());
@@ -82,7 +82,7 @@ class InventoryCLITest extends CLITestBase {
         // Invalid input, normal flow, exit with 0
         labMonster.takeDamage(10);
         inventory.add(new Item.Potion());
-        final var currHp3 = labMonster.getCurrentHp();
+        final int currHp3 = labMonster.getCurrentHp();
         provideMultipleInput(List.of("100", "1", "1", "0", "0"));
         inventoryCLI.inventoryInterface();
         assertTrue(acquireOutput().contains("Invalid input!"));
@@ -119,13 +119,13 @@ class InventoryCLITest extends CLITestBase {
 
         // Valid index and item
         labMonster.takeDamage(labMonster.maxHp() / 2);
-        final var currHp = labMonster.getCurrentHp();
+        final int currHp = labMonster.getCurrentHp();
         provideMultipleInput(List.of("1", "0"));
         inventoryCLI.useItemInterface(new Item.Potion(), false);
         assertNotEquals(currHp, labMonster.getCurrentHp());
 
         // Invalid input and exit with 0
-        final var currHp2 = labMonster.getCurrentHp();
+        final int currHp2 = labMonster.getCurrentHp();
         provideMultipleInput(List.of("100", "0"));
         inventoryCLI.useItemInterface(new Item.Potion(), false);
         assertEquals(currHp2, labMonster.getCurrentHp());
@@ -133,7 +133,7 @@ class InventoryCLITest extends CLITestBase {
         // Invalid input, normal flow, exit with 0
         labMonster.takeDamage(10);
         inventory.add(new Item.Potion());
-        final var currHp3 = labMonster.getCurrentHp();
+        final int currHp3 = labMonster.getCurrentHp();
         provideMultipleInput(List.of("100", "1", "0"));
         inventoryCLI.useItemInterface(new Item.Potion(), false);
         assertTrue(acquireOutput().contains("Invalid input!"));

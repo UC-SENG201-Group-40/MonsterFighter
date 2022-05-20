@@ -1,6 +1,7 @@
 package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.Monster;
+import seng.monsters.ui.gui.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,13 +115,8 @@ public final class PartySlotPanel {
      * Used to update the display to match the change in the Monster
      */
     public void refresh() {
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(
-                PartySlotPanel.class.getResource(
-                    String.format("/images/small/%s.gif", monster.monsterType().toLowerCase())
-                )
-            )
-        ));
+        Screen.imageIconFromResource(String.format("/images/small/%s.gif", monster.monsterType().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
 
         nameButton.setText(String.format("%s (%s)", monster.getName(), monster.monsterType()));
 
@@ -148,13 +144,8 @@ public final class PartySlotPanel {
         panel.setLayout(null);
 
         iconLabel = new JLabel("");
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(
-                this.getClass().getResource(
-                    String.format("/images/small/%s.gif", monster.monsterType().toLowerCase())
-                )
-            )
-        ));
+        Screen.imageIconFromResource(String.format("/images/small/%s.gif", monster.monsterType().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds(6, 10, 37, 39);
         panel.add(iconLabel);
 

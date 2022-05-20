@@ -21,7 +21,7 @@ class InventoryTest {
     void tearDown() {
         inventory.getItemEntries()
             .forEach(entry -> {
-                for (var i = 0; i < entry.getValue(); i++) {
+                for (int i = 0; i < entry.getValue(); i++) {
                     inventory.remove(entry.getKey());
                 }
             });
@@ -75,7 +75,7 @@ class InventoryTest {
             () -> inventory.use(new Item.Revive(), new Monster.Raver(1))
         );
 
-        final var monster = new Monster.Raver(1000);
+        final Monster monster = new Monster.Raver(1000);
         monster.takeDamage(monster.maxHp());
         inventory.use(new Item.Revive(), monster);
         assertNotEquals(0, monster.getCurrentHp());

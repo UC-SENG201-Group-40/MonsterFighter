@@ -7,6 +7,7 @@ import seng.monsters.ui.gui.components.LeavingPopUp;
 import seng.monsters.ui.gui.components.LevelledUpPopUp;
 import seng.monsters.ui.gui.components.SelectShopPopUp;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -30,12 +31,11 @@ public class MainMenuScreen extends Screen {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(
-            new ImageIcon(
-                Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
-                )))
-        ));
+        Screen
+            .imageIconFromResource(
+                String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
+            )
+            .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
         JButton partyButton = new JButton("Party");
         partyButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));

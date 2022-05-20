@@ -2,6 +2,7 @@ package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.Item;
 import seng.monsters.ui.gui.InventoryScreen;
+import seng.monsters.ui.gui.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,7 @@ public final class ItemPanel {
 
     /**
      * Creates a JPanel to display the item and its description
+     *
      * @param item The item to be displayed
      */
     public ItemPanel(Item item) {
@@ -73,11 +75,8 @@ public final class ItemPanel {
         itemPanel.add(descLabel);
 
         JLabel iconLabel = new JLabel("");
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(InventoryScreen.class.getResource(
-                String.format("/images/%s.png", item.getName().toLowerCase())
-            ))
-        ));
+        Screen.imageIconFromResource(String.format("/images/%s.png", item.getName().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
         iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
         iconLabel.setBounds(6, 38, 146, 92);
         itemPanel.add(iconLabel);

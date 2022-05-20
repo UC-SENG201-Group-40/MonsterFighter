@@ -1,6 +1,7 @@
 package seng.monsters.ui.gui.components;
 
 import seng.monsters.model.Monster;
+import seng.monsters.ui.gui.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -204,11 +205,8 @@ public final class DetailedMonsterPanel {
             String.format("Environment: %s", monster.idealEnvironment().toString())
         );
 
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(DetailedMonsterPanel.class.getResource(
-                String.format("/images/%s.gif", monster.monsterType().toLowerCase())
-            ))
-        ));
+        Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
     }
 
     /**
@@ -294,11 +292,8 @@ public final class DetailedMonsterPanel {
         monsterDisplayPanel.add(envLabel);
 
         iconLabel = new JLabel("");
-        iconLabel.setIcon(new ImageIcon(
-            Objects.requireNonNull(this.getClass().getResource(
-                String.format("/images/%s.gif", monster.monsterType().toLowerCase())
-            ))
-        ));
+        Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
+            .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds(148, 60, 146, 156);
         monsterDisplayPanel.add(iconLabel);
     }

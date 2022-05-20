@@ -76,7 +76,7 @@ public class ItemShopCLITest extends CLITestBase {
         itemShopCLI.buyPurchasableInterface(null);
 
         // Buy 1 FullRestore
-        final var fullRestore = new Item.FullRestore();
+        final Item fullRestore = new Item.FullRestore();
         shop.setItemStock(fullRestore, 2);
         provideMultipleInput(List.of("4", "0"));
         itemShopCLI.buyPurchasableInterface(null);
@@ -93,7 +93,7 @@ public class ItemShopCLITest extends CLITestBase {
         assertTrue(acquireOutput().contains("You're too poor! Come back when you're a little, mmmm... RICHER!"));
 
         // Invalid input, then regular flow
-        final var potion = new Item.Potion();
+        final Item potion = new Item.Potion();
         gameManager.setGold(potion.buyPrice() * 4);
         shop.setItemStock(potion, 5);
         provideMultipleInput(List.of("420", "1", "1", "0"));
@@ -104,8 +104,8 @@ public class ItemShopCLITest extends CLITestBase {
 
     @Test
     void sellPurchasableInterface() {
-        final var potion = new Item.Potion();
-        final var rareCandy = new Item.RareCandy();
+        final Item potion = new Item.Potion();
+        final Item rareCandy = new Item.RareCandy();
         inventory.add(potion);
         inventory.add(potion);
         inventory.add(rareCandy);

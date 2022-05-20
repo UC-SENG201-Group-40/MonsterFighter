@@ -58,7 +58,7 @@ public abstract class CLITestBase {
      * @param data The input as a collection of string
      */
     protected void provideMultipleInput(Collection<String> data) {
-        final var input = String.join("\n", data);
+        final String input = String.join("\n", data);
         provideInput(input);
     }
 
@@ -68,7 +68,7 @@ public abstract class CLITestBase {
      * @return The output as string
      */
     protected String acquireOutput() {
-        final var current = testOut.toString();
+        final String current = testOut.toString();
         baseSetup();
         return current;
     }
