@@ -168,12 +168,11 @@ The game ends when one of the following occurs:
        your UML class diagram.
     3. [ ] An explanation of unit test coverage, and why you managed to get a high/low percentage coverage.
 - [ ] Include on the second page:
-    4. [ ] Your thoughts and feedback on the project.
-    5. [ ] A brief retrospective of what went well, what did not go well, and what improvements you could make for your
-       next
-       project.
-    6. [ ] The effort spent (in hours) in the project per student.
-    7. [ ] A statement of agreed % contribution from both partners.
+    1. [ ] Your thoughts and feedback on the project.
+    2. [ ] A brief retrospective of what went well, what did not go well, and what improvements you could make for your
+       next project.
+    3. [ ] The effort spent (in hours) in the project per student.
+    4. [ ] A statement of agreed % contribution from both partners.
 
 ### Subsmission
 
