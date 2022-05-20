@@ -419,7 +419,7 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         timer.stop();
         if (battleManager.hasPlayerWon()) {
             gameManager.setGold(gameManager.getGold() + battleManager.goldReward());
-            gameManager.setScore(gameManager.getScore() + battleManager.scoreReward());
+            gameManager.setScore(gameManager.getScore() + battleManager.scoreReward() * gameManager.getDifficulty());
         }
     }
 
