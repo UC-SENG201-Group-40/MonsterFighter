@@ -96,7 +96,7 @@ public final class SelectPartyPopUp extends PopUp {
      */
     private ActionListener submitAction() {
         return ignoredEvent -> {
-            final var monster = chosenMonster.get();
+            final Monster monster = chosenMonster.get();
 
             onChosen.accept(ignoredEvent, monster);
             frame.dispose();

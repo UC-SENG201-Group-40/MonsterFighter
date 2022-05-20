@@ -67,7 +67,7 @@ public final class State<T> {
      * @param function The operation to be performed
      */
     public void set(UnaryOperator<T> function) {
-        final var res = function.apply(innerState);
+        final T res = function.apply(innerState);
         set(res);
     }
 

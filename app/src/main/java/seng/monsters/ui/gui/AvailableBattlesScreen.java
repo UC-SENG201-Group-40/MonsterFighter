@@ -32,12 +32,11 @@ public class AvailableBattlesScreen extends Screen {
     }
 
     public void render() {
-        frame.setContentPane(new JLabel(
-            new ImageIcon(
-                Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
-                )))
-        ));
+        Screen
+            .imageIconFromResource(
+                String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
+            )
+            .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
         JComboBox<String> enemiesComboBox = new JComboBox<>();
         enemiesComboBox.setModel(

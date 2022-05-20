@@ -2,6 +2,9 @@ package seng.monsters.ui.cli;
 
 import seng.monsters.model.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * A CLI to buy items from the shop
  */
@@ -25,9 +28,9 @@ public final class ItemShopCLI extends ShopCLI {
      */
     public void buyPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
-            final var items = Item.all();
+            final List<Item> items = Item.all();
             if ((scannerInput > 0) && (scannerInput < items.size() + 1)) {
-                final var item = items.get(scannerInput - 1);
+                final Item item = items.get(scannerInput - 1);
                 gameManager.buy(item);
                 buyPurchasableInterface(item);
             } else if (scannerInput != 0) {
@@ -53,7 +56,7 @@ public final class ItemShopCLI extends ShopCLI {
     public void sellPurchasable(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 5)) {
-                final var item = Item.all().get(scannerInput - 1);
+                final Item item = Item.all().get(scannerInput - 1);
                 gameManager.sell(item);
                 sellPurchasableInterface(item);
             } else if (scannerInput != 0) {
@@ -80,9 +83,9 @@ public final class ItemShopCLI extends ShopCLI {
         }
         System.out.printf("Gold: %d\n", gameManager.getGold());
         System.out.println("Select an item to buy:");
-        final var items = shop.getItemsStock();
-        for (var i = 0; i < items.size(); i++) {
-            final var item = items.get(i);
+        final List<Map.Entry<Item, Integer>> items = shop.getItemsStock();
+        for (int i = 0; i < items.size(); i++) {
+            final Map.Entry<Item, Integer> item = items.get(i);
             System.out.printf("%d - %s (Stock: %d, Price: %d)%n",
                 i + 1, item.getKey().getName(), item.getValue(), item.getKey().buyPrice());
 

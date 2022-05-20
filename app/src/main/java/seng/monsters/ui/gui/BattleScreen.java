@@ -115,53 +115,45 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(
-            new ImageIcon(
-                Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
-                )))
-        ));
-
+        Screen
+            .imageIconFromResource(
+                String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
+            )
+            .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
         playerFireImage = new JLabel();
         playerFireImage.setHorizontalAlignment(SwingConstants.CENTER);
-        playerFireImage.setIcon(new ImageIcon(
-            Objects.requireNonNull(BattleScreen.class.getResource(
-                "/images/fire.gif"
-            ))
-        ));
+        Screen.imageIconFromResource("/images/fire.gif")
+            .ifPresent(playerFireImage::setIcon);
         playerFireImage.setBounds(62, 94, 200, 150);
         playerFireImage.setVisible(false);
         frame.getContentPane().add(playerFireImage);
 
         enemyFireImage = new JLabel();
         enemyFireImage.setHorizontalAlignment(SwingConstants.CENTER);
-        enemyFireImage.setIcon(new ImageIcon(
-            Objects.requireNonNull(BattleScreen.class.getResource(
-                "/images/fire.gif"
-            ))
-        ));
+        Screen.imageIconFromResource("/images/fire.gif")
+            .ifPresent(enemyFireImage::setIcon);
         enemyFireImage.setBounds(551, 94, 200, 150);
         enemyFireImage.setVisible(false);
         frame.getContentPane().add(enemyFireImage);
 
         playerMonsterImage = new JLabel();
         playerMonsterImage.setHorizontalAlignment(SwingConstants.CENTER);
-        URL playerMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getBattlingPlayerMonster().monsterType().toLowerCase() + ".gif"
-        ));
-        ImageIcon playerMonIcon = new ImageIcon(playerMonUrl);
-        playerMonsterImage.setIcon(playerMonIcon);
+        Screen
+            .imageIconFromResource(
+                "/images/" + battleManager.getBattlingPlayerMonster().monsterType().toLowerCase() + ".gif"
+            )
+            .ifPresent(playerMonsterImage::setIcon);
         playerMonsterImage.setBounds(62, 94, 200, 150);
         frame.getContentPane().add(playerMonsterImage);
 
         enemyPlayerImage = new JLabel();
         enemyPlayerImage.setHorizontalAlignment(SwingConstants.CENTER);
-        URL enemyMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getBattlingEnemyMonster().monsterType().toLowerCase() + ".gif"
-        ));
-        ImageIcon enemyMonIcon = new ImageIcon(enemyMonUrl);
-        enemyPlayerImage.setIcon(enemyMonIcon);
+        Screen
+            .imageIconFromResource(
+                "/images/" + battleManager.getBattlingEnemyMonster().monsterType().toLowerCase() + ".gif"
+            )
+            .ifPresent(enemyPlayerImage::setIcon);
         enemyPlayerImage.setBounds(551, 94, 200, 150);
         frame.getContentPane().add(enemyPlayerImage);
 
@@ -367,11 +359,8 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
 
             // Update the sprites to be position properly in the direction of the defending monster
             final var isMon1Turn = battleManager.getBattlingPlayerMonster().speed() >= battleManager.getBattlingEnemyMonster().speed();
-            punchImg.setIcon(
-                new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
-                    "/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png"
-                )))
-            );
+            Screen.imageIconFromResource("/images/" + (isMon1Turn ? "punch-true" : "punch-false") + ".png")
+                .ifPresent(punchImg::setIcon);
             repaintParties();
             startButton.setEnabled(false);
         };
@@ -393,35 +382,28 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         punchImg.setVisible(false);
         playerFireImage.setVisible(!isPlayerTurn);
         enemyFireImage.setVisible(isPlayerTurn);
-        punchImg.setIcon(
-            new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
-                "/images/" + (!isPlayerTurn ? "punch-true" : "punch-false") + ".png"
-            )))
-        );
+        Screen.imageIconFromResource("/images/" + (!isPlayerTurn ? "punch-true" : "punch-false") + ".png")
+            .ifPresent(punchImg::setIcon);
     }
 
     @Override
     public void onEachNextMonster(boolean isPlayerTurn) {
         playerFireImage.setVisible(false);
         enemyFireImage.setVisible(false);
-        punchImg.setIcon(
-            new ImageIcon(Objects.requireNonNull(this.getClass().getResource(
-                "/images/" + (isPlayerTurn ? "punch-true" : "punch-false") + ".png"
-            )))
-        );
-        URL playerMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getBattlingPlayerMonster().getClass().getSimpleName().toLowerCase() + ".gif"
-        ));
-        ImageIcon playerMonIcon = new ImageIcon(playerMonUrl);
-        playerMonsterImage.setIcon(playerMonIcon);
-        URL enemyMonUrl = Objects.requireNonNull(BattleScreen.class.getResource(
-            "/images/" + battleManager.getBattlingEnemyMonster().getClass().getSimpleName().toLowerCase() + ".gif"
-        ));
-        ImageIcon enemyMonIcon = new ImageIcon(enemyMonUrl);
-        enemyPlayerImage.setIcon(enemyMonIcon);
+        Screen.imageIconFromResource("/images/" + (isPlayerTurn ? "punch-true" : "punch-false") + ".png")
+            .ifPresent(punchImg::setIcon);
+        Screen
+            .imageIconFromResource(
+                "/images/" + battleManager.getBattlingPlayerMonster().monsterType().toLowerCase() + ".gif"
+            )
+            .ifPresent(playerMonsterImage::setIcon);
+        Screen
+            .imageIconFromResource(
+                "/images/" + battleManager.getBattlingEnemyMonster().monsterType().toLowerCase() + ".gif"
+            )
+            .ifPresent(enemyPlayerImage::setIcon);
 
         repaintParties();
-
         repaint();
     }
 

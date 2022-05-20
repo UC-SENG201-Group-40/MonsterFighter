@@ -40,7 +40,7 @@ public final class ViewBattlesCLI extends TestableCLI {
     private void selectBattle(int scannerInput) {
         try {
             if ((scannerInput > 0) && (scannerInput < availableBattles.size() + 1)) {
-                final var battle = new BattleCLI(gameManager, scannerInput - 1);
+                final BattleCLI battle = new BattleCLI(gameManager, scannerInput - 1);
                 battle.run();
             } else if (scannerInput != 0) {
                 throw new IllegalArgumentException();
@@ -55,7 +55,7 @@ public final class ViewBattlesCLI extends TestableCLI {
         System.out.println("\n===========================\n");
         System.out.println("The following trainers would like to battle!");
         for (int i = 0; i < availableBattles.size(); i++) {
-            final var battleParty = availableBattles.get(i).getParty();
+            final List<Monster> battleParty = availableBattles.get(i).getParty();
             System.out.printf("%d - Trainer %d:%n",
                 i + 1, i + 1);
             for (Monster mon : battleParty) {

@@ -3,10 +3,8 @@ package seng.monsters.ui.gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 import java.util.function.Consumer;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -46,12 +44,11 @@ public class MonsterShopScreen extends Screen {
 
     @Override
     public void render() {
-        frame.setContentPane(new JLabel(
-            new ImageIcon(
-                Objects.requireNonNull(BattleScreen.class.getResource(
-                    String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
-                )))
-        ));
+        Screen
+            .imageIconFromResource(
+                String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
+            )
+            .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
 
         JButton backToMainMenu = new JButton();

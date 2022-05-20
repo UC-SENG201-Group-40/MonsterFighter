@@ -9,6 +9,7 @@ package seng.monsters.model;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -166,7 +167,7 @@ public final class BattleManager {
             return;
         }
 
-        final var progress = pseudoAttackPosition * 100 / PSEUDO_MAX_POSITION;
+        final int progress = pseudoAttackPosition * 100 / PSEUDO_MAX_POSITION;
         ui.onEachAttackProgress(progress);
         pseudoAttackPosition += pseudoSpeed;
 
@@ -194,13 +195,13 @@ public final class BattleManager {
      * Performed the damage, add new feed that the damage landed, and call damage event callback
      */
     private void performDamage() {
-        final var atk = isPlayerTurn ? battlingPlayerMonster : battlingEnemyMonster;
-        final var def = isPlayerTurn ? battlingEnemyMonster : battlingPlayerMonster;
-        final var atkTrainer = isPlayerTurn ? player : enemy;
-        final var defTrainer = isPlayerTurn ? enemy : player;
+        final Monster atk = isPlayerTurn ? battlingPlayerMonster : battlingEnemyMonster;
+        final Monster def = isPlayerTurn ? battlingEnemyMonster : battlingPlayerMonster;
+        final Trainer atkTrainer = isPlayerTurn ? player : enemy;
+        final Trainer defTrainer = isPlayerTurn ? enemy : player;
 
-        final var maxDmg = atk.damage(environment);
-        final var dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
+        final int maxDmg = atk.damage(environment);
+        final int dmg = rng.nextInt(maxDmg - (maxDmg / 4)) + (maxDmg / 4);
 
         def.takeDamage(dmg);
 
@@ -249,7 +250,7 @@ public final class BattleManager {
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextPlayerMon() throws WhitedOutException {
-        final var nextMon = player.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
+        final Optional<Monster> nextMon = player.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
@@ -263,7 +264,7 @@ public final class BattleManager {
      * @return A next non-fainted monster if there is none return null
      */
     private Monster nextEnemyMon() throws WhitedOutException {
-        final var nextMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
+        final Optional<Monster> nextMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
@@ -322,8 +323,8 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer winner() {
-        final var remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        final var remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final long remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final long remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
         return remainingPlayerMon >= remainingEnemyMon ? player : enemy;
     }
 
@@ -333,8 +334,8 @@ public final class BattleManager {
      * @return A trainer is the battle is settled otherwise null
      */
     private Trainer loser() {
-        final var remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
-        final var remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final long remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
+        final long remainingEnemyMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).count();
         return remainingPlayerMon >= remainingEnemyMon ? enemy : player;
     }
 

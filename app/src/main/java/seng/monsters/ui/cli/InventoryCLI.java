@@ -74,7 +74,7 @@ public final class InventoryCLI extends TestableCLI {
     private void selectItem(int scannerInput) throws IllegalArgumentException {
         try {
             if ((scannerInput > 0) && (scannerInput < 4)) {
-                final var item = Item.all().get(scannerInput - 1);
+                final Item item = Item.all().get(scannerInput - 1);
                 useItemInterface(item, false);
                 inventoryInterface();
             } else if (scannerInput != 0) {

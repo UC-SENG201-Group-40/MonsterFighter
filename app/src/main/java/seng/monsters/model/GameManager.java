@@ -7,6 +7,7 @@
 //
 package seng.monsters.model;
 
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -205,7 +206,7 @@ public class GameManager {
      * @return true if the player's party is all fainted and gold is less than the price of revive
      */
     public boolean hasNoPossibilityForRevive() {
-        final var hasNoSupply = inventory.getItemNumber(new Item.Revive()) <= 0 &&
+        final boolean hasNoSupply = inventory.getItemNumber(new Item.Revive()) <= 0 &&
             inventory.getItemNumber(new Item.FullRestore()) <= 0;
         return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice() && hasNoSupply;
     }
@@ -230,7 +231,7 @@ public class GameManager {
      */
     public boolean nextDay() {
         setCurrentDay(getCurrentDay() + 1);
-        final var hasEnded = getCurrentDay() > getMaxDays();
+        final boolean hasEnded = getCurrentDay() > getMaxDays();
 
         if (!hasEnded)
             triggerNightEvents();
@@ -263,7 +264,7 @@ public class GameManager {
      * Changes the environment to a randomly selected environment
      */
     protected void changeEnvironment() {
-        final var newEnvironment = Environment.generateRandomEnvironment();
+        final Environment newEnvironment = Environment.generateRandomEnvironment();
         setEnvironment(newEnvironment);
     }
 
@@ -275,7 +276,7 @@ public class GameManager {
      */
     public Optional<Monster> partyMonstersLeave() {
         for (int i = 0; i < trainer.getParty().size(); i++) {
-            final var mon = trainer.getParty().get(i);
+            final Monster mon = trainer.getParty().get(i);
             if (mon.shouldLeave()) {
                 trainer.remove(i);
                 return Optional.of(mon);
@@ -288,9 +289,9 @@ public class GameManager {
      * Heals each party monster by their heal rate if they are not fainted.
      */
     protected void partyMonstersHeal() {
-        for (final var mon : trainer.getParty()) {
+        for (final Monster mon : trainer.getParty()) {
             if (!mon.isFainted()) {
-                final var monsterHealRate = mon.healRate();
+                final int monsterHealRate = mon.healRate();
                 mon.healSelf(monsterHealRate);
             }
         }
@@ -302,7 +303,7 @@ public class GameManager {
      * @return a list of any monsters that levelled up.
      */
     public List<Monster> partyMonstersLevelUp() {
-        final var lastLevelledUp = trainer
+        final List<Monster> lastLevelledUp = trainer
             .getParty()
             .stream()
             .filter(mon -> !mon.isFainted())
@@ -322,12 +323,12 @@ public class GameManager {
      * @return the monster that is joining the party, or null otherwise.
      */
     public Optional<Monster> monsterJoinsParty() {
-        final var chance = 0.05 * (0.5 * getDifficulty() + 0.5) * (4 - getTrainer().getParty().size());
-        final var isLucky = Math.random() <= chance;
+        final double chance = 0.05 * (0.5 * getDifficulty() + 0.5) * (4 - getTrainer().getParty().size());
+        final boolean isLucky = Math.random() <= chance;
         if (!isLucky)
             return Optional.empty();
         try {
-            final var joining = shop.randomMonster();
+            final Monster joining = shop.randomMonster();
             trainer.add(joining);
             return Optional.of(joining);
         } catch (Trainer.PartyFullException err) {
@@ -339,18 +340,18 @@ public class GameManager {
      * Update the available battles for the day
      */
     protected void updateAvailableBattles() {
-        final var rng = new Random();
-        final var names = getRandomTrainerNames();
-        final var amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
-        final var amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final Random rng = new Random();
+        final List<String> names = getRandomTrainerNames();
+        final int amountEnemies = Math.max(3, Math.min(5, 5 * getDifficulty() * getCurrentDay() / getMaxDays()));
+        final int amountMonster = Math.max(1, Math.min(4, 4 * getDifficulty() * getCurrentDay() / getMaxDays()));
 
         availableBattles.clear();
 
-        for (var i = 0; i < amountEnemies; i++) {
-            final var index = rng.nextInt(names.size());
-            final var name = names.get(index);
-            final var enemy = new Trainer(name);
-            for (var j = 0; j < amountMonster; j++) {
+        for (int i = 0; i < amountEnemies; i++) {
+            final int index = rng.nextInt(names.size());
+            final String name = names.get(index);
+            final Trainer enemy = new Trainer(name);
+            for (int j = 0; j < amountMonster; j++) {
                 enemy.add(shop.randomMonster());
             }
             names.remove(index);
@@ -369,7 +370,7 @@ public class GameManager {
      * @throws IndexOutOfBoundsException If the index given does not point to a valid enemy
      */
     public BattleManager prepareBattle(BattleManager.UI ui, int index) throws IndexOutOfBoundsException {
-        final var enemy = getAvailableBattles().get(index);
+        final Trainer enemy = getAvailableBattles().get(index);
         return new BattleManager(ui, getTrainer(), enemy, getEnvironment());
     }
 
@@ -392,7 +393,7 @@ public class GameManager {
         if (monsterIndex < 0 || monsterIndex >= trainer.getParty().size())
             throw new Trainer.MonsterDoesNotExistException();
 
-        final var monster = trainer.getParty().get(monsterIndex);
+        final Monster monster = trainer.getParty().get(monsterIndex);
         if (monster == null)
             throw new Trainer.MonsterDoesNotExistException();
 
@@ -473,7 +474,7 @@ public class GameManager {
         if (purchasable instanceof Item item) {
             inventory.remove(item);
         } else if (purchasable instanceof Monster monster) {
-            var i = trainer.getParty().indexOf(monster);
+            int i = trainer.getParty().indexOf(monster);
             if (i == -1)
                 throw new Trainer.MonsterDoesNotExistException();
             trainer.remove(i);
@@ -553,12 +554,11 @@ public class GameManager {
      * @return A Map of index to role name pair
      */
     private List<String> getRandomTrainerNames() {
-        final var file = Objects.requireNonNull(GameManager.class.getResourceAsStream("/txt/roles.txt"));
-        final var scanner = new Scanner(file);
-        final var res = new ArrayList<String>(56);
-        var i = 0;
+        final InputStream file = Objects.requireNonNull(GameManager.class.getResourceAsStream("/txt/roles.txt"));
+        final Scanner scanner = new Scanner(file);
+        final ArrayList<String> res = new ArrayList<String>(56);
         while (scanner.hasNextLine()) {
-            final var name = scanner.nextLine();
+            final String name = scanner.nextLine();
             if (name.isBlank())
                 continue;
             res.add(name);

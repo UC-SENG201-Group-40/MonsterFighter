@@ -44,7 +44,7 @@ public final class Inventory {
      * @throws Item.NoEffectException If the item produce no effect
      */
     public void use(Item item, Monster mon) throws ItemNotExistException, Item.NoEffectException {
-        final var count = items.getOrDefault(item, 0);
+        final int count = items.getOrDefault(item, 0);
         if (count <= 0)
             throw new ItemNotExistException();
         item.applyTo(mon);
@@ -59,7 +59,7 @@ public final class Inventory {
      * @throws ItemNotExistException if the inventory holds 0 of the item
      */
     public void remove(Item item) throws ItemNotExistException {
-        final var count = items.getOrDefault(item, 0);
+        final int count = items.getOrDefault(item, 0);
         if (count <= 0)
             throw new ItemNotExistException();
         items.put(item, count - 1);

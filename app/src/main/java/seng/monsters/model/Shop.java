@@ -56,12 +56,12 @@ public final class Shop {
      * @throws InsufficientFundsException If the buyer does not have enough gold
      */
     public void buyPurchasable(Purchasable purchasable) throws NotInStockException, InsufficientFundsException {
-        final var funds = manager.getGold();
+        final int funds = manager.getGold();
         if (funds < purchasable.buyPrice())
             throw new InsufficientFundsException();
 
         if (purchasable instanceof Item item) {
-            final var stock = itemStock
+            final int stock = itemStock
                 .getOrDefault(item, 0);
 
             if (stock <= 0)
@@ -97,9 +97,9 @@ public final class Shop {
      * @return A monster
      */
     public Monster randomMonster() {
-        final var rng = new Random();
-        final var range = rng.nextInt(6 * manager.getDifficulty() + 1) - 3 * manager.getDifficulty();
-        final var level = Math.max(1, manager.getCurrentDay() + range);
+        final Random rng = new Random();
+        final int range = rng.nextInt(6 * manager.getDifficulty() + 1) - 3 * manager.getDifficulty();
+        final int level = Math.max(1, manager.getCurrentDay() + range);
         final List<Monster> allMonsters = Monster.all(level);
         return allMonsters.get(rng.nextInt(allMonsters.size()));
     }
@@ -110,13 +110,13 @@ public final class Shop {
      * @return A map mapping all the item to a count
      */
     public Map<Item, Integer> randomItemStock() {
-        final var rng = new Random();
+        final Random rng = new Random();
         final List<Item> allItems = List.of(
             new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
-                final var count = rng.nextInt(manager.getCurrentDay() * manager.getDifficulty()) + 1;
+                final int count = rng.nextInt(manager.getCurrentDay() * manager.getDifficulty()) + 1;
                 map.put(item, count);
             });
         return map;
@@ -128,8 +128,8 @@ public final class Shop {
     public void restock() {
         monsterStock.clear();
 
-        for (var i = 0; i < 3 * manager.getDifficulty(); i++) {
-            final var mon = randomMonster();
+        for (int i = 0; i < 3 * manager.getDifficulty(); i++) {
+            final Monster mon = randomMonster();
             monsterStock.put(mon.getId(), mon);
         }
 
