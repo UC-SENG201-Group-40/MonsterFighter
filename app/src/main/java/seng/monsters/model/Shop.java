@@ -10,38 +10,39 @@ package seng.monsters.model;
 import java.util.*;
 
 /**
- * A shop where you can buy or sell purchasable
+ * A shop where you can buy or sell purchasable.
  */
 public final class Shop {
     /**
-     * Signals that the desired purchasable is not available in the Shop at this current state
+     * Signals that the desired purchasable is not available in the Shop at this current state.
      */
     public static final class NotInStockException extends IndexOutOfBoundsException {
     }
 
     /**
-     * Signals that the buyer does not have sufficient fund to make the purchase
+     * Signals that the buyer does not have sufficient funds to make the purchase.
      */
     public static final class InsufficientFundsException extends IndexOutOfBoundsException {
     }
 
     /**
-     * The item stock in a form of counters
+     * The item stock in a form of counters.
      */
     private final Map<Item, Integer> itemStock = new HashMap<>();
+
     /**
-     * The monsters available to purchase
+     * The monsters available to purchase.
      */
     private final Map<UUID, Monster> monsterStock = new HashMap<>();
 
     /**
-     * The game managger
+     * The game manager.
      */
     private final GameManager manager;
 
     /**
-     * Creates an empty shop for the day
-     * @param manager The game manager to get all the game properties
+     * Creates an empty shop for the day.
+     * @param manager The game manager to get all the game properties.
      */
     public Shop(GameManager manager) {
         this.manager = manager;
@@ -49,29 +50,36 @@ public final class Shop {
 
 
     /**
-     * Buy a purchasable from the shop
+     * Buy a purchasable from the shop.
      *
-     * @param purchasable The purchasable trying to be bought
-     * @throws NotInStockException        If the item is not available
-     * @throws InsufficientFundsException If the buyer does not have enough gold
+     * @param purchasable The purchasable trying to be bought.
+     * @throws NotInStockException        If the purchasable is not available.
+     * @throws InsufficientFundsException If the buyer does not have enough gold.
      */
     public void buyPurchasable(Purchasable purchasable) throws NotInStockException, InsufficientFundsException {
         final int funds = manager.getGold();
         if (funds < purchasable.buyPrice())
+            // Error if not enough gold to buy item
             throw new InsufficientFundsException();
 
+        // Item is being purchased
         if (purchasable instanceof Item item) {
             final int stock = itemStock
                 .getOrDefault(item, 0);
 
             if (stock <= 0)
+                // Error if the shop has no stock of that item
                 throw new NotInStockException();
 
             itemStock.put(item, stock - 1);
+
+        // Monster is being purchased
         } else if (purchasable instanceof Monster monster) {
             if (manager.getTrainer().getParty().size() >= 4)
+                // Error if party is full
                 throw new Trainer.PartyFullException("Cannot add more than 4 monster");
             if (!monsterStock.containsKey(monster.getId()))
+                // Error if monster is no longer in shop stock
                 throw new NotInStockException();
 
             monsterStock.remove(monster.getId());
@@ -83,18 +91,18 @@ public final class Shop {
     }
 
     /**
-     * Sell a purchasable and get gold
+     * Sell a purchasable and get gold.
      *
-     * @param purchasable The item to be sold
+     * @param purchasable The item to be sold.
      */
     public void sellPurchasable(Purchasable purchasable) {
         manager.setGold(manager.getGold() + purchasable.sellPrice());
     }
 
     /**
-     * Create a random monster given the context
+     * Create a random monster given the context.
      *
-     * @return A monster
+     * @return A monster.
      */
     public Monster randomMonster() {
         final Random rng = new Random();
@@ -105,14 +113,18 @@ public final class Shop {
     }
 
     /**
-     * Create a new stock of the items
+     * Create a new stock of the items.
      *
-     * @return A map mapping all the item to a count
+     * @return A map mapping all the item to a count.
      */
     public Map<Item, Integer> randomItemStock() {
         final Random rng = new Random();
+
+        // A list of all the different items
         final List<Item> allItems = List.of(
             new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
+
+        // A new hashmapping of the items to their stock as an int
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
@@ -123,7 +135,7 @@ public final class Shop {
     }
 
     /**
-     * Refresh all item and monster sold
+     * Refresh all item and monster sold.
      */
     public void restock() {
         monsterStock.clear();
@@ -138,18 +150,18 @@ public final class Shop {
     }
 
     /**
-     * Get the monster in stock
+     * Get the monster in stock.
      *
-     * @return The list all monster in stock
+     * @return The list all monster in stock.
      */
     public List<Monster> getMonsterStock() {
         return monsterStock.values().stream().toList();
     }
 
     /**
-     * Get the items and its count
+     * Get the items and its count.
      *
-     * @return The list all item in stock
+     * @return The list all item in stock.
      */
     public List<Map.Entry<Item, Integer>> getItemsStock() {
         return itemStock.entrySet().stream().filter(entry -> entry.getValue() > 0).toList();

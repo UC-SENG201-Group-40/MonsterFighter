@@ -15,30 +15,32 @@ import java.util.UUID;
  */
 public abstract class Monster implements Purchasable {
     /**
-     * A Quacker duck (Jack of all trades)
+     * A Quacker duck (Jack of all trades).
      */
     public static final class Quacker extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Quacker(int level) {
             super("Quacker", 80, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Quacker(String name, int level) {
             super(name, 80, level);
         }
 
         @Override
-        public String description() { return "A Quacker Duck. Jack of all trades."; }
+        public String description() {
+            return "A Quacker Duck. Jack of all trades.";
+        }
 
         @Override
         public int baseDamage() {
@@ -73,30 +75,32 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * A Raver crab (Damage sponge, doesn't fight back well)
+     * A Raver crab (Damage sponge, doesn't fight back well).
      */
     public static final class Raver extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Raver(int level) {
             super("Raver", 200, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Raver(String name, int level) {
             super(name, 200, level);
         }
 
         @Override
-        public String description() { return "A Raver crab. Weak, but tanky."; }
+        public String description() {
+            return "A Raver crab. Weak, but tanky.";
+        }
 
         @Override
         public int baseDamage() {
@@ -135,26 +139,28 @@ public abstract class Monster implements Purchasable {
      */
     public static final class Tree extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Tree(int level) {
             super("Tree", 60, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Tree(String name, int level) {
             super(name, 60, level);
         }
 
         @Override
-        public String description() { return "A tree... that's it. Healthy."; }
+        public String description() {
+            return "A tree... that's it. Healthy.";
+        }
 
         @Override
         public int baseDamage() {
@@ -197,26 +203,28 @@ public abstract class Monster implements Purchasable {
      */
     public static final class Eel extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Eel(int level) {
             super("Eel", 60, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Eel(String name, int level) {
             super(name, 60, level);
         }
 
         @Override
-        public String description() { return "A parasitic eel. Slow but steals health during battle."; }
+        public String description() {
+            return "A parasitic eel. Slow but steals health during battle.";
+        }
 
         @Override
         public int baseDamage() {
@@ -235,6 +243,7 @@ public abstract class Monster implements Purchasable {
 
         @Override
         public int damage(Environment env) {
+            // Calls healSelf method for life steal
             final int res = super.damage(env);
             healSelf(res / 5);
             return res;
@@ -261,26 +270,28 @@ public abstract class Monster implements Purchasable {
      */
     public static final class Doger extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Doger(int level) {
             super("Doger", 40, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Doger(String name, int level) {
             super(name, 40, level);
         }
 
         @Override
-        public String description() { return "A very speedy boy. Glass cannon."; }
+        public String description() {
+            return "A very speedy boy. Glass cannon.";
+        }
 
         @Override
         public int baseDamage() {
@@ -318,26 +329,28 @@ public abstract class Monster implements Purchasable {
      */
     public static final class Shark extends Monster {
         /**
-         * Create a new monster
+         * Create a new monster.
          *
-         * @param level The current level
+         * @param level The current level as an int.
          */
         public Shark(int level) {
             super("Shark", 50, level);
         }
 
         /**
-         * Create a new monster
+         * Create a new monster with a name.
          *
-         * @param name  The name of the monster
-         * @param level The current level
+         * @param name  The name of the monster as a string.
+         * @param level The current level as an int.
          */
         public Shark(String name, int level) {
             super(name, 50, level);
         }
 
         @Override
-        public String description() { return "Definitely a shark. Jacked, but that's it."; }
+        public String description() {
+            return "Definitely a shark. Jacked, but that's it.";
+        }
 
         @Override
         public int baseDamage() {
@@ -371,33 +384,36 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Unique id
+     * Unique id of the monster.
      */
     private final UUID id = UUID.randomUUID();
 
     /**
-     * The name of the monster
+     * The name of the monster.
      */
     private String name;
+
     /**
-     * The current hp of the monster
+     * The current hp of the monster.
      */
     private int currentHp;
+
     /**
-     * The level of this monster, that increase all others stats
+     * The level of this monster, which increases all others stats.
      */
     private int level;
+
     /**
-     * The initial max hp at the lowest level
+     * The initial max hp at the lowest level.
      */
     private int baseHp;
 
     /**
-     * Create a new monster
+     * Create a new monster.
      *
-     * @param name   The name of the monster
-     * @param baseHp The base hp
-     * @param level  The current level
+     * @param name   The name of the monster as a string.
+     * @param baseHp The base hp as an int.
+     * @param level  The current level as an int.
      */
     public Monster(String name, int baseHp, int level) {
         this.name = name;
@@ -407,78 +423,79 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * The base damage output of this monster on level 1
+     * The base damage output of this monster on level 1.
      *
-     * @return The damage in integer
+     * @return The damage as an integer.
      */
     public abstract int baseDamage();
 
     /**
-     * The speed used to determine the which monster attack first
+     * The speed used to determine the which monster attack first.
      *
-     * @return The speed in integer
+     * @return The speed as an integer.
      */
     public abstract int speed();
 
     /**
-     * The amount of health point healed for this monster
+     * The amount of health point healed overnight for this monster.
      *
-     * @return The amount in integer
+     * @return The amount as an integer.
      */
     public abstract int healRate();
 
     /**
-     * The preferred environment
+     * The preferred environment which gives an attack bonus.
      *
-     * @return The environment enum
+     * @return The environment enum.
      */
     public abstract Environment idealEnvironment();
 
     /**
-     * The randomized chance for the monster to level up overnight
+     * The randomized chance for the monster to level up overnight.
      *
-     * @return A boolean for whether the monster should level up
+     * @return A boolean for whether the monster should level up.
      */
     public abstract boolean shouldLevelUp();
 
     /**
-     * The randomized chance for the monster to leave
+     * The randomized chance for the monster to leave overnight.
      *
-     * @return A boolean for whether the monster should leave
+     * @return A boolean for whether the monster should leave.
      */
     public abstract boolean shouldLeave();
 
     /**
-     * The type of monster
+     * The type of monster.
      *
-     * @return The type of monster as a string
+     * @return The type of monster as a string.
      */
     public String monsterType() {
         return this.getClass().getSimpleName();
     }
 
     /**
-     * The multiplier computed by level
+     * The multiplier computed by level, which dictates the strength of the other stats.
      *
-     * @return A level multiplier double
+     * @return A level multiplier double.
      */
     private double multiplier() {
         return Math.pow(1.1, this.level - 1);
     }
 
     /**
-     * Increase the level of the monster and all its properties
+     * Increase the level of the monster.
      */
     public void levelUp() {
+        // Calculate current hp percentage to maintain the sam percentage after level up.
         final int hpPercentage = this.currentHp * 100 / maxHp();
         level += 1;
         this.currentHp = hpPercentage * maxHp() / 100;
     }
 
     /**
-     * Heal self with a certain amount
+     * Heal self with a certain amount.
      *
-     * @param amount The amount healed
+     * @param amount The amount healed as an int.
      */
     public void healSelf(int amount) {
         if (amount < 0)
@@ -487,9 +504,9 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Damage self with a certain amount
+     * Damage self with a certain amount.
      *
-     * @param amount The amount damaged
+     * @param amount The amount damaged as an int.
      */
     public void takeDamage(int amount) {
         if (amount < 0)
@@ -498,20 +515,21 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Set the name of the monster
+     * Set the name of the monster.
      *
-     * @param name The new name
+     * @param name The new name as a string.
      */
     public void setName(String name) throws IllegalArgumentException {
         if ((name.length() < 3) || (name.length() > 15) || (!name.matches("[a-zA-Z]+")))
+            // Error if name not valid.
             throw new IllegalArgumentException();
         this.name = name;
     }
 
     /**
-     * Set the base hp of the monster
+     * Set the base hp of the monster.
      *
-     * @param baseHp The new base hp
+     * @param baseHp The new base hp as an int.
      */
     public void setBaseHp(int baseHp) {
         if (baseHp < 0)
@@ -524,18 +542,18 @@ public abstract class Monster implements Purchasable {
 
 
     /**
-     * The maximum hp for this level
+     * Computes and returns the maximum hp for this level.
      *
-     * @return The max hp in integer
+     * @return The max hp as an int.
      */
     public int maxHp() {
         return (int) Math.min(Integer.MAX_VALUE - 1, this.baseHp * multiplier());
     }
 
     /**
-     * The produce the damage given the proper environment
+     * Computes and returns the damage scaled by level.
      *
-     * @return The damage taking level
+     * @return The scaled damage as an int.
      */
     public int scaledDamage() {
         final double res = Math.min(
@@ -546,10 +564,10 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * The produce the damage given the proper environment
+     * Computes and returns the damage depending on what environment the monster is in.
      *
-     * @param env The environment of the battlefield
-     * @return The damage taking account the environment boost
+     * @param env The environment enum of the battlefield.
+     * @return The damage taking account the environment boost as an int.
      */
     public int damage(Environment env) {
         final double envMultiplier = env == idealEnvironment() ? 1.5 : 1;
@@ -561,19 +579,21 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Signal if the monster is fainted and needed to be revived
+     * Signal if the monster is fainted and needs to be revived.
      *
-     * @return A boolean signalling whether monster is fainted
+     * @return A boolean signalling whether monster is fainted.
      */
     public boolean isFainted() {
         return currentHp <= 0;
     }
 
     /**
-     * The cost to buy this monster
+     * Computes and returns the cost to buy this monster.
+     * Based on monster stats.
      *
-     * @return The integer representing the price
+     * @return The integer representing the price.
      */
+    @Override
     public int buyPrice() {
         final double basePrice = Math.min(
             Integer.MAX_VALUE - 1,
@@ -583,62 +603,64 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * The cost to sell this monster
+     * Computes and returns the cost to sell this monster.
      *
-     * @return The integer representing the price
+     * @return The integer representing the price.
      */
+    @Override
     public int sellPrice() {
         return buyPrice() / 2;
     }
 
     /**
-     * Get the current level
+     * A description of the monster and a brief summary of its properties.
      *
-     * @return The level of the monster
+     * @return The description of the monster.
+     */
+    @Override
+    public abstract String description();
+
+    /**
+     * Get the current level.
+     *
+     * @return The level of the monster.
      */
     public int getLevel() {
         return level;
     }
 
     /**
-     * Get the current name
+     * Get the current name.
      *
-     * @return The name of the monster
+     * @return The name of the monster.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * A description of the monster and a brief summary of its properties
+     * Get the current hp.
      *
-     * @return The description of the monster.
-     */
-    public abstract String description();
-
-    /**
-     * Get the current hp
-     *
-     * @return The current hp of the monster
+     * @return The current hp of the monster.
      */
     public int getCurrentHp() {
         return currentHp;
     }
 
     /**
-     * Get the id
+     * Get the id.
      *
-     * @return The id of the monster
+     * @return The id of the monster.
      */
     public UUID getId() {
         return id;
     }
 
     /**
-     * Compared the monster with another
+     * Compared the monster with another monster.
      *
-     * @param other The other to compared
-     * @return A boolean whether the monster is the same
+     * @param other The other monster to compare with.
+     * @return A boolean whether the monster is the same.
      */
     public boolean equals(Object other) {
         if (other instanceof Monster mon)
@@ -647,9 +669,9 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Gives a combination of name and id to create a unique identifier that still recognizable by name
+     * Gives a combination of name and id to create a unique identifier that still recognizable by name.
      *
-     * @return A string of name and id combined
+     * @return A string of name and id combined.
      */
     public String uniqueName() {
         return String.format("%s (%s)",
@@ -659,10 +681,10 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
-     * Get all types of monster with a specific level
+     * Get all types of monster with a specific level.
      *
-     * @param level The level all monster is set to
-     * @return A list of unique monsters set to the level given
+     * @param level The level all monster is set to as an int.
+     * @return A list of unique monsters set to the level given.
      */
     public static List<Monster> all(int level) {
         return List.of(

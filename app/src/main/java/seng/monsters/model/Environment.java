@@ -12,6 +12,7 @@ import java.util.Random;
 
 /**
  * Environment about the field of battle
+ * Monsters in their environment gain an attack bonus
  */
 public enum Environment {
     /**
