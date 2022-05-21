@@ -95,7 +95,7 @@ public class MonsterShopScreen extends Screen {
         frame.getContentPane().add(buyButton);
 
         JLabel errorLabel = new JLabel();
-        errorLabel.setBounds(8, 100, 222, 30);
+        errorLabel.setBounds(4, 100, 230, 30);
         errorLabel.setVisible(false);
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));

@@ -47,12 +47,12 @@ public final class SelectShopPopUp extends PopUp {
 
         JButton itemShopButton = new JButton("Item Shop");
         itemShopButton.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-        itemShopButton.setBounds((PopUp.WIDTH - 200) / 2, 160, 200, 60);
+        itemShopButton.setBounds((PopUp.WIDTH - 250) / 2, 160, 250, 60);
         frame.getContentPane().add(itemShopButton);
 
         JButton monsterShopButton = new JButton("Monster Shop");
         monsterShopButton.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-        monsterShopButton.setBounds((PopUp.WIDTH - 200) / 2, 280, 200, 60);
+        monsterShopButton.setBounds((PopUp.WIDTH - 250) / 2, 280, 250, 60);
         monsterShopButton.setEnabled(!gameManager.getShop().getMonsterStock().isEmpty());
         frame.getContentPane().add(monsterShopButton);
 

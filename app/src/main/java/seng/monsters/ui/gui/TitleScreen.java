@@ -32,7 +32,7 @@ public class TitleScreen extends Screen {
         JLabel subtitleLabel = new JLabel("Made by David Liang and Vincent");
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
-        subtitleLabel.setBounds(305, 185, 208, 16);
+        subtitleLabel.setBounds(289, 185, 240, 16);
         frame.getContentPane().add(subtitleLabel);
 
         JLabel namePromptLabel = new JLabel("Choose a name:");

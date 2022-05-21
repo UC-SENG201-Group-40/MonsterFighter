@@ -39,7 +39,7 @@ public class SettingsScreen extends Screen {
         frame.getContentPane().add(difficultyPromptLabel);
 
         JLabel maxDaysPromptLabel = new JLabel("Choose number of days to play:");
-        maxDaysPromptLabel.setBounds(145, 193, 220, 16);
+        maxDaysPromptLabel.setBounds(145, 193, 230, 16);
         frame.getContentPane().add(maxDaysPromptLabel);
 
         JLabel difficultyLabel = new JLabel("Normal");

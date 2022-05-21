@@ -57,20 +57,20 @@ public class PartyScreen extends Screen {
         frame.getContentPane().add(backToMainMenu);
 
         JLabel monsterActionLabel = new JLabel();
-        monsterActionLabel.setBounds(66, 46 + DetailedMonsterPanel.HEIGHT, DetailedMonsterPanel.WIDTH, 20);
+        monsterActionLabel.setBounds(66, 51 + DetailedMonsterPanel.HEIGHT, DetailedMonsterPanel.WIDTH, 20);
         monsterActionLabel.setVisible(false);
         monsterActionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         frame.getContentPane().add(monsterActionLabel);
 
         JLabel errorLabel = new JLabel();
-        errorLabel.setBounds(66, 46 + DetailedMonsterPanel.HEIGHT, DetailedMonsterPanel.WIDTH, 20);
+        errorLabel.setBounds(66, 51 + DetailedMonsterPanel.HEIGHT, DetailedMonsterPanel.WIDTH, 20);
         errorLabel.setVisible(false);
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
         frame.getContentPane().add(errorLabel);
 
         PartyPanel partyPanel = new PartyPanel(trainer);
-        partyPanel.setBounds(476, 68);
+        partyPanel.setBounds(436, 68);
         partyPanel.applyToFrame(frame);
 
         DetailedMonsterPanel monsterPanel = new DetailedMonsterPanel(chosenMonster.get(), false);

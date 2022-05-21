@@ -118,13 +118,13 @@ public final class PartySlotPanel {
         Screen.imageIconFromResource(String.format("/images/small/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);
 
-        nameButton.setText(String.format("%s (%s)", monster.getName(), monster.monsterType()));
+        nameButton.setText(String.format("%s", monster.getName()));
 
         levelLabel.setText(String.format("Lv. %d", monster.getLevel()));
 
         hpLabel.setText(String.format("%d/%d", monster.getCurrentHp(), monster.maxHp()));
 
-        currHpPanel.setBounds(55, 34, 220 * monster.getCurrentHp() / monster.maxHp(), 10);
+        currHpPanel.setBounds(55, 34, 260 * monster.getCurrentHp() / monster.maxHp(), 10);
     }
 
     /**
@@ -150,14 +150,15 @@ public final class PartySlotPanel {
         panel.add(iconLabel);
 
         nameButton = new JButton();
-        nameButton.setText(String.format("%s (%s)", monster.getName(), monster.monsterType()));
-        nameButton.setBounds(54, 10, 154, 16);
+        nameButton.setText(String.format("%s", monster.getName()));
+        nameButton.setFont(new Font("Lucida Grande", Font.BOLD, 12));
+        nameButton.setBounds(54, 10, 194, 16);
         panel.add(nameButton);
 
         levelLabel = new JLabel();
         levelLabel.setText(String.format("Lv. %d", monster.getLevel()));
         levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-        levelLabel.setBounds(214, 10, 61, 16);
+        levelLabel.setBounds(254, 10, 61, 16);
         panel.add(levelLabel);
 
         hpLabel = new JLabel();
@@ -169,12 +170,12 @@ public final class PartySlotPanel {
 
         currHpPanel = new JPanel();
         currHpPanel.setBackground(Color.GREEN);
-        currHpPanel.setBounds(55, 34, 220 * monster.getCurrentHp() / monster.maxHp(), 10);
+        currHpPanel.setBounds(55, 34, 260 * monster.getCurrentHp() / monster.maxHp(), 10);
         panel.add(currHpPanel);
 
         JPanel maxHpPanel = new JPanel();
         maxHpPanel.setBackground(Color.RED);
-        maxHpPanel.setBounds(55, 34, 220, 10);
+        maxHpPanel.setBounds(55, 34, 260, 10);
         panel.add(maxHpPanel);
 
     }
@@ -182,7 +183,7 @@ public final class PartySlotPanel {
     /**
      * The width of the panel
      */
-    public static final int WIDTH = 287;
+    public static final int WIDTH = 327;
 
     /**
      * The height of the panel

@@ -52,7 +52,7 @@ public class AvailableBattlesScreen extends Screen {
         frame.getContentPane().add(battlesPrompt);
 
         PartyPanel panel = new PartyPanel(selectedTrainer.get());
-        panel.setBounds(439, 80);
+        panel.setBounds(419, 80);
         panel.applyToFrame(frame);
 
         JButton battleButton = new JButton("Fight");
