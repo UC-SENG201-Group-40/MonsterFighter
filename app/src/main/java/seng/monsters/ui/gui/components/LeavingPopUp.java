@@ -44,7 +44,7 @@ public class LeavingPopUp extends PopUp {
         frame.getContentPane().add(titleLabel);
 
         // The icon for the monster leaving
-        JLabel iconLabel = new JLabel(monster.monsterType());
+        JLabel iconLabel = new JLabel();
         Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds((PopUp.WIDTH - 146) / 2, 160, 146, 171);
