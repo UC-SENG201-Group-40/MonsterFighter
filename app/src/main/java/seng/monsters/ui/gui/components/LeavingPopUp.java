@@ -43,14 +43,14 @@ public class LeavingPopUp extends PopUp {
         titleLabel.setBounds((PopUp.WIDTH - 600) / 2, 52, 600, 39);
         frame.getContentPane().add(titleLabel);
 
-        // The icon for the monster joining
+        // The icon for the monster leaving
         JLabel iconLabel = new JLabel(monster.monsterType());
         Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds((PopUp.WIDTH - 146) / 2, 160, 146, 171);
         frame.getContentPane().add(iconLabel);
 
-        // The button to apply the name change and trigger the onEnd callback
+        // The button to close the popup and continue the game
         JButton continueButton = new JButton("Continue");
         continueButton.setBounds(351, 400, 117, 29);
         frame.getContentPane().add(continueButton);

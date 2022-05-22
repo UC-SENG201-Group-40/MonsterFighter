@@ -6,7 +6,6 @@ import seng.monsters.ui.gui.Screen;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 /**
  * A panel for the individual slot for the party
@@ -20,7 +19,7 @@ public final class PartySlotPanel {
     /**
      * The panel itself
      */
-    private JPanel panel;
+    private JPanel monsterPanel;
 
     /**
      * The label for the small icon
@@ -63,7 +62,7 @@ public final class PartySlotPanel {
      * @param isVisible A boolean if the panel should be visible
      */
     public void setVisible(boolean isVisible) {
-        panel.setVisible(isVisible);
+        monsterPanel.setVisible(isVisible);
         if (isVisible)
             refresh();
     }
@@ -76,8 +75,8 @@ public final class PartySlotPanel {
      * @param y The vertical location
      */
     public void setBounds(int x, int y) {
-        panel.setBounds(x, y, WIDTH, HEIGHT);
-        panel.setLayout(null);
+        monsterPanel.setBounds(x, y, WIDTH, HEIGHT);
+        monsterPanel.setLayout(null);
     }
 
     /**
@@ -86,7 +85,7 @@ public final class PartySlotPanel {
      * @param frame The JFrame to be displayed into (<b>Must use absolute positioning</b>)
      */
     public void applyToFrame(JFrame frame) {
-        frame.getContentPane().add(panel);
+        frame.getContentPane().add(monsterPanel);
     }
 
 
@@ -96,7 +95,7 @@ public final class PartySlotPanel {
      * @param parentPanel The panel to be displayed into (<b>Must use absolute positioning</b>)
      */
     public void applyToPanel(JPanel parentPanel) {
-        parentPanel.add(panel);
+        parentPanel.add(monsterPanel);
     }
 
     /**
@@ -139,44 +138,49 @@ public final class PartySlotPanel {
      * Initialize the UI element for this panel
      */
     private void render() {
-        panel = new JPanel();
-        panel.setBackground(new Color(255, 250, 250));
-        panel.setLayout(null);
+        // Panel for the party slot
+        monsterPanel = new JPanel();
+        monsterPanel.setBackground(new Color(255, 250, 250));
+        monsterPanel.setLayout(null);
 
+        // Label for the picture of the monster
         iconLabel = new JLabel("");
         Screen.imageIconFromResource(String.format("/images/small/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);
         iconLabel.setBounds(6, 10, 37, 39);
-        panel.add(iconLabel);
+        monsterPanel.add(iconLabel);
 
+        // Button to select this specific monster, if required
         nameButton = new JButton();
         nameButton.setText(String.format("%s", monster.getName()));
         nameButton.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         nameButton.setBounds(54, 10, 194, 16);
-        panel.add(nameButton);
+        monsterPanel.add(nameButton);
 
         levelLabel = new JLabel();
         levelLabel.setText(String.format("Lv. %d", monster.getLevel()));
         levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
         levelLabel.setBounds(254, 10, 61, 16);
-        panel.add(levelLabel);
+        monsterPanel.add(levelLabel);
 
         hpLabel = new JLabel();
         hpLabel.setText(String.format("%d/%d", monster.getCurrentHp(), monster.maxHp()));
         hpLabel.setHorizontalAlignment(SwingConstants.LEADING);
         hpLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
         hpLabel.setBounds(55, 34, 220, 11);
-        panel.add(hpLabel);
+        monsterPanel.add(hpLabel);
 
+        // Panel displaying the current hp bar
         currHpPanel = new JPanel();
         currHpPanel.setBackground(Color.GREEN);
         currHpPanel.setBounds(55, 34, 260 * monster.getCurrentHp() / monster.maxHp(), 10);
-        panel.add(currHpPanel);
+        monsterPanel.add(currHpPanel);
 
+        // Panel display the maximum hp bar
         JPanel maxHpPanel = new JPanel();
         maxHpPanel.setBackground(Color.RED);
         maxHpPanel.setBounds(55, 34, 260, 10);
-        panel.add(maxHpPanel);
+        monsterPanel.add(maxHpPanel);
 
     }
 

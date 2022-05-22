@@ -23,10 +23,10 @@ public abstract class Item implements Purchasable {
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
             if (mon.isFainted())
-                // Error if monster is fainted
+                // Error if monster is fainted.
                 throw new NoEffectException("The monster is dead");
             if (mon.getCurrentHp() == mon.maxHp())
-                // Error if monster as max Hp
+                // Error if monster has max Hp.
                 throw new NoEffectException("The monster hp is full");
             mon.healSelf(50);
         }
@@ -55,7 +55,7 @@ public abstract class Item implements Purchasable {
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
             if (!mon.isFainted())
-                // Error if monster applying to is not fainted
+                // Error if monster applying to is not fainted.
                 throw new NoEffectException("The monster is not dead");
             mon.healSelf(mon.maxHp() / 4);
         }

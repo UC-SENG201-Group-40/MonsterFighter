@@ -47,7 +47,7 @@ public class GameManager {
     /**
      * The player trainer.
      */
-    private final Trainer trainer;
+    private final Trainer player;
 
     /**
      * The player's inventory.
@@ -69,25 +69,25 @@ public class GameManager {
      * Creates a bare-bone GameManager that still requires additional setup.
      */
     public GameManager() {
-        trainer = new Trainer("Anonymous");
+        player = new Trainer("Anonymous");
         inventory = new Inventory();
         shop = new Shop(this);
     }
 
     /**
      * Creates a fully ready and functional GameManager that requires no additional setup.
-     * @param gold The starting amount of gold as an int.
-     * @param currentDay The current day as an int.
-     * @param maxDays The maximum amount of days as an int.
-     * @param difficulty The difficulty scale as an int.
-     * @param name The trainer name as a string.
+     * @param gold The starting amount of gold.
+     * @param currentDay The current day.
+     * @param maxDays The maximum amount of days.
+     * @param difficulty The difficulty scale.
+     * @param name The trainer name.
      */
     public GameManager(int gold, int currentDay, int maxDays, int difficulty, String name) {
         this.gold = gold;
         this.currentDay = currentDay % maxDays;
         this.maxDays = maxDays;
         this.difficulty = difficulty;
-        this.trainer = new Trainer(name);
+        this.player = new Trainer(name);
         this.inventory = new Inventory();
         this.shop = new Shop(this);
 
@@ -102,8 +102,8 @@ public class GameManager {
      *
      * @return The Trainer for the player.
      */
-    public Trainer getTrainer() {
-        return trainer;
+    public Trainer getPlayer() {
+        return player;
     }
 
     /**
@@ -118,7 +118,7 @@ public class GameManager {
     /**
      * Get the gold reserve owned by the player.
      *
-     * @return The integer count of gold the player owned.
+     * @return The count of gold the player owned.
      */
     public int getGold() {
         return gold;
@@ -127,7 +127,7 @@ public class GameManager {
     /**
      * Get the current day count.
      *
-     * @return How many days has passed as an int.
+     * @return How many days has passed.
      */
     public int getCurrentDay() {
         return currentDay;
@@ -136,7 +136,7 @@ public class GameManager {
     /**
      * Get the maximum length of the game in days.
      *
-     * @return The maximum day counter as an int.
+     * @return The maximum day counter.
      */
     public int getMaxDays() {
         return maxDays;
@@ -154,7 +154,7 @@ public class GameManager {
     /**
      * Get the difficulty multiplier.
      *
-     * @return The difficulty multiplier as a double.
+     * @return The difficulty multiplier.
      */
     public int getDifficulty() {
         return difficulty;
@@ -176,7 +176,7 @@ public class GameManager {
     /**
      * Get the score.
      *
-     * @return The score points as an int.
+     * @return The score points.
      */
     public int getScore() {
         return score;
@@ -193,28 +193,31 @@ public class GameManager {
 
     // MARK: -- Rule checking methods --
 
-
     /**
+     * <p>
      * Check if the player has no monster and not enough funds to purchase a monster.
      * One of the game fail conditions.
+     * </p>
      *
      * @return true if the player has no monster and gold is less than any monster price in the shop.
      */
     public boolean hasNotEnoughMoneyForMonster() {
-        return trainer.getParty().isEmpty() &&
+        return player.getParty().isEmpty() &&
             getGold() < shop.getMonsterStock().stream().mapToInt(Monster::buyPrice).min().orElse(0);
     }
 
     /**
+     * <p>
      * Check if the player has not active monster and not enough funds to purchase revive.
      * One of the game fail conditions.
+     * </p>
      *
      * @return true if the player's party is all fainted and gold is less than the price of revive.
      */
     public boolean hasNoPossibilityForRevive() {
         final boolean hasNoRevive = inventory.getItemNumber(new Item.Revive()) <= 0 &&
             inventory.getItemNumber(new Item.FullRestore()) <= 0;
-        return trainer.isWhitedOut() && getGold() < new Item.Revive().buyPrice() && hasNoRevive;
+        return player.isWhitedOut() && getGold() < new Item.Revive().buyPrice() && hasNoRevive;
     }
 
     /**
@@ -241,7 +244,7 @@ public class GameManager {
         setCurrentDay(getCurrentDay() + 1);
         final boolean hasEnded = getCurrentDay() > getMaxDays();
 
-        // Triggers night events if game is not over.
+        // Triggers night events if game is not completed.
         if (!hasEnded)
             triggerNightEvents();
 
@@ -280,17 +283,19 @@ public class GameManager {
     }
 
     /**
+     * <p>
      * Removes a monster from the party if their leave prerequisites are met.
      * Only remove one monster at once to prevent indexing errors.
+     * </p>
      *
      * @return the monster leaving the party for displaying to output, or null otherwise.
      */
     public Optional<Monster> partyMonstersLeave() {
         // Checking each monster in the party if they meet leave conditions.
-        for (int i = 0; i < trainer.getParty().size(); i++) {
-            final Monster mon = trainer.getParty().get(i);
+        for (int i = 0; i < player.getParty().size(); i++) {
+            final Monster mon = player.getParty().get(i);
             if (mon.shouldLeave()) {
-                trainer.remove(i);
+                player.remove(i);
                 return Optional.of(mon);
             }
         }
@@ -301,7 +306,7 @@ public class GameManager {
      * Heals each party monster by their heal rate if they are not fainted.
      */
     protected void partyMonstersHeal() {
-        for (final Monster mon : trainer.getParty()) {
+        for (final Monster mon : player.getParty()) {
             if (!mon.isFainted()) {
                 final int monsterHealRate = mon.healRate();
                 mon.healSelf(monsterHealRate);
@@ -316,7 +321,7 @@ public class GameManager {
      */
     public List<Monster> partyMonstersLevelUp() {
         // Creates a list of monsters that meet level up conditions and increments their level by 1.
-        final List<Monster> lastLevelledUp = trainer
+        final List<Monster> lastLevelledUp = player
             .getParty()
             .stream()
             .filter(mon -> !mon.isFainted())
@@ -336,15 +341,15 @@ public class GameManager {
      * @return the monster that is joining the party for displaying to output, or null otherwise.
      */
     public Optional<Monster> monsterJoinsParty() {
-        final double chance = 0.05 * (0.5 * getDifficulty()) * (4 - getTrainer().getParty().size());
+        final double chance = 0.05 * (0.5 * getDifficulty() + 0.5) * (4 - getPlayer().getParty().size());
         final boolean isLucky = Math.random() <= chance;
-        // Returns nothing if fails the check
+        // Returns nothing if the check is failed
         if (!isLucky)
             return Optional.empty();
-        // Attempts to add and return the joining monster, catchs error if party is full
+        // Attempts to add and return the joining monster, else returns nothing if party is full.
         try {
             final Monster joining = shop.randomMonster();
-            trainer.add(joining);
+            player.add(joining);
             return Optional.of(joining);
         } catch (Trainer.PartyFullException err) {
             return Optional.empty();
@@ -378,7 +383,7 @@ public class GameManager {
     // MARK: -- Actions --
 
     /**
-     * Prepare battle manager for a battle against selected enemy.
+     * Prepares a battle manager for a battle against selected enemy.
      *
      * @param ui    The UI used to the battle manager.
      * @param index The index of the available battle.
@@ -388,7 +393,7 @@ public class GameManager {
     public BattleManager prepareBattle(BattleManager.UI ui, int index) throws IndexOutOfBoundsException {
         // Retrieves enemy from availableBattles and creates a BattleManager
         final Trainer enemy = getAvailableBattles().get(index);
-        return new BattleManager(ui, getTrainer(), enemy, getEnvironment());
+        return new BattleManager(ui, getPlayer(), enemy, getEnvironment());
     }
 
     /**
@@ -408,11 +413,11 @@ public class GameManager {
             // Error if the item attempting to be used is invalid.
             throw new Inventory.ItemNotExistException();
 
-        if (monsterIndex < 0 || monsterIndex >= trainer.getParty().size())
+        if (monsterIndex < 0 || monsterIndex >= player.getParty().size())
             // Error if the monster index is invalid.
             throw new Trainer.MonsterDoesNotExistException();
 
-        final Monster monster = trainer.getParty().get(monsterIndex);
+        final Monster monster = player.getParty().get(monsterIndex);
         if (monster == null)
             // Error if the monster the item attempting to be used on is invalid.
             throw new Trainer.MonsterDoesNotExistException();
@@ -451,10 +456,10 @@ public class GameManager {
      *
      * @param from Starting index.
      * @param to   Destination index.
-     * @throws IndexOutOfBoundsException If either the indices are not valid indices for the party.
+     * @throws IndexOutOfBoundsException If either of the indices are not valid indices for the party.
      */
     public void switchMonsterOnParty(int from, int to) throws IndexOutOfBoundsException {
-        trainer.switchMonster(from, to);
+        player.switchMonster(from, to);
     }
 
     /**
@@ -462,10 +467,10 @@ public class GameManager {
      *
      * @param monster Monster to be moved.
      * @param to      Destination index.
-     * @throws IndexOutOfBoundsException If either the indices are not valid indices for the party.
+     * @throws IndexOutOfBoundsException If either of the indices are not valid indices for the party.
      */
     public void switchMonsterOnParty(Monster monster, int to) throws IndexOutOfBoundsException {
-        trainer.moveMonster(monster, to);
+        player.moveMonster(monster, to);
     }
 
     /**
@@ -481,9 +486,11 @@ public class GameManager {
     ) throws Shop.NotInStockException, Shop.InsufficientFundsException, Trainer.PartyFullException {
         shop.buyPurchasable(purchasable);
         if (purchasable instanceof Item item) {
+            // Item is being purchased.
             inventory.add(item);
         } else if (purchasable instanceof Monster monster) {
-            trainer.add(monster);
+            // Monster is being purchased.
+            player.add(monster);
         }
     }
 
@@ -496,12 +503,15 @@ public class GameManager {
      */
     public void sell(Purchasable purchasable) throws Inventory.ItemNotExistException, Trainer.MonsterDoesNotExistException {
         if (purchasable instanceof Item item) {
+            // Item is being sold.
             inventory.remove(item);
         } else if (purchasable instanceof Monster monster) {
-            int i = trainer.getParty().indexOf(monster);
+            // Monster is being sold.
+            int i = player.getParty().indexOf(monster);
             if (i == -1)
+                // Error if index is invalid
                 throw new Trainer.MonsterDoesNotExistException();
-            trainer.remove(i);
+            player.remove(i);
         }
         shop.sellPurchasable(purchasable);
     }
@@ -514,7 +524,7 @@ public class GameManager {
      * @param name The new name the player choose as a string.
      */
     public void setTrainerName(String name) throws IllegalArgumentException {
-        trainer.setName(name);
+        player.setName(name);
     }
 
     /**

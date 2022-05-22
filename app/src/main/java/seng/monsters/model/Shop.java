@@ -75,7 +75,7 @@ public final class Shop {
 
         // Monster is being purchased
         } else if (purchasable instanceof Monster monster) {
-            if (manager.getTrainer().getParty().size() >= 4)
+            if (manager.getPlayer().getParty().size() >= 4)
                 // Error if party is full
                 throw new Trainer.PartyFullException("Cannot add more than 4 monster");
             if (!monsterStock.containsKey(monster.getId()))
@@ -105,9 +105,12 @@ public final class Shop {
      * @return A monster.
      */
     public Monster randomMonster() {
+        // Generating level based on difficulty and current day.
         final Random rng = new Random();
         final int range = rng.nextInt(6 * manager.getDifficulty() + 1) - 3 * manager.getDifficulty();
         final int level = Math.max(1, manager.getCurrentDay() + range);
+
+        // Generating list of monsters at that level and picking one at random.
         final List<Monster> allMonsters = Monster.all(level);
         return allMonsters.get(rng.nextInt(allMonsters.size()));
     }
@@ -124,7 +127,7 @@ public final class Shop {
         final List<Item> allItems = List.of(
             new Item.Potion(), new Item.Revive(), new Item.RareCandy(), new Item.FullRestore());
 
-        // A new hashmapping of the items to their stock as an int
+        // A new hashmapping of the items to a randomly generated stock amount
         final Map<Item, Integer> map = new HashMap<>(allItems.size());
         allItems
             .forEach(item -> {
@@ -140,11 +143,13 @@ public final class Shop {
     public void restock() {
         monsterStock.clear();
 
+        // Generate new shop monsters
         for (int i = 0; i < 3 * manager.getDifficulty(); i++) {
             final Monster mon = randomMonster();
             monsterStock.put(mon.getId(), mon);
         }
 
+        // Generate new shop item stock
         itemStock.clear();
         itemStock.putAll(randomItemStock());
     }

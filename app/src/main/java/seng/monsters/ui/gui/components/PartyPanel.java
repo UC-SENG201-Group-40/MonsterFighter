@@ -29,9 +29,9 @@ public final class PartyPanel {
     private Trainer trainer;
 
     /**
-     * The display panel
+     * The main display panel for displaying the party slots
      */
-    private JPanel panel;
+    private JPanel displayPanel;
 
     /**
      * The panel for all monster slots
@@ -62,8 +62,8 @@ public final class PartyPanel {
      * @param y The vertical location
      */
     public void setBounds(int x, int y) {
-        panel.setBounds(x, y, WIDTH, HEIGHT);
-        panel.setLayout(null);
+        displayPanel.setBounds(x, y, WIDTH, HEIGHT);
+        displayPanel.setLayout(null);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class PartyPanel {
      * @param frame The JFrame to be displayed into (<b>Must use absolute positioning</b>)
      */
     public void applyToFrame(JFrame frame) {
-        frame.getContentPane().add(panel);
+        frame.getContentPane().add(displayPanel);
     }
 
     /**
@@ -88,22 +88,25 @@ public final class PartyPanel {
      * Initialize the UI element for this panel
      */
     private void render() {
-        panel = new JPanel();
-        panel.setOpaque(false);
+        // Panel for containing the party slots
+        displayPanel = new JPanel();
+        displayPanel.setOpaque(false);
 
+        // List of the party of the corresponding trainer
         final List<Monster> party = trainer.getParty();
         final int diffY = 20;
 
+        // Displays each party slot and their order in the party
         slots = IntStream.range(0, party.size())
             .mapToObj(i -> {
                 JLabel orderLabel = new JLabel(Integer.toString(i+1));
                 orderLabel.setBounds(0, i * (PartySlotPanel.HEIGHT + diffY), 8, 20);
                 orderLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
-                panel.add(orderLabel);
+                displayPanel.add(orderLabel);
 
                 PartySlotPanel slot = new PartySlotPanel(party.get(i));
                 slot.setBounds(0, diffY + i * (PartySlotPanel.HEIGHT + diffY));
-                slot.applyToPanel(panel);
+                slot.applyToPanel(displayPanel);
                 slot.addActionListener(eachPanelAction(i));
                 return slot;
             })

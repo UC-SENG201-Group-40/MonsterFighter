@@ -40,16 +40,19 @@ public class TitleScreen extends Screen {
         namePromptLabel.setBounds(326, 287, 167, 16);
         frame.getContentPane().add(namePromptLabel);
 
+        // Text field for player to enter their name
         JTextField nameTextField = new JTextField();
         nameTextField.setToolTipText("Must be between 3 to 15 characters");
         nameTextField.setBounds(326, 315, 167, 26);
         frame.getContentPane().add(nameTextField);
         nameTextField.setColumns(10);
 
+        // Button to submit name and go to next screen
         JButton submitButton = new JButton("Next");
         submitButton.setBounds(350, 374, 117, 29);
         frame.getContentPane().add(submitButton);
 
+        // Label for when the player enters an invalid name and an error occurs
         JLabel errorLabel = new JLabel("");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
@@ -76,9 +79,11 @@ public class TitleScreen extends Screen {
         return ignoredEvent -> {
             final String input = textField.getText();
             try {
+                // Player enters a valid name
                 gameManager.setTrainerName(input);
                 gui.navigateTo(new SettingsScreen(gui, gameManager));
             } catch (IllegalArgumentException ignored) {
+                // Player enters an invalid name
                 errorLabel.setVisible(true);
                 errorLabel.setText("<html>Invalid name! (Must be between 3 and 15 letters inclusive, no symbols or numbers)</html>");
             }

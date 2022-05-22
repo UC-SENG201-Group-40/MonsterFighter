@@ -42,6 +42,7 @@ public class StartingMonsterScreen extends Screen {
 
     @Override
     public void render() {
+        // Combobox containing the starting monster choices
         JComboBox<String> startingMonsterComboBox = new JComboBox<>();
         startingMonsterComboBox.setModel(
             new LabelComboboxModel<>(startingMonsters, Monster::monsterType)
@@ -54,10 +55,12 @@ public class StartingMonsterScreen extends Screen {
         startingMonsterPrompt.setBounds(66, 112, 238, 16);
         frame.getContentPane().add(startingMonsterPrompt);
 
+        // Panel displaying monster and its stats
         DetailedMonsterPanel panel = new DetailedMonsterPanel(selectedMonster.get(), false);
         panel.setBounds(439, 90);
         panel.applyToFrame(frame);
 
+        // Button to submit monster selection
         JButton submitButton = new JButton("Next");
         submitButton.setBounds(350, 374, 117, 29);
         frame.getContentPane().add(submitButton);
@@ -77,9 +80,9 @@ public class StartingMonsterScreen extends Screen {
     }
 
     /**
-     * The action performed when the combo box selection changed
+     * The action performed when the combo box selection changes
      *
-     * @param comboBox The combo box to get the selection
+     * @param comboBox The combo box to get the monster selection
      * @return An action listener for the combobox
      */
     private ActionListener comboBoxAction(JComboBox<String> comboBox) {
@@ -92,7 +95,7 @@ public class StartingMonsterScreen extends Screen {
     }
 
     /**
-     * The action performed when the user has chosen their starting monster
+     * The action performed when the user has chosen their starting monster.
      *
      * @param comboBox The combo box for the starting monster
      * @return The action listener for the submit button
@@ -102,6 +105,7 @@ public class StartingMonsterScreen extends Screen {
             final Monster monster = selectedMonster.get();
             comboBox.setEnabled(false);
 
+            // Displays popup to name monster
             final JoiningPopUp popUp = new JoiningPopUp(monster);
             popUp.onEnd(
                 popUpRenameAction(monster)
@@ -110,14 +114,14 @@ public class StartingMonsterScreen extends Screen {
     }
 
     /**
-     * The action after the user chose a new name for the monster in the pop-up
+     * The action after the user chosen a new name for the monster in the pop-up.
      *
-     * @param monster The monster to be renamed
+     * @param monster The joining monster to be renamed
      * @return The action for the pop-up after renaming
      */
     private Consumer<ActionEvent> popUpRenameAction(Monster monster) {
         return ignoredEvent -> {
-            gameManager.getTrainer().add(monster);
+            gameManager.getPlayer().add(monster);
 
             gui.navigateTo(new MainMenuScreen(gui, gameManager));
         };

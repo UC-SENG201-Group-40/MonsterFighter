@@ -31,13 +31,16 @@ public class AvailableBattlesScreen extends Screen {
         selectedTrainer = State.of(gameManager.getAvailableBattles().get(0));
     }
 
+    @Override
     public void render() {
+        // Changes background to the current environment
         Screen
             .imageIconFromResource(
                 String.format("/images/%s.jpeg", gameManager.getEnvironment().toString().toLowerCase())
             )
             .ifPresent(icon -> frame.setContentPane(new JLabel(icon)));
 
+        // Combobox containing enemy choices
         JComboBox<String> enemiesComboBox = new JComboBox<>();
         enemiesComboBox.setModel(
             new LabelComboboxModel<>(gameManager.getAvailableBattles(), Trainer::getName)
@@ -51,20 +54,23 @@ public class AvailableBattlesScreen extends Screen {
         battlesPrompt.setBounds(66, 112, 238, 16);
         frame.getContentPane().add(battlesPrompt);
 
-        PartyPanel panel = new PartyPanel(selectedTrainer.get());
-        panel.setBounds(419, 80);
-        panel.applyToFrame(frame);
+        // Panel displaying enemy's party
+        PartyPanel enemyPanel = new PartyPanel(selectedTrainer.get());
+        enemyPanel.setBounds(419, 80);
+        enemyPanel.applyToFrame(frame);
 
+        // Button to start the battle
         JButton battleButton = new JButton("Fight");
         battleButton.setBounds(475, 390, 117, 29);
         frame.getContentPane().add(battleButton);
 
+        // Button to return to the main menu
         JButton cancelButton = new JButton("Return");
         cancelButton.setBounds(187, 390, 117, 29);
         frame.getContentPane().add(cancelButton);
 
-
-        selectedTrainer.onChange(panel::refresh);
+        // Refresh the enemy party panel
+        selectedTrainer.onChange(enemyPanel::refresh);
 
         enemiesComboBox.addActionListener(selectEnemyAction(enemiesComboBox));
         battleButton.addActionListener(battleAction(enemiesComboBox));
@@ -74,9 +80,9 @@ public class AvailableBattlesScreen extends Screen {
     }
 
     /**
-     * The action performed when a new trainer is selected
+     * The action performed when a new trainer is selected (sets the selectedTrainer)
      *
-     * @param enemiesComboBox The combobox to get the new selection
+     * @param enemiesComboBox The enemy combobox to get the new selection
      * @return An action listener for the combo-box
      */
     private ActionListener selectEnemyAction(JComboBox<String> enemiesComboBox) {
@@ -90,9 +96,9 @@ public class AvailableBattlesScreen extends Screen {
     }
 
     /**
-     * The action performed when starting the battle
+     * The action performed when using the fight button (Initiates a BattleScreen)
      *
-     * @param enemiesComboBox The combobox to get the new selection
+     * @param enemiesComboBox The enemy combobox to get the new selection
      * @return An action listener for the battle button
      */
     private ActionListener battleAction(JComboBox<String> enemiesComboBox) {
@@ -103,7 +109,7 @@ public class AvailableBattlesScreen extends Screen {
     }
 
     /**
-     * The action performed when going back to the main menu
+     * The action performed when using the return (Returns to the main menu)
      *
      * @return An action listener for the return button
      */

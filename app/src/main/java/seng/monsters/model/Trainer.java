@@ -18,7 +18,7 @@ public final class Trainer {
      */
     public static final class PartyFullException extends IllegalStateException {
         /**
-         * Creates an party full exception with a description.
+         * Creates a party full exception with a description.
          * @param desc The description of why the exception was thrown.
          */
         public PartyFullException(String desc) {
@@ -140,7 +140,7 @@ public final class Trainer {
     /**
      * Get the name of the trainer
      *
-     * @return The name as a string.
+     * @return The trainer's name.
      */
     public String getName() {
         return name;

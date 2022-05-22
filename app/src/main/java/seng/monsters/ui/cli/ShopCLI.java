@@ -34,7 +34,7 @@ public abstract class ShopCLI extends TestableCLI {
     public ShopCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         this.shop = gameManager.getShop();
-        this.party = gameManager.getTrainer().getParty();
+        this.party = gameManager.getPlayer().getParty();
     }
 
     /**

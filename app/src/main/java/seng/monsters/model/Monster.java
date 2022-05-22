@@ -21,7 +21,7 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster.
          *
-         * @param level The current level as an int.
+         * @param level The current level.
          */
         public Quacker(int level) {
             super("Quacker", 80, level);
@@ -30,8 +30,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Quacker(String name, int level) {
             super(name, 80, level);
@@ -90,8 +90,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Raver(String name, int level) {
             super(name, 200, level);
@@ -141,7 +141,7 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster.
          *
-         * @param level The current level as an int.
+         * @param level The current level.
          */
         public Tree(int level) {
             super("Tree", 60, level);
@@ -150,8 +150,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Tree(String name, int level) {
             super(name, 60, level);
@@ -205,7 +205,7 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster.
          *
-         * @param level The current level as an int.
+         * @param level The current level.
          */
         public Eel(int level) {
             super("Eel", 60, level);
@@ -214,8 +214,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Eel(String name, int level) {
             super(name, 60, level);
@@ -272,7 +272,7 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster.
          *
-         * @param level The current level as an int.
+         * @param level The current level.
          */
         public Doger(int level) {
             super("Doger", 40, level);
@@ -281,8 +281,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Doger(String name, int level) {
             super(name, 40, level);
@@ -331,7 +331,7 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster.
          *
-         * @param level The current level as an int.
+         * @param level The current level.
          */
         public Shark(int level) {
             super("Shark", 50, level);
@@ -340,8 +340,8 @@ public abstract class Monster implements Purchasable {
         /**
          * Create a new monster with a name.
          *
-         * @param name  The name of the monster as a string.
-         * @param level The current level as an int.
+         * @param name  The name of the monster.
+         * @param level The current level.
          */
         public Shark(String name, int level) {
             super(name, 50, level);
@@ -411,9 +411,9 @@ public abstract class Monster implements Purchasable {
     /**
      * Create a new monster.
      *
-     * @param name   The name of the monster as a string.
-     * @param baseHp The base hp as an int.
-     * @param level  The current level as an int.
+     * @param name   The name of the monster.
+     * @param baseHp The base hp.
+     * @param level  The current level.
      */
     public Monster(String name, int baseHp, int level) {
         this.name = name;
@@ -425,28 +425,28 @@ public abstract class Monster implements Purchasable {
     /**
      * The base damage output of this monster on level 1.
      *
-     * @return The damage as an integer.
+     * @return The monster's base damage.
      */
     public abstract int baseDamage();
 
     /**
      * The speed used to determine the which monster attack first.
      *
-     * @return The speed as an integer.
+     * @return The monster's speed.
      */
     public abstract int speed();
 
     /**
      * The amount of health point healed overnight for this monster.
      *
-     * @return The amount as an integer.
+     * @return The monsters healrate.
      */
     public abstract int healRate();
 
     /**
      * The preferred environment which gives an attack bonus.
      *
-     * @return The environment enum.
+     * @return The monster's preferred environment.
      */
     public abstract Environment idealEnvironment();
 
@@ -476,7 +476,7 @@ public abstract class Monster implements Purchasable {
     /**
      * The multiplier computed by level, which dictates the strength of the other stats.
      *
-     * @return A level multiplier double.
+     * @return A level scaled multiplier.
      */
     private double multiplier() {
         return Math.pow(1.1, this.level - 1);
@@ -588,8 +588,10 @@ public abstract class Monster implements Purchasable {
     }
 
     /**
+     * <p>
      * Computes and returns the cost to buy this monster.
-     * Based on monster stats.
+     * Calculated based on monster stats.
+     * </p>
      *
      * @return The integer representing the price.
      */

@@ -38,19 +38,21 @@ public class ItemShopScreen extends Screen {
 
     @Override
     public void render() {
-        JLabel titleLabel = new JLabel("Item shop! (No refund)");
+        JLabel titleLabel = new JLabel("Item shop! (No refunds.)");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
         titleLabel.setBounds((Screen.WIDTH - 600) / 2, 42, 600, 39);
         frame.getContentPane().add(titleLabel);
 
-        JLabel errorLabel = new JLabel("No monster in party");
+        // Label for when an error occurs
+        JLabel errorLabel = new JLabel();
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));
         errorLabel.setBounds(6, 338, 807, 16);
         errorLabel.setVisible(false);
         frame.getContentPane().add(errorLabel);
 
+        // Label for when an item is bought
         JLabel itemBoughtLabel = new JLabel();
         itemBoughtLabel.setHorizontalAlignment(SwingConstants.CENTER);
         itemBoughtLabel.setForeground(new Color(0, 0, 0));
@@ -58,35 +60,41 @@ public class ItemShopScreen extends Screen {
         itemBoughtLabel.setVisible(false);
         frame.getContentPane().add(itemBoughtLabel);
 
-        JLabel goldLabel = new JLabel(String.format("Your own %d gold", gameManager.getGold()));
+        // Label displaying amount of gold
+        JLabel goldLabel = new JLabel(String.format("You have %d gold.", gameManager.getGold()));
         goldLabel.setHorizontalAlignment(SwingConstants.LEADING);
         goldLabel.setBounds(206, 366, 200, 30);
         frame.getContentPane().add(goldLabel);
 
+        // Button to return to the main menu
         JButton backToMainMenu = new JButton();
         backToMainMenu.setText("Main menu");
         backToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
         backToMainMenu.setBounds(456, 366, 156, 30);
         frame.getContentPane().add(backToMainMenu);
 
+        // Positioning values for item panels
         final int distanceFromTop = 100;
         final int distanceBetweenPanel = (819 - 4 * ItemPanel.WIDTH) / 5;
 
+        // Components for each item
         for (int i = 0; i < items.size(); i++) {
             final Item item = items.get(i);
             final int itemCount = gameManager.getShop().getItemStock(item);
             final int distanceX = (i + 1) * distanceBetweenPanel + i * ItemPanel.WIDTH;
 
+            // Item information panel
             ItemPanel panel = new ItemPanel(item);
             panel.setBounds(distanceX, distanceFromTop);
             panel.applyToFrame(frame);
 
+            // Label for the shop's stock of that item and its buy price
             JLabel countLabel = new JLabel(String.format("%dx (%d gold)", itemCount, item.buyPrice()));
             countLabel.setHorizontalAlignment(SwingConstants.CENTER);
             countLabel.setBounds(distanceX, distanceFromTop + ItemPanel.HEIGHT, 158, 30);
             frame.getContentPane().add(countLabel);
 
-
+            // Button to buy the item
             JButton buyButton = new JButton("Buy");
             buyButton.setBounds(distanceX, distanceFromTop + 30 + ItemPanel.HEIGHT, 158, 30);
             buyButton.setEnabled(itemCount > 0);
@@ -106,7 +114,7 @@ public class ItemShopScreen extends Screen {
 
 
     /**
-     * The action performed when using an item
+     * The action performed when the buy item button is used (attempts to buy the item)
      *
      * @param item       The item to be used
      * @param errorLabel The error label to prompt error messages
@@ -118,17 +126,20 @@ public class ItemShopScreen extends Screen {
     private ActionListener buyItemAction(Item item, JLabel errorLabel, JLabel countLabel, JLabel itemBoughtLabel, JButton buyButton, JLabel goldLabel) {
         return ignoredEvent -> {
             try {
+                // An item is successfully bought
                 gameManager.buy(item);
                 errorLabel.setVisible(false);
                 itemBoughtLabel.setText(String.format("%s bought!", item.getName()));
                 itemBoughtLabel.setVisible(true);
             } catch (Shop.InsufficientFundsException err) {
+                // The player does not have enough money to buy the item
                 itemBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
                     "You're too poor! You have %d gold and the item costs %d!", gameManager.getGold(), item.buyPrice()
                 ));
             } catch (Shop.NotInStockException err) {
+                // The shop does not have any stock of that item
                 itemBoughtLabel.setVisible(false);
                 errorLabel.setVisible(true);
                 errorLabel.setText(String.format(
@@ -142,13 +153,13 @@ public class ItemShopScreen extends Screen {
                 final int newCount = gameManager.getShop().getItemStock(item);
                 countLabel.setText(String.format("%dx (%d gold)", newCount, item.buyPrice()));
                 buyButton.setEnabled(newCount > 0);
-                goldLabel.setText(String.format("Your own %d gold", gameManager.getGold()));
+                goldLabel.setText(String.format("You have %d gold.", gameManager.getGold()));
             }
         };
     }
 
     /**
-     * The action performed when the user chose to return the main menu
+     * The action performed when the main menu button is used (returns to the main menu)
      */
     private ActionListener backToMainMenuAction() {
         return ignoredEvent -> gui.navigateBackToMainMenu();

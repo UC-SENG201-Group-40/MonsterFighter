@@ -33,7 +33,7 @@ public class LevelledUpPopUp extends PopUp {
     }
 
     private void render() {
-        // Title label using the name of the monster
+        // Title label showing how many monsters have levelled up
         JLabel titleLabel = new JLabel(
             String.format("%d of your monster(s) has levelled up", monsters.size())
         );
@@ -42,21 +42,22 @@ public class LevelledUpPopUp extends PopUp {
         titleLabel.setBounds((PopUp.WIDTH - 700) / 2, 32, 700, 39);
         frame.getContentPane().add(titleLabel);
 
-        // The icon for the monster joining
+
         final int diffY = 20;
 
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setLayout(null);
-        panel.setBounds((PopUp.WIDTH - PartySlotPanel.WIDTH) / 2, 71, PartySlotPanel.WIDTH, PartySlotPanel.WIDTH * 4 + 3 * diffY);
+        // Panel containing the party slots of the monsters that levelled up
+        JPanel levelledUpMonstersPanel = new JPanel();
+        levelledUpMonstersPanel.setOpaque(false);
+        levelledUpMonstersPanel.setLayout(null);
+        levelledUpMonstersPanel.setBounds((PopUp.WIDTH - PartySlotPanel.WIDTH) / 2, 71, PartySlotPanel.WIDTH, PartySlotPanel.WIDTH * 4 + 3 * diffY);
         for (int i = 0; i < monsters.size(); i++) {
             PartySlotPanel slot = new PartySlotPanel(monsters.get(i));
             slot.setBounds(0, i * (PartySlotPanel.HEIGHT + diffY));
-            slot.applyToPanel(panel);
+            slot.applyToPanel(levelledUpMonstersPanel);
         }
-        frame.getContentPane().add(panel);
+        frame.getContentPane().add(levelledUpMonstersPanel);
 
-        // The button to apply the name change and trigger the onEnd callback
+        // The button to close the popup and continue the game
         JButton continueButton = new JButton("Continue");
         continueButton.setBounds(351, 400, 117, 29);
         frame.getContentPane().add(continueButton);

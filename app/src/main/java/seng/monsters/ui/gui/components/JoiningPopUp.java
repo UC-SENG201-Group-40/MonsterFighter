@@ -74,7 +74,7 @@ public class JoiningPopUp extends PopUp {
         frame.getContentPane().add(doneButton);
 
         // The error label for the name
-        JLabel errorLabel = new JLabel("Name your monster:");
+        JLabel errorLabel = new JLabel();
         errorLabel.setForeground(new Color(255, 0, 0));
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setBounds(125, 226, 229, 32);
@@ -87,7 +87,7 @@ public class JoiningPopUp extends PopUp {
     }
 
     /**
-     * Added a <code>onEnd</code> callback to be run when the <code>done</code> button is pressed.
+     * Added an <code>onEnd</code> callback to be run when the <code>done</code> button is pressed.
      *
      * @param callback The callback to be called
      */
@@ -110,7 +110,7 @@ public class JoiningPopUp extends PopUp {
                 onEnd.accept(ignoredEvent);
                 frame.dispose();
             } catch (IllegalArgumentException ignored) {
-                errorLabel.setText("<html>Must be 3 to 15 characters and only contains letters!</html>");
+                errorLabel.setText("<html>Must be 3 to 15 characters and only contain letters!</html>");
                 errorLabel.setVisible(true);
             }
         };

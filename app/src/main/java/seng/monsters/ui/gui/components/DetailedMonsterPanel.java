@@ -224,9 +224,11 @@ public final class DetailedMonsterPanel {
      * Initialize the UI element for this panel
      */
     private void render() {
+        // Panel to contain all the monster's information
         monsterDisplayPanel = new JPanel();
         monsterDisplayPanel.setBackground(new Color(255, 250, 240));
 
+        // Label for the name of the monster
         monsterNameLabel = new JLabel(
             String.format("%s", monster.getName())
         );
@@ -235,36 +237,30 @@ public final class DetailedMonsterPanel {
         monsterNameLabel.setBounds(6, 6, 240, 36);
         monsterDisplayPanel.add(monsterNameLabel);
 
+        // Label for the type of the monster
         monsterTypeLabel = new JLabel(
                 String.format("(%s)", monster.monsterType())
         );
-        monsterTypeLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+        monsterTypeLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
         monsterTypeLabel.setForeground(Color.BLACK);
-        monsterTypeLabel.setBounds(6, 27, 72, 24);
+        monsterTypeLabel.setBounds(6, 28, 72, 24);
         monsterDisplayPanel.add(monsterTypeLabel);
 
+        // Label for the description of the monster
         monsterDescriptionLabel = new JLabel(
                 "<html>" + monster.description() + "</html>"
         );
         monsterDescriptionLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 10));
         monsterDescriptionLabel.setForeground(Color.BLACK);
-        monsterDescriptionLabel.setBounds(7, 40, 294, 24);
+        monsterDescriptionLabel.setBounds(7, 41, 294, 24);
         monsterDisplayPanel.add(monsterDescriptionLabel);
 
+        // Labels for the hp of the monster
         JLabel hpLabel = new JLabel("HP:");
         hpLabel.setForeground(Color.BLACK);
         hpLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         hpLabel.setBounds(16, 70, 25, 16);
         monsterDisplayPanel.add(hpLabel);
-
-        levelLabel = new JLabel(
-            String.format("Lv. %d", monster.getLevel())
-        );
-        levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-        levelLabel.setForeground(Color.BLACK);
-        levelLabel.setFont(new Font("Lucida Grande", Font.BOLD, 12));
-        levelLabel.setBounds(239, 6, 55, 36);
-        monsterDisplayPanel.add(levelLabel);
 
         monsterCurrHpLabel = new JLabel(
             String.format("%d/%d", monster.getCurrentHp(), monster.maxHp())
@@ -274,6 +270,17 @@ public final class DetailedMonsterPanel {
         monsterCurrHpLabel.setBounds(44, 70, 99, 16);
         monsterDisplayPanel.add(monsterCurrHpLabel);
 
+        // Label for the level of the monster
+        levelLabel = new JLabel(
+                String.format("Lv. %d", monster.getLevel())
+        );
+        levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        levelLabel.setForeground(Color.BLACK);
+        levelLabel.setFont(new Font("Lucida Grande", Font.BOLD, 12));
+        levelLabel.setBounds(239, 6, 55, 36);
+        monsterDisplayPanel.add(levelLabel);
+
+        // Label for the buy/sell price of the monster
         priceLabel = new JLabel(
             String.format("%s price: %d Gold",
                 showBuying ? "Buy" : "Sell",
@@ -285,6 +292,7 @@ public final class DetailedMonsterPanel {
         priceLabel.setBounds(16, 98, 127, 16);
         monsterDisplayPanel.add(priceLabel);
 
+        // Label for the attack damage of the monster
         attackLabel = new JLabel(
             String.format("Attack: %d", monster.scaledDamage())
         );
@@ -293,6 +301,7 @@ public final class DetailedMonsterPanel {
         attackLabel.setBounds(16, 126, 127, 16);
         monsterDisplayPanel.add(attackLabel);
 
+        // Label for the speed of the monster
         speedLabel = new JLabel(
             String.format("Speed: %d", monster.speed())
         );
@@ -301,6 +310,7 @@ public final class DetailedMonsterPanel {
         speedLabel.setBounds(16, 154, 127, 16);
         monsterDisplayPanel.add(speedLabel);
 
+        // Label for the overnight heal rate of the monster
         healRateLabel = new JLabel(
             String.format("Heal rate: %d", monster.healRate())
         );
@@ -309,6 +319,7 @@ public final class DetailedMonsterPanel {
         healRateLabel.setBounds(16, 182, 127, 16);
         monsterDisplayPanel.add(healRateLabel);
 
+        // Label for the environment of the monster
         envLabel = new JLabel(
             String.format("Environment: %s", monster.idealEnvironment().toString())
         );
@@ -317,6 +328,7 @@ public final class DetailedMonsterPanel {
         envLabel.setBounds(16, 210, 137, 16);
         monsterDisplayPanel.add(envLabel);
 
+        // Label for the icon of the monster
         iconLabel = new JLabel("");
         Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);

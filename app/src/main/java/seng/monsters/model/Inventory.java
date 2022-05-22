@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A collection of item used by trainer.
+ * A collection of item used by the player.
  */
 public final class Inventory {
     /**
@@ -27,7 +27,7 @@ public final class Inventory {
     private final Map<Item, Integer> items = new HashMap<>();
 
     /**
-     * Adding a new item to the inventory.
+     * Add a new item to the inventory.
      *
      * @param item The newly added item.
      */
