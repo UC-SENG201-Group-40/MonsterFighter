@@ -145,7 +145,7 @@ public class EndScreen extends Screen {
     private ActionListener restartGameAction() {
         return e -> {
             gui.quit();
-            final var gui2 = new GUI();
+            final GUI gui2 = new GUI();
         };
     }
 

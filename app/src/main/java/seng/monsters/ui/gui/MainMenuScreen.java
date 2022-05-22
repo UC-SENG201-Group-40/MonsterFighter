@@ -59,7 +59,11 @@ public class MainMenuScreen extends Screen {
         JButton sleepButton = new JButton("Sleep");
         sleepButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         sleepButton.setBounds(631, 320, 150, 40);
-        sleepButton.setEnabled(!gameManager.hasNotBattleOnce());
+        sleepButton.setEnabled(
+            gameManager.hasNoPossibilityForRevive()
+                || gameManager.hasNotEnoughMoneyForMonster()
+                || !gameManager.hasNotBattleOnce()
+        );
         frame.getContentPane().add(sleepButton);
 
         // Label for when an error occurs
@@ -119,7 +123,10 @@ public class MainMenuScreen extends Screen {
         battlesButton.setForeground(new Color(220, 20, 60));
         battlesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
         battlesButton.setBounds(309, 320, 200, 61);
-        battlesButton.setEnabled(!gameManager.getAvailableBattles().isEmpty() && !gameManager.getPlayer().isWhitedOut());
+        battlesButton.setEnabled(
+            !gameManager.getAvailableBattles().isEmpty()
+                && !gameManager.getPlayer().isWhitedOut()
+        );
         frame.getContentPane().add(battlesButton);
 
         partyButton.addActionListener(managePartyAction());
@@ -162,8 +169,8 @@ public class MainMenuScreen extends Screen {
      */
     private ActionListener sleepAction(JLabel errorLabel) {
         return ignoredEvent -> {
-            // Can't sleep if the player hasn't battled
-            if (gameManager.hasNotBattleOnce()) {
+            // Can't sleep if the player hasn't battled but is capable of doing so
+            if (!gameManager.getPlayer().isWhitedOut() && gameManager.hasNotBattleOnce()) {
                 errorLabel.setVisible(true);
                 errorLabel.setText("You must battle at least once before you can sleep!");
                 return;
