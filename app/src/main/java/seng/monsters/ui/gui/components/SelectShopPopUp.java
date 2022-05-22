@@ -45,18 +45,20 @@ public final class SelectShopPopUp extends PopUp {
         titleLabel.setBounds((PopUp.WIDTH - 600) / 2, 52, 600, 39);
         frame.getContentPane().add(titleLabel);
 
+        // Button to go to the item shop
         JButton itemShopButton = new JButton("Item Shop");
         itemShopButton.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-        itemShopButton.setBounds((PopUp.WIDTH - 200) / 2, 160, 200, 60);
+        itemShopButton.setBounds((PopUp.WIDTH - 250) / 2, 160, 250, 60);
         frame.getContentPane().add(itemShopButton);
 
+        // Button to go to the monster shop
         JButton monsterShopButton = new JButton("Monster Shop");
         monsterShopButton.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
-        monsterShopButton.setBounds((PopUp.WIDTH - 200) / 2, 280, 200, 60);
+        monsterShopButton.setBounds((PopUp.WIDTH - 250) / 2, 280, 250, 60);
         monsterShopButton.setEnabled(!gameManager.getShop().getMonsterStock().isEmpty());
         frame.getContentPane().add(monsterShopButton);
 
-
+        // Button to return to the main menu
         JButton backToMainMenu = new JButton();
         backToMainMenu.setText("Main menu");
         backToMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
@@ -71,7 +73,7 @@ public final class SelectShopPopUp extends PopUp {
     }
 
     /**
-     * The action performed when player want to go to the monster shop
+     * The action performed when the player uses the monster shop button (navigates to the monster shop)
      *
      * @return An action listener for the monster shop button
      */
@@ -85,7 +87,7 @@ public final class SelectShopPopUp extends PopUp {
     }
 
     /**
-     * The action performed when player want to go to the item shop
+     * The action performed when the player uses the item shop button (navigates to the item shop)
      *
      * @return An action listener for the item shop button
      */
@@ -97,7 +99,7 @@ public final class SelectShopPopUp extends PopUp {
     }
 
     /**
-     * The action performed when the user chose to return the main menu
+     * The action performed when the main menu button is used (returns to the main menu)
      */
     private ActionListener backToMainMenuAction() {
         return ignoredEvent -> frame.dispose();

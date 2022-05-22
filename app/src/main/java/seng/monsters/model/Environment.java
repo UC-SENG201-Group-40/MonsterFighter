@@ -11,43 +11,46 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Environment about the field of battle
+ * <p>
+ * Environment about the field of battle.
+ * Monsters in their environment gain an attack bonus.
+ * </p>
  */
 public enum Environment {
     /**
-     * The desert environment
+     * The desert environment.
      */
     DESERT,
 
     /**
-     * The field / neutral environment
+     * The field / neutral environment.
      */
     FIELD,
 
     /**
-     * The beach environment
+     * The beach environment.
      */
     BEACH,
 
     /**
-     * The mountain and hills environment
+     * The mountain and hills environment.
      */
     HILL,
 
     /**
-     * The forest environment
+     * The forest environment.
      */
     FOREST,
 
     /**
-     * The city environment
+     * The city environment.
      */
     URBAN;
 
     /**
-     * Get all the possible environment
+     * Get all the possible environment.
      *
-     * @return A list of all unique environment
+     * @return A list of all unique environment.
      */
     public static List<Environment> all() {
         return List.of(
@@ -61,9 +64,9 @@ public enum Environment {
     }
 
     /**
-     * Generates a random environment
+     * Generates a random environment.
      *
-     * @return An environment randomly chosen from the list of environments
+     * @return An environment randomly chosen from the list of environments.
      */
     public static Environment generateRandomEnvironment() {
         Environment[] environments = Environment.values();

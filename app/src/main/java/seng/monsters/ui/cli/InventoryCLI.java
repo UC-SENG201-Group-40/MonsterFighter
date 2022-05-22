@@ -24,7 +24,7 @@ public final class InventoryCLI extends TestableCLI {
     public InventoryCLI(GameManager gameManager) {
         this.gameManager = gameManager;
         inventory = gameManager.getInventory();
-        party = gameManager.getTrainer().getParty();
+        party = gameManager.getPlayer().getParty();
     }
 
     /**

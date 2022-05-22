@@ -160,8 +160,8 @@ class BattleManagerTest {
     /**
      * BattleManager <code>isEitherFallen</code> should:
      * <ul>
-     * <li> Return true is either battling monster is fainted
-     * <li> Return false is either is still standing
+     * <li> Return true if either battling monster is fainted
+     * <li> Return false if either is still standing
      * </ul>
      */
     @Test
@@ -169,13 +169,16 @@ class BattleManagerTest {
         player.add(new Monster.Doger(6));
         enemy.add(new Monster.Tree(6));
 
+        // Neither monster is fainted
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertFalse(battleManager.isEitherFallen());
 
+        // Player monster is fainted
         final Monster mon0 = battleManager.getBattlingPlayerMonster();
         mon0.takeDamage(mon0.maxHp());
         assertTrue(battleManager.isEitherFallen());
 
+        // Enemy monster is fainted
         final Monster mon1 = battleManager.getBattlingEnemyMonster();
         mon0.healSelf(mon0.maxHp());
         mon1.takeDamage(mon1.maxHp());
@@ -192,15 +195,18 @@ class BattleManagerTest {
      */
     @Test
     void isSettled() {
+        // Player has no monsters to begin with
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertTrue(battleManager.isSettled());
 
+        // Player and enemy have active monsters
         final Monster mon = new Monster.Doger(1);
         player.add(mon);
         enemy.add(new Monster.Doger(1));
         battleManager = new BattleManager(dud, player, enemy, Environment.FIELD);
         assertFalse(battleManager.isSettled());
 
+        // Player has no active monsters
         mon.takeDamage(mon.maxHp());
         battleManager.nextIteration();
         assertTrue(battleManager.isSettled());
@@ -210,8 +216,8 @@ class BattleManagerTest {
     /**
      * BattleManager's:
      * <ul>
-     * <li><code>goldReward</code> should return the sum of sell price for the losing player</li>
-     * <li><code>scoreReward</code> should return the sum of level for the losing player</li>
+     * <li><code>goldReward</code> should return the sum of sell price for the losing trainer</li>
+     * <li><code>scoreReward</code> should return the sum of level for the losing trainer</li>
      * </ul>
      */
     @Test

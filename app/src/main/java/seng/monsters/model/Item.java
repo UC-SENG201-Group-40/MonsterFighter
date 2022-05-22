@@ -11,20 +11,22 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A usable item that can be applied to a monster to produce a variety of result
+ * A usable item that can be applied to a monster to produce a variety of result.
  */
 public abstract class Item implements Purchasable {
 
     /**
-     * Potion to heal monsters
+     * Potion to heal monsters.
      */
     public static class Potion extends Item {
 
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
             if (mon.isFainted())
+                // Error if monster is fainted.
                 throw new NoEffectException("The monster is dead");
             if (mon.getCurrentHp() == mon.maxHp())
+                // Error if monster has max Hp.
                 throw new NoEffectException("The monster hp is full");
             mon.healSelf(50);
         }
@@ -46,13 +48,14 @@ public abstract class Item implements Purchasable {
     }
 
     /**
-     * Revive to heal fainted monsters
+     * Revive to heal fainted monsters.
      */
     public static class Revive extends Item {
 
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
             if (!mon.isFainted())
+                // Error if monster applying to is not fainted.
                 throw new NoEffectException("The monster is not dead");
             mon.healSelf(mon.maxHp() / 4);
         }
@@ -74,7 +77,7 @@ public abstract class Item implements Purchasable {
     }
 
     /**
-     * RareCandy to level up a monster
+     * RareCandy to level up a monster.
      */
     public static class RareCandy extends Item {
 
@@ -100,13 +103,14 @@ public abstract class Item implements Purchasable {
     }
 
     /**
-     * FullRestore restores health to full regardless if monster is fainted or not
+     * FullRestore restores health to full regardless if monster is fainted or not.
      */
     public static class FullRestore extends Item {
 
         @Override
         public void applyTo(Monster mon) throws NoEffectException {
             if (mon.getCurrentHp() == mon.maxHp())
+                // Error if monster's hp is full
                 throw new NoEffectException("The monster hp is full");
             mon.healSelf(mon.maxHp());
         }
@@ -128,12 +132,12 @@ public abstract class Item implements Purchasable {
     }
 
     /**
-     * Signals that an item has been applied to a monster but produce no result
+     * Signals that an item has been applied to a monster but produce no result.
      */
     public static final class NoEffectException extends IllegalStateException {
         /**
-         * Creates an Exception that indicates that the item produces no result on the monster
-         * @param desc The reasoning why the item produces no result
+         * Creates an Exception that indicates that the item produces no result on the monster.
+         * @param desc The reasoning why the item produces no result as a string.
          */
         public NoEffectException(String desc) {
             super(desc);
@@ -141,34 +145,46 @@ public abstract class Item implements Purchasable {
     }
 
     /**
-     * Apply this item to a monster
+     * Apply this item to a monster.
      *
-     * @param mon The target monster
-     * @throws NoEffectException if the effect gave no changes
+     * @param mon The target monster.
+     * @throws NoEffectException if the effect gave no changes.
      */
     public abstract void applyTo(Monster mon) throws NoEffectException;
 
     /**
-     * A quick description of what this item does
+     * Returns the buy price of the item.
      *
-     * @return The quick description and effect for the item
+     * @return The buy price as an int.
      */
-    public abstract String description();
-
     @Override
     public abstract int buyPrice();
 
+    /**
+     * Computes and returns the sell price of the item.
+     *
+     * @return The sell price of the item.
+     */
     @Override
     public abstract int sellPrice();
 
     /**
-     * Access the name of this item
+     * Access the name of this item.
      *
-     * @return The name of this item
+     * @return The name of this item as a string.
      */
+    @Override
     public String getName() {
         return this.getClass().getSimpleName();
     }
+
+    /**
+     * Access the description of this item
+     *
+     * @return The description of the item as a string.
+     */
+    @Override
+    public abstract String description();
 
     /**
      * Comparing the item with another

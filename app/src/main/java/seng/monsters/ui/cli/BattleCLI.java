@@ -78,7 +78,7 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
             .orElse("");
 
         return String.format(
-            "Player 1: %s (HP: %d) %s" + "\n" + "Player 2: %s (HP: %d) %s",
+            "Trainer 1: %s (HP: %d) %s" + "\n" + "Trainer 2: %s (HP: %d) %s",
             playerMon.getName(), playerMon.getCurrentHp(), party1,
             enemyMon.getName(), enemyMon.getCurrentHp(), party2
         );
@@ -122,7 +122,7 @@ public final class BattleCLI extends TestableCLI implements BattleManager.UI {
         System.out.println("===========================");
         System.out.println(feeds.get(feeds.size() - 1));
         System.out.println(partyFeed());
-        if (!gameManager.getTrainer().isWhitedOut()) {
+        if (!gameManager.getPlayer().isWhitedOut()) {
             displayBattleRewards();
             battleRewards();
         }

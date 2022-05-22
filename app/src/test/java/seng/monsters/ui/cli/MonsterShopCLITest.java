@@ -23,7 +23,7 @@ public class MonsterShopCLITest extends CLITestBase {
     void setUp() {
         gameManager = new GameManager(0, 1, 5, 1, "Idiot");
         shop = gameManager.getShop();
-        trainer = gameManager.getTrainer();
+        trainer = gameManager.getPlayer();
         monsterShopCLI = new MonsterShopCLI(gameManager);
         baseSetup();
     }

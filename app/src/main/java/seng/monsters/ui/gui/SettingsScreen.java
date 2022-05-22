@@ -39,7 +39,7 @@ public class SettingsScreen extends Screen {
         frame.getContentPane().add(difficultyPromptLabel);
 
         JLabel maxDaysPromptLabel = new JLabel("Choose number of days to play:");
-        maxDaysPromptLabel.setBounds(145, 193, 220, 16);
+        maxDaysPromptLabel.setBounds(145, 193, 230, 16);
         frame.getContentPane().add(maxDaysPromptLabel);
 
         JLabel difficultyLabel = new JLabel("Normal");
@@ -50,18 +50,22 @@ public class SettingsScreen extends Screen {
         maxDaysLabel.setBounds(400, 193, 346, 16);
         frame.getContentPane().add(maxDaysLabel);
 
+        // Button to select normal difficulty
         JButton normalDifficultyButton = new JButton("Normal");
         normalDifficultyButton.setBounds(181, 112, 117, 29);
         frame.getContentPane().add(normalDifficultyButton);
 
+        // Button to select hard difficulty
         JButton hardDifficultButton = new JButton("Hard");
         hardDifficultButton.setBounds(324, 112, 117, 29);
         frame.getContentPane().add(hardDifficultButton);
 
+        // Button to select impossible difficulty
         JButton impossibleDifficultyLabel = new JButton("Impossible");
         impossibleDifficultyLabel.setBounds(473, 112, 117, 29);
         frame.getContentPane().add(impossibleDifficultyLabel);
 
+        // Textfield to enter number of days to play
         JTextField maxDaysTextField = new JTextField();
         maxDaysTextField.setToolTipText("Must be between 5 to 15 days");
         maxDaysTextField.setText(maxDays.get().toString());
@@ -69,14 +73,17 @@ public class SettingsScreen extends Screen {
         frame.getContentPane().add(maxDaysTextField);
         maxDaysTextField.setColumns(10);
 
+        // Button to confirm number of days change
         JButton verifyMaxDaysButton = new JButton("Change");
         verifyMaxDaysButton.setBounds(473, 242, 117, 29);
         frame.getContentPane().add(verifyMaxDaysButton);
 
+        // Button to continue to main menu
         JButton submitButton = new JButton("Next");
         submitButton.setBounds(350, 374, 117, 29);
         frame.getContentPane().add(submitButton);
 
+        // Label for when an error occurs ( an invalid number of days is passed)
         JLabel errorLabel = new JLabel("");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         errorLabel.setForeground(new Color(255, 0, 0));

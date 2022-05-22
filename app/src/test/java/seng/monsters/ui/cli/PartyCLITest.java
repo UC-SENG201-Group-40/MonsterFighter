@@ -46,7 +46,7 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void partyStatsInterface() {
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
@@ -96,7 +96,7 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void moveMonsterInterface() {
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
@@ -139,7 +139,7 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void selectMonsterToMove() {
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
@@ -187,7 +187,7 @@ class PartyCLITest extends CLITestBase {
      */
     @Test
     void selectMonsterToSwap() {
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
 
@@ -227,7 +227,7 @@ class PartyCLITest extends CLITestBase {
         final String res0 = acquireOutput();
         assertFalse(Stream.of(1, 2, 3, 4).map(Object::toString).anyMatch(s -> res0.contains(s + " - ")));
 
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         final List<Monster> monsters = List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1));
         monsters.forEach(trainer::add);
         partyCLI.displayPartyStats(false);
@@ -259,7 +259,7 @@ class PartyCLITest extends CLITestBase {
         assertTrue(res0.contains("Which monster would you like to swap A with?"));
         assertFalse(Stream.of(1, 2, 3, 4).map(Object::toString).anyMatch(s -> res0.contains(s + " - ")));
 
-        final Trainer trainer = gameManager.getTrainer();
+        final Trainer trainer = gameManager.getPlayer();
         List.of(new Monster.Quacker("1", 1), new Monster.Eel("2", 1)).forEach(trainer::add);
         partyCLI.displayMoveMonsters(new Monster.Tree("A", 1));
         final String res1 = acquireOutput();

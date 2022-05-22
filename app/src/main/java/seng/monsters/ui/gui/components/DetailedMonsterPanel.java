@@ -35,6 +35,13 @@ public final class DetailedMonsterPanel {
     private JLabel monsterNameLabel;
 
     /**
+     * The monster type label
+     * <p>
+     * Text format: "<code>{Monster::monsterType}</code>"
+     */
+    private JLabel monsterTypeLabel;
+
+    /**
      * The monster description label.
      * <p>
      * Text format: "<code>{Monster::description}</code>"
@@ -166,7 +173,11 @@ public final class DetailedMonsterPanel {
      */
     public void refresh() {
         monsterNameLabel.setText(
-            String.format("%s (%s)", monster.getName(), monster.monsterType())
+            String.format("%s", monster.getName())
+        );
+
+        monsterTypeLabel.setText(
+                String.format("(%s)", monster.monsterType())
         );
 
         monsterDescriptionLabel.setText(
@@ -213,88 +224,115 @@ public final class DetailedMonsterPanel {
      * Initialize the UI element for this panel
      */
     private void render() {
+        // Panel to contain all the monster's information
         monsterDisplayPanel = new JPanel();
         monsterDisplayPanel.setBackground(new Color(255, 250, 240));
 
+        // Label for the name of the monster
         monsterNameLabel = new JLabel(
-            String.format("%s (%s)", monster.getName(), monster.monsterType())
+            String.format("%s", monster.getName())
         );
-        monsterNameLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+        monsterNameLabel.setFont(new Font("Lucida Grande", Font.BOLD, 14));
         monsterNameLabel.setForeground(Color.BLACK);
         monsterNameLabel.setBounds(6, 6, 240, 36);
         monsterDisplayPanel.add(monsterNameLabel);
 
+        // Label for the type of the monster
+        monsterTypeLabel = new JLabel(
+                String.format("(%s)", monster.monsterType())
+        );
+        monsterTypeLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
+        monsterTypeLabel.setForeground(Color.BLACK);
+        monsterTypeLabel.setBounds(6, 28, 72, 24);
+        monsterDisplayPanel.add(monsterTypeLabel);
+
+        // Label for the description of the monster
         monsterDescriptionLabel = new JLabel(
                 "<html>" + monster.description() + "</html>"
         );
-        monsterDescriptionLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 11));
+        monsterDescriptionLabel.setFont(new Font("Lucida Grande", Font.ITALIC, 10));
         monsterDescriptionLabel.setForeground(Color.BLACK);
-        monsterDescriptionLabel.setBounds(6, 30, 294, 24);
+        monsterDescriptionLabel.setBounds(7, 41, 294, 24);
         monsterDisplayPanel.add(monsterDescriptionLabel);
 
+        // Labels for the hp of the monster
         JLabel hpLabel = new JLabel("HP:");
         hpLabel.setForeground(Color.BLACK);
-        hpLabel.setBounds(16, 60, 25, 16);
+        hpLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+        hpLabel.setBounds(16, 70, 25, 16);
         monsterDisplayPanel.add(hpLabel);
-
-        levelLabel = new JLabel(
-            String.format("Lv. %d", monster.getLevel())
-        );
-        levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-        levelLabel.setForeground(Color.BLACK);
-        levelLabel.setFont(new Font("Lucida Grande", Font.BOLD, 12));
-        levelLabel.setBounds(249, 6, 45, 36);
-        monsterDisplayPanel.add(levelLabel);
 
         monsterCurrHpLabel = new JLabel(
             String.format("%d/%d", monster.getCurrentHp(), monster.maxHp())
         );
+        monsterCurrHpLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         monsterCurrHpLabel.setForeground(hpColor());
-        monsterCurrHpLabel.setBounds(44, 60, 99, 16);
+        monsterCurrHpLabel.setBounds(44, 70, 99, 16);
         monsterDisplayPanel.add(monsterCurrHpLabel);
 
+        // Label for the level of the monster
+        levelLabel = new JLabel(
+                String.format("Lv. %d", monster.getLevel())
+        );
+        levelLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        levelLabel.setForeground(Color.BLACK);
+        levelLabel.setFont(new Font("Lucida Grande", Font.BOLD, 12));
+        levelLabel.setBounds(239, 6, 55, 36);
+        monsterDisplayPanel.add(levelLabel);
+
+        // Label for the buy/sell price of the monster
         priceLabel = new JLabel(
             String.format("%s price: %d Gold",
                 showBuying ? "Buy" : "Sell",
                 showBuying ? monster.buyPrice() : monster.sellPrice()
             )
         );
+        priceLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         priceLabel.setForeground(Color.BLACK);
-        priceLabel.setBounds(16, 88, 127, 16);
+        priceLabel.setBounds(16, 98, 127, 16);
         monsterDisplayPanel.add(priceLabel);
 
+        // Label for the attack damage of the monster
         attackLabel = new JLabel(
             String.format("Attack: %d", monster.scaledDamage())
         );
+        attackLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         attackLabel.setForeground(Color.BLACK);
-        attackLabel.setBounds(16, 116, 127, 16);
+        attackLabel.setBounds(16, 126, 127, 16);
         monsterDisplayPanel.add(attackLabel);
 
+        // Label for the speed of the monster
         speedLabel = new JLabel(
             String.format("Speed: %d", monster.speed())
         );
+        speedLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         speedLabel.setForeground(Color.BLACK);
-        speedLabel.setBounds(16, 144, 127, 16);
+        speedLabel.setBounds(16, 154, 127, 16);
         monsterDisplayPanel.add(speedLabel);
 
+        // Label for the overnight heal rate of the monster
         healRateLabel = new JLabel(
             String.format("Heal rate: %d", monster.healRate())
         );
         healRateLabel.setForeground(Color.BLACK);
-        healRateLabel.setBounds(16, 172, 127, 16);
+        healRateLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+        healRateLabel.setBounds(16, 182, 127, 16);
         monsterDisplayPanel.add(healRateLabel);
 
+        // Label for the environment of the monster
         envLabel = new JLabel(
             String.format("Environment: %s", monster.idealEnvironment().toString())
         );
+        envLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         envLabel.setForeground(Color.BLACK);
-        envLabel.setBounds(16, 200, 127, 16);
+        envLabel.setBounds(16, 210, 137, 16);
         monsterDisplayPanel.add(envLabel);
 
+        // Label for the icon of the monster
         iconLabel = new JLabel("");
         Screen.imageIconFromResource(String.format("/images/%s.gif", monster.monsterType().toLowerCase()))
             .ifPresent(iconLabel::setIcon);
-        iconLabel.setBounds(148, 60, 146, 156);
+        iconLabel.setBounds(148, 70, 146, 156);
         monsterDisplayPanel.add(iconLabel);
     }
 

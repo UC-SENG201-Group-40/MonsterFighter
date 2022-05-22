@@ -109,7 +109,7 @@ public final class MainMenuCLI extends TestableCLI {
     }
 
     private void displayEndScreen() {
-        System.out.printf("%s...%n", gameManager.getTrainer().getName());
+        System.out.printf("%s...%n", gameManager.getPlayer().getName());
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -130,7 +130,7 @@ public final class MainMenuCLI extends TestableCLI {
         System.out.printf("Final Gold: %d%n", gameManager.getGold());
         System.out.printf("Final score: %d%n", gameManager.getScore());
         System.out.println("\nFinal party:");
-        for (Monster mon : gameManager.getTrainer().getParty()) {
+        for (Monster mon : gameManager.getPlayer().getParty()) {
             System.out.printf("%s - Level %d %s%n",
                 mon.getName(), mon.getLevel(), mon.monsterType());
         }

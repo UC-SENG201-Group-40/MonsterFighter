@@ -15,121 +15,122 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Battle manager to handle battle between Trainer.
  * <p>
- * The match is handled using the <code>nextIteration()</code> method which will need to be and
+ * Battle manager to handle a battle between Trainers.
+ * The match is handled using the <code>nextIteration()</code> method which will need to be implemented by the ui.
+ * </p>
  */
 public final class BattleManager {
     /**
-     * The UI that provides callbacks at certain event during the match
+     * The UI that provides callbacks at certain event during the match.
      */
     public interface UI {
         /**
-         * The action done on each frame of the moving attack
+         * The action done on each frame of the moving attack.
          *
-         * @param percentage The progress percentage of the attack
+         * @param percentage The progress percentage of the attack.
          */
         void onEachAttackProgress(int percentage);
 
         /**
-         * The action done when the pseudo attack lands and dealt damage
+         * The action done when the pseudo attack lands and dealt damage.
          *
-         * @param isPlayerTurn True if the player is attacking, otherwise false
-         * @param dmg          The damage dealt
+         * @param isPlayerTurn True if the player is attacking, otherwise false.
+         * @param dmg          The damage dealt by the attack.
          */
         void onEachLandedAttack(boolean isPlayerTurn, int dmg);
 
         /**
-         * The action done when either battling monster needed to be switched out
+         * The action done when either battling monster needs to be switched out.
          *
-         * @param isPlayerTurn True if the player is attacking, otherwise false
+         * @param isPlayerTurn True if the player is attacking, otherwise false.
          */
         void onEachNextMonster(boolean isPlayerTurn);
 
         /**
-         * The action done after the battle has concluded
+         * The action done after the battle has concluded.
          */
         void onEnd();
     }
 
     /**
-     * Signals that the trainer no longer have any active (non-fainted) monster left
+     * Signals that the trainer no longer has any active (non-fainted) monster left.
      */
     public static class WhitedOutException extends IllegalStateException {
     }
 
     /**
-     * The UI class to perform certain action on event
+     * The UI class to perform certain action on event.
      */
     private final UI ui;
 
     /**
-     * The player trainer
+     * The player trainer.
      */
     private final Trainer player;
 
     /**
-     * The opposing trainer
+     * The opposing trainer.
      */
     private final Trainer enemy;
 
     /**
-     * The environment where the battle is held
+     * The environment where the battle is held.
      */
     private final Environment environment;
 
     /**
-     * The current monster for the player
+     * The current monster for the player.
      */
     private Monster battlingPlayerMonster;
 
     /**
-     * The current monster for the opponent
+     * The current monster for the opponent.
      */
     private Monster battlingEnemyMonster;
 
     /**
-     * A state to determine whether the manager can still continue
+     * A state to determine whether the manager should still continue (i.e. if the battle is finished or not).
      */
     private AtomicBoolean isSettled;
 
     /**
-     * The list of actions done
+     * The list of actions done.
      */
     private final ConcurrentLinkedDeque<String> feeds = new ConcurrentLinkedDeque<>();
 
     /**
-     * The randomizer used to simulate fluctuating damage output
+     * The randomizer used to simulate fluctuating damage output.
      */
     private final Random rng = new Random();
 
     /**
-     * The boolean signalling whose turn is at this moment
+     * The boolean signalling whose turn is at this moment.
      */
     private boolean isPlayerTurn;
 
     /**
-     * Pseudo position state to simulate delay in the attack before connecting
+     * Pseudo position state to simulate delay in the attack before connecting.
      */
     private int pseudoAttackPosition;
 
     /**
-     * Pseudo speed (in distance) state the jump of movement in the attack before connecting
+     * Pseudo speed (in distance) state to simulate the jump of movement in the attack before connecting.
      */
     private int pseudoSpeed;
 
     /**
-     * Pseudo end goal state simulating the distance needed to reach before the attack lands
+     * Pseudo end goal state simulating the distance needed to reach before the attack lands.
      */
     private int pseudoGoal;
 
 
     /**
-     * Creates a battle manager that provide functions to simulate the battle process
-     * @param ui The UI that can perform actions on certain events
-     * @param player The player trainer
-     * @param enemy The enemy trainer to fight
-     * @param environment The environment for the battle
+     * Creates a battle manager that provide functions to simulate the battle process.
+     * @param ui The UI that is shown to the use and can display actions on certain events.
+     * @param player The player trainer.
+     * @param enemy The enemy trainer to fight.
+     * @param environment The environment for the battle.
      */
     public BattleManager(UI ui, Trainer player, Trainer enemy, Environment environment) {
         this.player = player;
@@ -150,7 +151,7 @@ public final class BattleManager {
     }
 
     /**
-     * A method to proceed to the next iteration of the battle
+     * A method to proceed to the next iteration of the battle.
      */
     public void nextIteration() {
         if (isSettled())
@@ -158,10 +159,12 @@ public final class BattleManager {
 
         if (isEitherFallen()) {
             try {
+                // Loads next monster when either monster faints
                 battlingPlayerMonster = battlingPlayerMonster.isFainted() ? nextPlayerMon() : battlingPlayerMonster;
                 battlingEnemyMonster = battlingEnemyMonster.isFainted() ? nextEnemyMon() : battlingEnemyMonster;
                 changeMonster();
             } catch (WhitedOutException ignored) {
+                // Ends battle if either party is wiped
                 endGame();
             }
             return;
@@ -183,18 +186,19 @@ public final class BattleManager {
     }
 
     /**
-     * Check if the pseudo attack has reach the target and lands
+     * Check if the pseudo attack has reach the target and lands.
      *
-     * @return A boolean signalling the attacking landing or not
+     * @return A boolean signalling the attacking landing or not.
      */
     private boolean hasAttackLanded() {
         return isPlayerTurn ? pseudoAttackPosition >= pseudoGoal : pseudoAttackPosition <= pseudoGoal;
     }
 
     /**
-     * Performed the damage, add new feed that the damage landed, and call damage event callback
+     * Performs the damage, add new feed that the damage landed, and call damage event callback.
      */
     private void performDamage() {
+        // Decides which monster is attacking/defending depending on if it's the player's turn
         final Monster atk = isPlayerTurn ? battlingPlayerMonster : battlingEnemyMonster;
         final Monster def = isPlayerTurn ? battlingEnemyMonster : battlingPlayerMonster;
         final Trainer atkTrainer = isPlayerTurn ? player : enemy;
@@ -220,7 +224,7 @@ public final class BattleManager {
     }
 
     /**
-     * Switching monsters after either battling monster fainted, and resetting the pseudo states
+     * Switching monsters after either battling monster fainted, and resetting the pseudo states.
      */
     private void changeMonster() {
         isPlayerTurn = battlingPlayerMonster.speed() >= battlingEnemyMonster.speed();
@@ -231,7 +235,7 @@ public final class BattleManager {
     }
 
     /**
-     * Ending the match, add to the ending feed, and call the end callback
+     * Ends the match, add ending to the feed, and call the end callback
      */
     private void endGame() {
         feeds.add(String.format(
@@ -250,82 +254,86 @@ public final class BattleManager {
     }
 
     /**
-     * Get the next monster for the player that is not fainted
+     * Get the next non-fainted monster for the player.
      *
-     * @return A next non-fainted monster if there is none return null
+     * @return The next non-fainted monster. If there is none, throw a WhitedOutException.
+     * @throws WhitedOutException if the player has no more monsters to fight with.
      */
     private Monster nextPlayerMon() throws WhitedOutException {
         final Optional<Monster> nextMon = player.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
+            // Error if player has no more monsters
             throw new WhitedOutException();
         }
     }
 
     /**
-     * Get the next monster for the enemy that is not fainted
+     * Get the next non-fainted monster for the enemy trainer.
      *
-     * @return A next non-fainted monster if there is none return null
+     * @return The next non-fainted monster. If there is none, throw a WhitedOutException.
+     * @throws WhitedOutException if the enemy has no more monsters to fight with.
      */
     private Monster nextEnemyMon() throws WhitedOutException {
         final Optional<Monster> nextMon = enemy.getParty().stream().filter(mon -> !mon.isFainted()).findFirst();
         try {
             return nextMon.orElseThrow();
         } catch (NoSuchElementException ignored) {
+            // Error if enemy has no more monsters
             throw new WhitedOutException();
         }
     }
 
     /**
-     * Get the feeds broadcast during the battle
+     * Get the feeds broadcast during the battle.
      *
-     * @return A concurrent linked deque containing the feeds
+     * @return A concurrent linked deque containing the feeds.
      */
     public Collection<String> getFeeds() {
         return feeds;
     }
 
     /**
-     * Get the player's monster currently battling
+     * Get the player's monster currently battling.
      *
-     * @return A monster currently battling
+     * @return A monster currently battling.
      */
     public Monster getBattlingPlayerMonster() {
         return battlingPlayerMonster;
     }
 
     /**
-     * Get the enemy's monster currently battling
+     * Get the enemy's monster currently battling.
      *
-     * @return A monster currently battling
+     * @return A monster currently battling.
      */
     public Monster getBattlingEnemyMonster() {
         return battlingEnemyMonster;
     }
 
     /**
-     * Get the player trainer
+     * Get the player trainer.
      *
-     * @return A trainer representation for the player
+     * @return A trainer representation for the player.
      */
     public Trainer getPlayer() {
         return player;
     }
 
     /**
-     * Get the opposing trainer
+     * Get the opposing trainer.
      *
-     * @return A trainer representation for the enemy
+     * @return A trainer representation for the enemy.
      */
     public Trainer getEnemy() {
         return enemy;
     }
 
     /**
-     * Get the winning trainer
+     * Get the winning trainer.
      *
-     * @return A trainer is the battle is settled otherwise null
+     * @return A trainer if the battle is settled otherwise null.
      */
     private Trainer winner() {
         final long remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
@@ -334,9 +342,9 @@ public final class BattleManager {
     }
 
     /**
-     * Get the losing trainer
+     * Get the losing trainer.
      *
-     * @return A trainer is the battle is settled otherwise null
+     * @return A trainer if the battle is settled otherwise null.
      */
     private Trainer loser() {
         final long remainingPlayerMon = player.getParty().stream().filter(mon -> !mon.isFainted()).count();
@@ -354,29 +362,30 @@ public final class BattleManager {
     }
 
     /**
-     * Check if the match has settled
+     * Check if the match has finished.
      *
-     * @return A boolean signalling that result
+     * @return A boolean signalling that result.
      */
     public boolean isSettled() {
         return isSettled.get();
     }
 
     /**
-     * Check if the player1 has won
+     * Check if the player1 has won.
      *
-     * @return True if all player 2 monster is fainted, otherwise false
+     * @return True if all player 2 monster is fainted, otherwise false.
      */
     public boolean hasPlayerWon() {
         return enemy.getParty().stream().allMatch(Monster::isFainted);
     }
 
     /**
-     * The gold total rewarded for this battle
+     * The gold total rewarded for this battle.
      *
-     * @return The amount gold should be received by the winner
+     * @return The amount of gold to be received by the winner.
      */
     public int goldReward() {
+        // Sum of monster sell prices of losing team.
         return loser().getParty()
             .stream()
             .mapToInt(Monster::sellPrice)
@@ -384,11 +393,12 @@ public final class BattleManager {
     }
 
     /**
-     * The score total rewarded for this battle
+     * The score total rewarded for this battle.
      *
-     * @return The amount score should be received by the winner
+     * @return The amount of score to be received by the winner.
      */
     public int scoreReward() {
+        // Sum of monster levels of losing team
         return loser().getParty()
             .stream()
             .mapToInt(Monster::getLevel)
