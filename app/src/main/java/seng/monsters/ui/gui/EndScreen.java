@@ -2,10 +2,9 @@ package seng.monsters.ui.gui;
 
 import java.awt.Color;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JPanel;
+import java.awt.event.ActionListener;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.ui.gui.components.PartyPanel;
@@ -97,12 +96,12 @@ public class EndScreen extends Screen {
         scoreLabel.setBounds(6, 189, 200, 16);
         gameReportPanel.add(scoreLabel);
 
-        JLabel lblNewLabel = new JLabel("Thank you for playing");
+        JLabel lblNewLabel = new JLabel("Thank you for playing!");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setBounds(244, 400, 333, 16);
         frame.getContentPane().add(lblNewLabel);
 
-        JLabel partyReportLabel = new JLabel("Here is your party:");
+        JLabel partyReportLabel = new JLabel("Final Party:");
         partyReportLabel.setFont(new Font("Lucida Grande", Font.BOLD, 13));
         partyReportLabel.setBounds(410, 70, 200, 16);
         frame.getContentPane().add(partyReportLabel);
@@ -112,7 +111,42 @@ public class EndScreen extends Screen {
         partyPanel.setBounds(410, 86);
         partyPanel.applyToFrame(frame);
 
+        // Button to exit the game.
+        JButton exitButton = new JButton("Exit Game");
+        exitButton.setHorizontalAlignment(SwingConstants.CENTER);
+        exitButton.setBounds(16, 400, 180, 30);
+        frame.getContentPane().add(exitButton);
+        exitButton.addActionListener(exitGameAction());
+
+        // Button to start game over.
+        JButton startOverButton = new JButton("Restart Game");
+        startOverButton.setHorizontalAlignment(SwingConstants.CENTER);
+        startOverButton.setBounds(607, 400, 180, 30);
+        frame.getContentPane().add(startOverButton);
+        startOverButton.addActionListener(restartGameAction());
+
         frame.setVisible(true);
+    }
+
+    /**
+     * The action performed when using the exit game button (exits the game.)
+     *
+     * @return an action listener that is passed to the exit button.
+     */
+    private ActionListener exitGameAction() {
+        return e -> gui.quit();
+    }
+
+    /**
+     * The action performed when using the restart game button (starts over game from the start)
+     *
+     * @return an action listener that is passed to the startOver button.
+     */
+    private ActionListener restartGameAction() {
+        return e -> {
+            gui.quit();
+            final var gui2 = new GUI();
+        };
     }
 
     /**
