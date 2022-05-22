@@ -129,7 +129,7 @@
     - [ ] The chance should increase depending on how many free slots the player has in their team
     - [x] The chance should be quite low
 
---- 
+---
 
 ## Finishing the game
 
@@ -160,19 +160,19 @@ The game ends when one of the following occurs:
 
 ### Report
 
-- [ ] Write a short two page report describing your work.
-- [ ] Include on the first page:
-    1. [ ] Student names and ID numbers.
-    2. [ ] The structure of your application and any design decisions you had to make. We are particularity interested
+- [x] Write a short two page report describing your work.
+- [x] Include on the first page:
+    1. [x] Student names and ID numbers.
+    2. [x] The structure of your application and any design decisions you had to make. We are particularity interested
        in communication between classes and how interfaces and/or inheritance were used. You might want to reference
        your UML class diagram.
-    3. [ ] An explanation of unit test coverage, and why you managed to get a high/low percentage coverage.
-- [ ] Include on the second page:
-    1. [ ] Your thoughts and feedback on the project.
-    2. [ ] A brief retrospective of what went well, what did not go well, and what improvements you could make for your
+    3. [x] An explanation of unit test coverage, and why you managed to get a high/low percentage coverage.
+- [x] Include on the second page:
+    1. [x] Your thoughts and feedback on the project.
+    2. [x] A brief retrospective of what went well, what did not go well, and what improvements you could make for your
        next project.
-    3. [ ] The effort spent (in hours) in the project per student.
-    4. [ ] A statement of agreed % contribution from both partners.
+    3. [x] The effort spent (in hours) in the project per student.
+    4. [x] A statement of agreed % contribution from both partners.
 
 ### Subsmission
 
@@ -182,7 +182,7 @@ Please create a ZIP archive with the following:
   into Eclipse.
 - [x] Javadoc (already compiled and ready to view).
 - [x] UML use case and class diagrams as a PDF or PNG (do not submit Umbrello or Dia files; these will not be marked).
-- [ ] Your report as a PDF file (do not submit MS Word or LibreOffice docu- ments; these will not be marked).
-- [ ] A README.txt file describing how to build your source code, import your project into Eclipse and run your program.
+- [x] Your report as a PDF file (do not submit MS Word or LibreOffice docu- ments; these will not be marked).
+- [x] A README.txt file describing how to build your source code, import your project into Eclipse and run your program.
 - [x] A packaged version of your program as a JAR. We must be able to run your program in one of the lab machines along
   the lines of: java -jar usercode1 usercode2 MonsterFighter.jar.

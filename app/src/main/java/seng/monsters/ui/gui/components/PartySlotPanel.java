@@ -48,6 +48,7 @@ public final class PartySlotPanel {
 
     /**
      * Creates a JPanel that display a monster in the party
+     *
      * @param monster The monster to be displayed
      */
     public PartySlotPanel(Monster monster) {
@@ -128,6 +129,7 @@ public final class PartySlotPanel {
 
     /**
      * Set the action listener for when the monster is selected
+     *
      * @param action The action listener to be called
      */
     public void addActionListener(ActionListener action) {
@@ -152,7 +154,7 @@ public final class PartySlotPanel {
 
         // Button to select this specific monster, if required
         nameButton = new JButton();
-        nameButton.setText(String.format("%s", monster.getName()));
+        nameButton.setText(monster.getName());
         nameButton.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         nameButton.setBounds(54, 10, 194, 16);
         monsterPanel.add(nameButton);
