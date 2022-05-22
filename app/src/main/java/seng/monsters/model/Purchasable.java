@@ -8,34 +8,34 @@
 package seng.monsters.model;
 
 /**
- * Any class that can be bought and sold into the shop
+ * Any class that can be bought and sold into the shop.
  */
 public interface Purchasable {
     /**
-     * The cost of the purchasable when bought
+     * The cost of the purchasable when bought.
      *
-     * @return The price as integer
+     * @return The buy price of the purchasable.
      */
     int buyPrice();
 
     /**
-     * The cost of the purchasable when sold back
+     * The cost of the purchasable when sold back.
      *
-     * @return The price as integer
+     * @return The sell price of the purchasable.
      */
     int sellPrice();
 
     /**
-     * The name of the purchasable
+     * The name of the purchasable.
      *
-     * @return The name of the purchasable as string
+     * @return The name of the purchasable.
      */
     String getName();
 
     /**
-     * A description of the purchasable
+     * A description of the purchasable.
      *
-     * @return The description of the purchasable as a string
+     * @return The description of the purchasable.
      */
     String description();
 }

@@ -29,7 +29,7 @@ public final class SetupCLI extends TestableCLI {
         final GameManager gameManager = new GameManager(0, 1, maxDays, difficulty, name);
         final Monster mon = selectStartingMonsterInterface();
         System.out.printf("\n%s, Your adventure has begun!", name);
-        gameManager.getTrainer().add(mon);
+        gameManager.getPlayer().add(mon);
         MainMenuCLI.make(gameManager);
     }
 

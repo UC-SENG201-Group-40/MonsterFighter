@@ -20,7 +20,7 @@ public final class PartyCLI extends TestableCLI {
     public PartyCLI(GameManager gameManager) {
         super();
         this.gameManager = gameManager;
-        this.party = gameManager.getTrainer().getParty();
+        this.party = gameManager.getPlayer().getParty();
     }
 
     /**

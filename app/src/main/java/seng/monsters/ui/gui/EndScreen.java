@@ -2,10 +2,9 @@ package seng.monsters.ui.gui;
 
 import java.awt.Color;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JPanel;
+import java.awt.event.ActionListener;
 
 import seng.monsters.model.GameManager;
 import seng.monsters.ui.gui.components.PartyPanel;
@@ -34,44 +33,46 @@ public class EndScreen extends Screen {
 
     @Override
     public void render() {
+        // Title label announcing the player's success or failure
         JLabel titleLabel = new JLabel(String.format(
             isSuccessful
                 ? "Well done, %s! You completed the game!"
                 : "Too bad, %s! You lost the game",
-            gameManager.getTrainer().getName()
+            gameManager.getPlayer().getName()
         ));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
         titleLabel.setBounds(6, 25, 807, 39);
         frame.getContentPane().add(titleLabel);
 
-        JPanel panel = new JPanel();
-        panel.setBounds(113, 115, 212, 234);
-        frame.getContentPane().add(panel);
-        panel.setLayout(null);
+        // Panel for end game report
+        JPanel gameReportPanel = new JPanel();
+        gameReportPanel.setBounds(113, 115, 212, 234);
+        frame.getContentPane().add(gameReportPanel);
+        gameReportPanel.setLayout(null);
 
         JLabel gameReportLabel = new JLabel("Here is your game report:");
         gameReportLabel.setFont(new Font("Lucida Grande", Font.BOLD, 13));
         gameReportLabel.setBounds(6, 6, 200, 16);
-        panel.add(gameReportLabel);
+        gameReportPanel.add(gameReportLabel);
 
         JLabel dayReachLabel = new JLabel("Day(s) reached:");
         dayReachLabel.setBounds(6, 57, 200, 16);
-        panel.add(dayReachLabel);
+        gameReportPanel.add(dayReachLabel);
 
         JLabel goldCollectedLabel = new JLabel("Total gold collected:");
         goldCollectedLabel.setBounds(6, 108, 200, 16);
-        panel.add(goldCollectedLabel);
+        gameReportPanel.add(goldCollectedLabel);
 
         JLabel diificultyLabel = new JLabel(String.format(
             "Difficulty: %s", difficultyName()
         ));
         diificultyLabel.setBounds(6, 34, 200, 16);
-        panel.add(diificultyLabel);
+        gameReportPanel.add(diificultyLabel);
 
         JLabel scoreAchievedLabel = new JLabel("Total score achieved:");
         scoreAchievedLabel.setBounds(6, 159, 200, 16);
-        panel.add(scoreAchievedLabel);
+        gameReportPanel.add(scoreAchievedLabel);
 
         JLabel dayProgressLabel = new JLabel(String.format(
             "%d/%d",
@@ -81,35 +82,71 @@ public class EndScreen extends Screen {
         dayProgressLabel.setForeground(color(gameManager.getCurrentDay(), gameManager.getMaxDays()));
         dayProgressLabel.setHorizontalAlignment(SwingConstants.CENTER);
         dayProgressLabel.setBounds(6, 80, 200, 16);
-        panel.add(dayProgressLabel);
+        gameReportPanel.add(dayProgressLabel);
 
         JLabel goldLabel = new JLabel(String.format("%d gold", gameManager.getGold()));
         goldLabel.setHorizontalAlignment(SwingConstants.CENTER);
         goldLabel.setForeground(new Color(0, 0, 0));
         goldLabel.setBounds(6, 136, 200, 16);
-        panel.add(goldLabel);
+        gameReportPanel.add(goldLabel);
 
         JLabel scoreLabel = new JLabel(String.format("%d points", gameManager.getScore()));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setForeground(Color.BLACK);
         scoreLabel.setBounds(6, 189, 200, 16);
-        panel.add(scoreLabel);
+        gameReportPanel.add(scoreLabel);
 
-        JLabel lblNewLabel = new JLabel("Thank you for playing");
+        JLabel lblNewLabel = new JLabel("Thank you for playing!");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setBounds(244, 400, 333, 16);
         frame.getContentPane().add(lblNewLabel);
 
-        JLabel partyReportLabel = new JLabel("Here is your party:");
+        JLabel partyReportLabel = new JLabel("Final Party:");
         partyReportLabel.setFont(new Font("Lucida Grande", Font.BOLD, 13));
         partyReportLabel.setBounds(410, 70, 200, 16);
         frame.getContentPane().add(partyReportLabel);
 
-        PartyPanel partyPanel = new PartyPanel(gameManager.getTrainer());
+        // Panel displaying final party
+        PartyPanel partyPanel = new PartyPanel(gameManager.getPlayer());
         partyPanel.setBounds(410, 86);
         partyPanel.applyToFrame(frame);
 
+        // Button to exit the game.
+        JButton exitButton = new JButton("Exit Game");
+        exitButton.setHorizontalAlignment(SwingConstants.CENTER);
+        exitButton.setBounds(16, 400, 180, 30);
+        frame.getContentPane().add(exitButton);
+        exitButton.addActionListener(exitGameAction());
+
+        // Button to start game over.
+        JButton startOverButton = new JButton("Restart Game");
+        startOverButton.setHorizontalAlignment(SwingConstants.CENTER);
+        startOverButton.setBounds(607, 400, 180, 30);
+        frame.getContentPane().add(startOverButton);
+        startOverButton.addActionListener(restartGameAction());
+
         frame.setVisible(true);
+    }
+
+    /**
+     * The action performed when using the exit game button (exits the game.)
+     *
+     * @return an action listener that is passed to the exit button.
+     */
+    private ActionListener exitGameAction() {
+        return e -> gui.quit();
+    }
+
+    /**
+     * The action performed when using the restart game button (starts over game from the start)
+     *
+     * @return an action listener that is passed to the startOver button.
+     */
+    private ActionListener restartGameAction() {
+        return e -> {
+            gui.quit();
+            final var gui2 = new GUI();
+        };
     }
 
     /**

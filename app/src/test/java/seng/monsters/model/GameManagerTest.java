@@ -100,6 +100,7 @@ class GameManagerTest {
      */
     @Test
     void getAvailableBattles() {
+        // No enemy trainers have been defeated
         assertTrue(manager.getAvailableBattles().size() > 0);
         assertTrue(manager.getAvailableBattles().stream().noneMatch(Trainer::isWhitedOut));
 
@@ -108,6 +109,7 @@ class GameManagerTest {
         assertEquals(amountEnemies, manager.getAvailableBattles().size());
         assertTrue(manager.getAvailableBattles().stream().allMatch(trainer -> trainer.getParty().size() == amountMonster));
 
+        // At least 1 enemy trainer has been defeated
         manager.getAvailableBattles()
             .stream()
             .findFirst()
@@ -129,17 +131,21 @@ class GameManagerTest {
      */
     @Test
     void hasNotEnoughMoneyForMonster() {
+        // No monster, no money
         assertTrue(manager.hasNotEnoughMoneyForMonster());
 
-        manager.getTrainer().add(new Monster.Shark(10));
+        // One monster, no money
+        manager.getPlayer().add(new Monster.Shark(10));
 
         assertFalse(manager.hasNotEnoughMoneyForMonster());
 
-        manager.getTrainer().getParty().forEach(mon -> mon.takeDamage(mon.maxHp()));
+        // One fainted monster, no money
+        manager.getPlayer().getParty().forEach(mon -> mon.takeDamage(mon.maxHp()));
 
         assertFalse(manager.hasNotEnoughMoneyForMonster());
 
-        manager.getTrainer().remove(0);
+        // No monster, enough money for a new one
+        manager.getPlayer().remove(0);
         manager.setGold(manager.getShop().getMonsterStock().stream().findFirst().map(Monster::buyPrice).orElse(1000));
 
         assertFalse(manager.hasNotEnoughMoneyForMonster());
@@ -155,13 +161,16 @@ class GameManagerTest {
      */
     @Test
     void hasNoPossibilityForRevive() {
+        // No monster, no money
         assertTrue(manager.hasNoPossibilityForRevive());
 
-        manager.getTrainer().add(new Monster.Shark(10));
+        // One monster, no money
+        manager.getPlayer().add(new Monster.Shark(10));
 
         assertFalse(manager.hasNoPossibilityForRevive());
 
-        manager.getTrainer().getParty().forEach(mon -> mon.takeDamage(mon.maxHp()));
+        // One fainted monster, no money, enough money for a revive
+        manager.getPlayer().getParty().forEach(mon -> mon.takeDamage(mon.maxHp()));
         manager.setGold(new Item.Revive().buyPrice());
 
         assertFalse(manager.hasNoPossibilityForRevive());
@@ -176,8 +185,10 @@ class GameManagerTest {
      */
     @Test
     void hasNotBattleOnce() {
+        // All enemy trainer monsters have full health
         assertTrue(manager.hasNotBattleOnce());
 
+        // At least one enemy trainer monster has taken damage
         manager.getAvailableBattles()
             .stream()
             .findFirst()
@@ -200,8 +211,8 @@ class GameManagerTest {
     @Test
     void nextDay() {
         manager.setGold(99999);
-        manager.getTrainer().add(perfectMon);
-        manager.getTrainer().add(ejectMon);
+        manager.getPlayer().add(perfectMon);
+        manager.getPlayer().add(ejectMon);
         perfectMon.takeDamage(perfectMon.maxHp() / 2);
         manager.getAvailableBattles().forEach(trainer -> trainer.getParty().forEach(mon -> mon.takeDamage(mon.maxHp())));
         manager.setCurrentDay(3);
@@ -281,19 +292,21 @@ class GameManagerTest {
      */
     @Test
     void partyMonstersLeave() {
-        manager.getTrainer().add(ejectMon);
+        // ejectMon leaves the party
+        manager.getPlayer().add(ejectMon);
 
         final Optional<Monster> leaveMon = manager.partyMonstersLeave();
 
-        assertTrue(manager.getTrainer().isWhitedOut());
+        assertTrue(manager.getPlayer().isWhitedOut());
 
         assertEquals(ejectMon, leaveMon.orElseThrow());
 
-        manager.getTrainer().add(perfectMon);
+        // perfectMon does not leave the party
+        manager.getPlayer().add(perfectMon);
 
         manager.partyMonstersLeave();
 
-        assertFalse(manager.getTrainer().isWhitedOut());
+        assertFalse(manager.getPlayer().isWhitedOut());
     }
 
     /**
@@ -305,7 +318,7 @@ class GameManagerTest {
     @Test
     void partyMonstersHeal() {
         perfectMon.takeDamage(1);
-        manager.getTrainer().add(perfectMon);
+        manager.getPlayer().add(perfectMon);
 
         final int currentHp = perfectMon.getCurrentHp();
 
@@ -323,7 +336,7 @@ class GameManagerTest {
      */
     @Test
     void partyMonstersLevelUp() {
-        manager.getTrainer().add(perfectMon);
+        manager.getPlayer().add(perfectMon);
 
         final int currentLevel = perfectMon.getLevel();
 
@@ -342,15 +355,18 @@ class GameManagerTest {
      */
     @Test
     void monsterJoinsParty() {
-        manager.setMaxDays(1);
-        manager.setCurrentDay(1);
+        // Monster joins party
+        final Trainer player = manager.getPlayer();
         manager.setDifficulty(100);
 
         assertTrue(manager.monsterJoinsParty().isPresent());
-        assertEquals(1, manager.getTrainer().getParty().size());
+        assertEquals(1, player.getParty().size());
 
-        manager.setMaxDays(10000);
-        manager.setCurrentDay(0);
+        // Party is full
+        player.add(new Monster.Eel(1));
+        player.add(new Monster.Quacker(1));
+        player.add(new Monster.Tree(1));
+
         manager.setDifficulty(0);
         assertTrue(manager.monsterJoinsParty().isEmpty());
     }
@@ -383,10 +399,12 @@ class GameManagerTest {
      */
     @Test
     void useItemFromInventory() {
+        // Player has no rare candies and tries to use one
         final Monster mon = new Monster.Shark(9);
         assertThrows(Inventory.ItemNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), mon));
         assertEquals(9, mon.getLevel());
 
+        // Player has a rare candy and uses one
         manager.getInventory().add(new Item.RareCandy());
 
         manager.useItemFromInventory(new Item.RareCandy(), mon);
@@ -405,15 +423,18 @@ class GameManagerTest {
      */
     @Test
     void testUseItemFromInventory() {
+        // Player has no monsters and tries to use one
         final Monster mon = new Monster.Shark(9);
         assertThrows(Trainer.MonsterDoesNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), 0));
         assertEquals(9, mon.getLevel());
 
-        manager.getTrainer().add(mon);
+        // Player has no rare candies and tries to use one
+        manager.getPlayer().add(mon);
 
         assertThrows(Inventory.ItemNotExistException.class, () -> manager.useItemFromInventory(new Item.RareCandy(), 0));
         assertEquals(9, mon.getLevel());
 
+        // Player has a rare candy and uses one
         manager.getInventory().add(new Item.RareCandy());
 
         manager.useItemFromInventory(new Item.RareCandy(), 0);
@@ -431,17 +452,19 @@ class GameManagerTest {
      */
     @Test
     void switchMonsterOnParty() {
+        // Successful monster swap
         final Monster mon1 = new Monster.Shark(10);
         final Monster mon2 = new Monster.Doger(10);
-        manager.getTrainer().add(mon1);
-        manager.getTrainer().add(mon2);
+        manager.getPlayer().add(mon1);
+        manager.getPlayer().add(mon2);
 
         manager.switchMonsterOnParty(0, 1);
 
-        final List<Monster> party = manager.getTrainer().getParty();
+        final List<Monster> party = manager.getPlayer().getParty();
         assertEquals(mon2, party.get(0));
         assertEquals(mon1, party.get(1));
 
+        // Swap with invalid index
         assertThrows(IndexOutOfBoundsException.class, () -> manager.switchMonsterOnParty(0, 10));
     }
 
@@ -454,17 +477,19 @@ class GameManagerTest {
      */
     @Test
     void testSwitchMonsterOnParty() {
+        // Successful monster swap
         final Monster mon1 = new Monster.Shark(10);
         final Monster mon2 = new Monster.Doger(10);
-        manager.getTrainer().add(mon1);
-        manager.getTrainer().add(mon2);
+        manager.getPlayer().add(mon1);
+        manager.getPlayer().add(mon2);
 
         manager.switchMonsterOnParty(mon1, 1);
 
-        final List<Monster> party = manager.getTrainer().getParty();
+        final List<Monster> party = manager.getPlayer().getParty();
         assertEquals(mon2, party.get(0));
         assertEquals(mon1, party.get(1));
 
+        // Swap with invalid index
         assertThrows(IndexOutOfBoundsException.class, () -> manager.switchMonsterOnParty(mon1, 10));
     }
 
@@ -485,19 +510,23 @@ class GameManagerTest {
 
         manager.setGold(0);
 
+        // Not enough gold to buy anything
         assertThrows(Shop.InsufficientFundsException.class, () -> manager.buy(anyItem));
         assertThrows(Shop.InsufficientFundsException.class, () -> manager.buy(anyMonster));
 
+        // Buys an item
         manager.setGold(anyItem.buyPrice() + anyMonster.buyPrice() + 100);
 
         manager.buy(anyItem);
 
         assertTrue(manager.getInventory().getItemNumber(anyItem) > 0);
 
+        // Buys a monster
         manager.buy(anyMonster);
 
-        assertTrue(manager.getTrainer().getParty().contains(anyMonster));
+        assertTrue(manager.getPlayer().getParty().contains(anyMonster));
 
+        // Attempt to buy a monster that is not in stock
         manager.setGold(manager.getGold() * 10);
 
         assertThrows(Shop.NotInStockException.class, () -> manager.buy(new Monster.Eel(1)));
@@ -519,21 +548,23 @@ class GameManagerTest {
 
         manager.setGold(0);
 
+        // No items or monster to sell
         assertThrows(Inventory.ItemNotExistException.class, () -> manager.sell(anyItem));
         assertThrows(Trainer.MonsterDoesNotExistException.class, () -> manager.sell(anyMonster));
         assertEquals(0, manager.getGold());
 
         manager.getInventory().add(anyItem);
-        manager.getTrainer().add(anyMonster);
+        manager.getPlayer().add(anyMonster);
 
-
+        // Sells an item
         manager.sell(anyItem);
 
         assertEquals(0, manager.getInventory().getItemNumber(anyItem));
 
+        // Sells a monster
         manager.sell(anyMonster);
 
-        assertFalse(manager.getTrainer().getParty().contains(anyMonster));
+        assertFalse(manager.getPlayer().getParty().contains(anyMonster));
 
         assertEquals(anyItem.sellPrice() + anyMonster.sellPrice(), manager.getGold());
     }
@@ -548,7 +579,7 @@ class GameManagerTest {
         assertEquals(0, manager.getScore());
 
         manager.refreshCurrentDay();
-        manager.getTrainer().add(new Monster.Shark(1));
+        manager.getPlayer().add(new Monster.Shark(1));
         final BattleManager battleManager = manager.prepareBattle(new BattleManager.UI() {
             @Override
             public void onEachAttackProgress(int percentage) {
@@ -586,11 +617,13 @@ class GameManagerTest {
      */
     @Test
     void setTrainerName() {
+        // Attempting to set illegal names
         assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("invalid1"));
         assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("iw"));
         assertThrows(IllegalArgumentException.class, () -> manager.setTrainerName("toolongforanameaaaaaaaaaa"));
 
+        // Setting a valid name
         manager.setTrainerName("Jimbo");
-        assertEquals("Jimbo", manager.getTrainer().getName());
+        assertEquals("Jimbo", manager.getPlayer().getName());
     }
 }

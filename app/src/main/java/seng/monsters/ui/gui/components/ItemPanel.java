@@ -58,15 +58,18 @@ public final class ItemPanel {
      * Initialize the UI element for this panel
      */
     private void render() {
+        // Panel to contain all the item information
         itemPanel = new JPanel();
         itemPanel.setBackground(new Color(255, 250, 240));
 
+        // Label for the item's name
         JLabel itemNameLabel = new JLabel(item.getName());
         itemNameLabel.setBounds(6, 6, 146, 20);
         itemPanel.add(itemNameLabel);
         itemNameLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
         itemNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        // Label for the item's description
         JLabel descLabel = new JLabel(item.description());
         descLabel.setForeground(new Color(0, 128, 128));
         descLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -74,6 +77,7 @@ public final class ItemPanel {
         descLabel.setBounds(6, 142, 146, 20);
         itemPanel.add(descLabel);
 
+        // Label to display the items icon
         JLabel iconLabel = new JLabel("");
         Screen.imageIconFromResource(String.format("/images/%s.png", item.getName().toLowerCase()))
             .ifPresent(iconLabel::setIcon);

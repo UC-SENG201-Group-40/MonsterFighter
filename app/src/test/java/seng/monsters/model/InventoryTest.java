@@ -66,15 +66,18 @@ class InventoryTest {
      */
     @Test
     void use() {
+        // Player does not have a rare candy to use
         assertThrows(Inventory.ItemNotExistException.class,
             () -> inventory.use(new Item.RareCandy(), new Monster.Raver(1))
         );
 
+        // Revive is used on invalid monster
         inventory.add(new Item.Revive());
         assertThrows(Item.NoEffectException.class,
             () -> inventory.use(new Item.Revive(), new Monster.Raver(1))
         );
 
+        // Revive is successfully used on a monster
         final Monster monster = new Monster.Raver(1000);
         monster.takeDamage(monster.maxHp());
         inventory.use(new Item.Revive(), monster);
@@ -90,8 +93,10 @@ class InventoryTest {
      */
     @Test
     void remove() {
+        // No potion to remove
         assertThrows(Inventory.ItemNotExistException.class, () -> inventory.remove(new Item.Potion()));
 
+        // Successfully remove a potion
         inventory.add(new Item.Potion());
         inventory.remove(new Item.Potion());
         assertEquals(0, inventory.getItems().size());

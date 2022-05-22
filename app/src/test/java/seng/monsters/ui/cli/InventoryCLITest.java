@@ -24,7 +24,7 @@ class InventoryCLITest extends CLITestBase {
         labMonster = new Monster.Doger("Good boi", 10);
         inventoryCLI = new InventoryCLI(gameManager);
         inventory = gameManager.getInventory();
-        gameManager.getTrainer().add(labMonster);
+        gameManager.getPlayer().add(labMonster);
         baseSetup();
     }
 

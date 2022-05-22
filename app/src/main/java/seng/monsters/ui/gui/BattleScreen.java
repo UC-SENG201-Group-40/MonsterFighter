@@ -247,15 +247,19 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         frame.getContentPane().add(party1);
 
         JRadioButton party1Check0 = new JRadioButton();
+        party1Check0.setEnabled(false);
         party1.add(party1Check0);
 
         JRadioButton party1Check1 = new JRadioButton();
+        party1Check1.setEnabled(false);
         party1.add(party1Check1);
 
         JRadioButton party1Check2 = new JRadioButton();
+        party1Check2.setEnabled(false);
         party1.add(party1Check2);
 
         JRadioButton party1Check3 = new JRadioButton();
+        party1Check3.setEnabled(false);
         party1.add(party1Check3);
 
         this.playerPartyButtons = new JRadioButton[]{party1Check0, party1Check1, party1Check2, party1Check3};
@@ -265,15 +269,19 @@ public final class BattleScreen extends Screen implements BattleManager.UI {
         frame.getContentPane().add(party2);
 
         JRadioButton party2Check3 = new JRadioButton();
+        party2Check3.setEnabled(false);
         party2.add(party2Check3);
 
         JRadioButton party2Check2 = new JRadioButton();
+        party2Check2.setEnabled(false);
         party2.add(party2Check2);
 
         JRadioButton party2Check1 = new JRadioButton();
+        party2Check1.setEnabled(false);
         party2.add(party2Check1);
 
         JRadioButton party2Check0 = new JRadioButton();
+        party2Check0.setEnabled(false);
         party2.add(party2Check0);
 
         this.enemyPartyButtons = new JRadioButton[]{party2Check0, party2Check1, party2Check2, party2Check3};
